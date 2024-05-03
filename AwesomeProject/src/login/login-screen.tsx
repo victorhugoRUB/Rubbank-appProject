@@ -1,11 +1,12 @@
-import React, { useState, ReactHTML } from 'react'
+import React, { useState, useRef } from 'react'
 import type {NavigationProp} from '@react-navigation/native';
 import type {RootStackParamList} from '../../App';
-import {ConfirmButton, Container, DivInputLogin, DivLogin, DivText, EyePasswordIcon, InputLogin, Logo, TextBottom, TextButton, TextLinks, TextTop, TitleInput} from './login-screen.styles';
+import {ConfirmButton, Container, DivInputLogin, DivLogin, DivText, EyePasswordIcon, InputLogin, InputLoginSenha, Logo, TextBottom, TextButton, TextLinks, TextTop, TitleInput} from './login-screen.styles';
 import {ScreenBase} from '../components/screen-base/screen-base';
 import { Modal, TouchableOpacity, TouchableWithoutFeedback, View, useColorScheme } from 'react-native';
 import { WarningScreen } from '../AvisoModel/erroModel';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { LoadingSpinner } from '../Loading/loadingScreen';
 const logoRubbank = require('../assets/logos/rubbank.png');
 const logoRubbankWhite = require('../assets/logos/rubbankWhite.png');
 const eyeIconOpen = require('../assets/Icons/eyeIconPsswrdOpened.png');
@@ -22,17 +23,24 @@ export default function LoginScreen({navigation}: LoginScreenProps) {
   const [showWarning, setShowWarning] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     usuario_cpf: '',
     usuario_senha: '' 
   })
 
-  const handleFormEdit = (event: any, valor: any) => {
+  // let value = event;
+  // if (valor === 'usuario_cpf') {
+  //   value = event.replace(/\D/g, ''); // Remove all non-digit characters
+  // }
+
+  const handleFormEdit = (event: any, valor: any) => { 
     setFormData({
       ...formData,
-      [valor]: event
+      [valor]: event.replace(/[.-]/g, '')
     })
+    console.log(formData)
   }
 
   const handleForm = async (event: any) => {
@@ -45,6 +53,7 @@ export default function LoginScreen({navigation}: LoginScreenProps) {
       }
       setInputBorderColor('#000000');
       setErrorMessage('');
+      setLoading(true)
       const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/usuario/login`,{
         method: 'POST',
         headers: {
@@ -65,12 +74,13 @@ export default function LoginScreen({navigation}: LoginScreenProps) {
         navigation.navigate('Inicio')
       }
       
-
+      setLoading(false)
       const json = await res.json()
       console.log(res)
       console.log(json)
     }catch(err) {
       console.log(err)
+      setLoading(false)
     }
   }
 
@@ -81,6 +91,7 @@ export default function LoginScreen({navigation}: LoginScreenProps) {
   const colorChangetoBlack = {
     color: isDarkMode ? Colors.darker : Colors.lighter
   };
+
 
   return (
     <ScreenBase>
@@ -100,13 +111,28 @@ export default function LoginScreen({navigation}: LoginScreenProps) {
             </DivText>
             <DivLogin>
               <TitleInput style={colorChangetoWhite}>CPF</TitleInput>
-              <InputLogin placeholder="Insira seu CPF aqui" value={formData.usuario_cpf} onChangeText={(e) => {handleFormEdit(e, 'usuario_cpf')}} style={{ borderColor: inputBorderColor, backgroundColor: isDarkMode ? Colors.darker : Colors.lighter}} />
+              <InputLogin 
+                placeholder="Insira seu CPF aqui" 
+                placeholderTextColor='#aaabab'
+                value={formData.usuario_cpf}
+                onChangeText={(e) => {handleFormEdit(e, 'usuario_cpf')}} 
+                style={{ borderColor: inputBorderColor, backgroundColor: isDarkMode ? Colors.darker : Colors.lighter, color: isDarkMode ? Colors.lighter : Colors.darker}} 
+                type={'cpf'}
+                />
               <TitleInput style={colorChangetoWhite}>Senha</TitleInput>
-              <InputLogin placeholder="Insira sua senha" value={formData.usuario_senha} onChangeText={(e) => {handleFormEdit(e, 'usuario_senha')}} style={{ borderColor: inputBorderColor, backgroundColor: isDarkMode ? Colors.darker : Colors.lighter}} secureTextEntry={!showPassword}/>
+              <InputLoginSenha 
+                placeholder="Insira sua senha" 
+                placeholderTextColor='#aaabab'
+                value={formData.usuario_senha} 
+                onChangeText={(e) => {handleFormEdit(e, 'usuario_senha')}} 
+                style={{ borderColor: inputBorderColor, backgroundColor: isDarkMode ? Colors.darker : Colors.lighter, color: isDarkMode ? Colors.lighter : Colors.darker}} 
+                secureTextEntry={!showPassword}
+                />
               <TouchableOpacity onPress={() => setShowPassword(!showPassword)}><EyePasswordIcon source={showPassword ? eyeIconOpen : eyeIconClose} style={{   position: 'absolute', right: 20, top: -43, bottom: 12,  backgroundColor: isDarkMode ? Colors.lighter: Colors.transparent }}/></TouchableOpacity>
               {errorMessage !== '' ? <TextBottom style={colorChangetoWhite}>{errorMessage}</TextBottom> : null}
               <TextLinks>Esqueceu a sua senha?</TextLinks>
             </DivLogin>
+            <LoadingSpinner visible={loading}/>
             <DivInputLogin>
               <ConfirmButton onPress={handleForm} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff" style={colorChangetoBlack}>CONFIRMAR</TextButton></ConfirmButton>
               <ConfirmButton onPress={() => navigation.navigate('Inicio')} accessibilityLabel="Criar uma nova conta" cor='#ffffff0'><TextLinks>Criar uma nova conta</TextLinks></ConfirmButton>

@@ -5,16 +5,16 @@ const warningImage = require('../assets/Icons/warning.png');
 
 export const WarningScreen = ({onClose, warnMessage}: {onClose: () => void, warnMessage: string}) => {
     return (
-        <ErrorContainer>
+    <ErrorContainer>
         <DivTextCloseModel><TouchableWithoutFeedback onPress={onClose}><TextCloseModel>X Fechar</TextCloseModel></TouchableWithoutFeedback></DivTextCloseModel>
         <ErrorModel>
             <WarningImage source={warningImage}/>
             <DivTextModel>
-            <TopText>Atenção</TopText>
-            <BottomText>{warnMessage}</BottomText>
+                <TopText>Atenção</TopText>
+                <BottomText>{warnMessage}</BottomText>
             </DivTextModel>
         </ErrorModel>
-      </ErrorContainer>
+    </ErrorContainer>
     );
 }
   

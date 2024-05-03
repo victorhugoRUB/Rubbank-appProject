@@ -1,4 +1,5 @@
 import {View, Image, Text, TextInput, TouchableOpacity} from 'react-native';
+import { TextInputMask } from 'react-native-masked-text';
 import styled from 'styled-components';
 
 export const Container = styled(View)`
@@ -23,8 +24,7 @@ export const DivText = styled(View)`
   display: flex;
   justify-content: flex-start;
   gap: 5px;
-  max-width: 100%;
-  /* background-color: red; */
+  width: 100%;
 `;
 
 export const TextTop = styled(Text)`
@@ -54,7 +54,18 @@ export const TitleInput = styled(Text)`
   color: black;
 `;
 
-export const InputLogin = styled(TextInput)`
+export const InputLogin = styled(TextInputMask)`
+  background-color: #ffffff;
+  border-bottom-color: #1D1C3E;
+  border-bottom-width: 1px;
+  padding: 10px;
+  width: 100%;
+  max-width: 100%;
+  font-size: 15px;
+  font-weight: 700;
+`;
+
+export const InputLoginSenha = styled(TextInput)`
   background-color: #ffffff;
   border-bottom-color: #1D1C3E;
   border-bottom-width: 1px;
