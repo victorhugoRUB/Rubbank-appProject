@@ -7,6 +7,7 @@ import { Modal, TouchableOpacity, TouchableWithoutFeedback, View, useColorScheme
 import { WarningScreen } from '../AvisoModel/erroModel';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { LoadingSpinner } from '../Loading/loadingScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const logoRubbank = require('../assets/logos/rubbank.png');
 const logoRubbankWhite = require('../assets/logos/rubbankWhite.png');
 const eyeIconOpen = require('../assets/Icons/eyeIconPsswrdOpened.png');
@@ -38,7 +39,7 @@ export default function LoginScreen({navigation}: LoginScreenProps) {
   const handleFormEdit = (event: any, valor: any) => { 
     setFormData({
       ...formData,
-      [valor]: event.replace(/[.-]/g, '')
+      [valor]: event.replace(/[.-@]/g, '')
     })
     console.log(formData)
   }
@@ -70,10 +71,9 @@ export default function LoginScreen({navigation}: LoginScreenProps) {
       const r = await res.json()
       if(r.token){
         console.log(r.token)
-        console.log(r)
-        navigation.navigate('Inicio')
+        await AsyncStorage.setItem('token', r.token)
+        navigation.navigate('Dashboard')
       }
-      
       setLoading(false)
       const json = await res.json()
       console.log(res)
@@ -88,10 +88,6 @@ export default function LoginScreen({navigation}: LoginScreenProps) {
   const colorChangetoWhite = {
     color: isDarkMode ? Colors.lighter : Colors.darker
   };
-  const colorChangetoBlack = {
-    color: isDarkMode ? Colors.darker : Colors.lighter
-  };
-
 
   return (
     <ScreenBase>
@@ -116,7 +112,7 @@ export default function LoginScreen({navigation}: LoginScreenProps) {
                 placeholderTextColor='#aaabab'
                 value={formData.usuario_cpf}
                 onChangeText={(e) => {handleFormEdit(e, 'usuario_cpf')}} 
-                style={{ borderColor: inputBorderColor, backgroundColor: isDarkMode ? Colors.darker : Colors.lighter, color: isDarkMode ? Colors.lighter : Colors.darker}} 
+                style={{ borderColor: inputBorderColor, backgroundColor: isDarkMode ? Colors.darker : Colors.lighter, color: isDarkMode ? Colors.lighter : Colors.darker, borderBottomColor: isDarkMode ? Colors.lighter : Colors.darker, borderBottomWidth: 1}} 
                 type={'cpf'}
                 />
               <TitleInput style={colorChangetoWhite}>Senha</TitleInput>
@@ -134,7 +130,7 @@ export default function LoginScreen({navigation}: LoginScreenProps) {
             </DivLogin>
             <LoadingSpinner visible={loading}/>
             <DivInputLogin>
-              <ConfirmButton onPress={handleForm} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff" style={colorChangetoBlack}>CONFIRMAR</TextButton></ConfirmButton>
+              <ConfirmButton onPress={handleForm} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">CONFIRMAR</TextButton></ConfirmButton>
               <ConfirmButton onPress={() => navigation.navigate('Inicio')} accessibilityLabel="Criar uma nova conta" cor='#ffffff0'><TextLinks>Criar uma nova conta</TextLinks></ConfirmButton>
             </DivInputLogin>
         </Container>

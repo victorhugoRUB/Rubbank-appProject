@@ -56,8 +56,8 @@ export const TitleInput = styled(Text)`
 
 export const InputLogin = styled(TextInputMask)`
   background-color: #ffffff;
-  border-bottom-color: #1D1C3E;
-  border-bottom-width: 1px;
+  /* border-bottom-color: #1D1C3E; */
+  /* border-bottom-width: 1px; */
   padding: 10px;
   width: 100%;
   max-width: 100%;
@@ -66,7 +66,6 @@ export const InputLogin = styled(TextInputMask)`
 `;
 
 export const InputLoginSenha = styled(TextInput)`
-  background-color: #ffffff;
   border-bottom-color: #1D1C3E;
   border-bottom-width: 1px;
   padding: 10px;
