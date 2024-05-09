@@ -39,7 +39,7 @@ export default function LoginScreen({navigation}: LoginScreenProps) {
   const handleFormEdit = (event: any, valor: any) => { 
     setFormData({
       ...formData,
-      [valor]: event.replace(/[.-@]/g, '')
+      [valor]: event
     })
     console.log(formData)
   }
@@ -111,7 +111,7 @@ export default function LoginScreen({navigation}: LoginScreenProps) {
                 placeholder="Insira seu CPF aqui" 
                 placeholderTextColor='#aaabab'
                 value={formData.usuario_cpf}
-                onChangeText={(e) => {handleFormEdit(e, 'usuario_cpf')}} 
+                onChangeText={(e) => {handleFormEdit(e.replace(/[.-]/g, ''), 'usuario_cpf')}} 
                 style={{ borderColor: inputBorderColor, backgroundColor: isDarkMode ? Colors.darker : Colors.lighter, color: isDarkMode ? Colors.lighter : Colors.darker, borderBottomColor: isDarkMode ? Colors.lighter : Colors.darker, borderBottomWidth: 1}} 
                 type={'cpf'}
                 />
@@ -131,7 +131,7 @@ export default function LoginScreen({navigation}: LoginScreenProps) {
             <LoadingSpinner visible={loading}/>
             <DivInputLogin>
               <ConfirmButton onPress={handleForm} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">CONFIRMAR</TextButton></ConfirmButton>
-              <ConfirmButton onPress={() => navigation.navigate('Inicio')} accessibilityLabel="Criar uma nova conta" cor='#ffffff0'><TextLinks>Criar uma nova conta</TextLinks></ConfirmButton>
+              <ConfirmButton onPress={() => navigation.navigate('OnboardingDadosPessoais')} accessibilityLabel="Criar uma nova conta" cor='#ffffff0'><TextLinks>Criar uma nova conta</TextLinks></ConfirmButton>
             </DivInputLogin>
         </Container>
     </ScreenBase>

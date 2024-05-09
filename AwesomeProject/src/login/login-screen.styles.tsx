@@ -55,9 +55,8 @@ export const TitleInput = styled(Text)`
 `;
 
 export const InputLogin = styled(TextInputMask)`
-  background-color: #ffffff;
-  /* border-bottom-color: #1D1C3E; */
-  /* border-bottom-width: 1px; */
+  border-bottom-color: #1D1C3E;
+  border-bottom-width: 1px;
   padding: 10px;
   width: 100%;
   max-width: 100%;
@@ -66,6 +65,17 @@ export const InputLogin = styled(TextInputMask)`
 `;
 
 export const InputLoginSenha = styled(TextInput)`
+  border-bottom-color: #1D1C3E;
+  border-bottom-width: 1px;
+  padding: 10px;
+  width: 100%;
+  max-width: 100%;
+  font-size: 15px;
+  font-weight: 700;
+  color: #000000;
+`;
+
+export const InputLoginSenhaMasked = styled(TextInputMask)`
   border-bottom-color: #1D1C3E;
   border-bottom-width: 1px;
   padding: 10px;

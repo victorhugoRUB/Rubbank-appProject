@@ -3,7 +3,10 @@ import React, { useEffect, useState } from 'react';
 import type {RootStackParamList} from '../../App';
 import {ScreenBase} from '../components/screen-base/screen-base';
 import { BlockInput, BlocksOfInput, Container, DivButtonConfirm, DivContent, DivInput, InputCadastro, Span, TextInputCad, TextTitle, TopBar, TopBarBluePart } from './onboarding-screen.styles';
-import { ConfirmButton, InputLoginSenha, TextButton } from '../login/login-screen.styles';
+import { ConfirmButton, InputLogin, InputLoginSenha, TextButton } from '../login/login-screen.styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch } from 'react-redux';
+import { setEndField } from '../redux/endSlice';
 
 
 interface OnboardingEndScreenProps {
@@ -12,6 +15,57 @@ interface OnboardingEndScreenProps {
 
 export default function OnboardingEndScreen({navigation}: OnboardingEndScreenProps) {
   const [loading, setLoading] = useState(false);
+  const [buttonState, setButtonState] = useState(false);
+  const dispatch = useDispatch();
+
+  const [formData, setFormData] = useState({
+    end_cep: '',
+    end_rua: '',
+    end_num: '',
+    end_complem: '',
+    end_bairro: '',
+    end_cidade: '',
+    end_uf: ''
+  })
+
+  const handleFormEdit = (event: any, valor: any) => {
+    dispatch((setEndField({field: valor, value: event})))
+    setFormData({
+      ...formData,
+      [valor]: event
+    })
+    console.log(formData)
+  }
+
+  useEffect(() => {
+    setLoading(true)
+    handleGetCEP()
+    setLoading(false)
+  }, [])
+
+  useEffect(() => {
+    if(formData.end_num === '' || formData.end_complem === ''){
+      setButtonState(false)
+      return
+    }else{
+      setButtonState(true)
+    }
+  }, [formData])
+  const handleGetCEP = async () => {
+    const CEP = await AsyncStorage.getItem('CEP')
+    const parseCEP = JSON.parse(CEP || '')
+    console.log(parseCEP)
+    setFormData({
+      ...formData,
+      end_cep: parseCEP.cep,
+      end_rua: parseCEP.logradouro,
+      end_bairro: parseCEP.bairro,
+      end_cidade: parseCEP.localidade,
+      end_uf: parseCEP.uf
+    })
+  }
+  
+
   return (
     <ScreenBase>
       <Container>
@@ -23,6 +77,9 @@ export default function OnboardingEndScreen({navigation}: OnboardingEndScreenPro
             <InputLoginSenha
             placeholder='XXXXX-XXX'
             placeholderTextColor='#aaabab'
+            value={formData.end_cep}
+            onChangeText={(e) => handleFormEdit(e, 'end_cep')}
+            editable={false}
             />
           </BlockInput>
           <BlockInput>
@@ -30,6 +87,9 @@ export default function OnboardingEndScreen({navigation}: OnboardingEndScreenPro
             <InputLoginSenha
             placeholder='Digite seu endereço'
             placeholderTextColor='#aaabab'
+            value={formData.end_rua}
+            onChangeText={(e) => handleFormEdit(e, 'end_rua')}
+            editable={false}
             />
           </BlockInput>
           <BlocksOfInput>
@@ -38,6 +98,8 @@ export default function OnboardingEndScreen({navigation}: OnboardingEndScreenPro
               <InputLoginSenha
               placeholder='Número residência'
               placeholderTextColor='#aaabab'
+              value={formData.end_num}
+              onChangeText={(e) => handleFormEdit(e, 'end_num')}
               />
             </BlockInput>
             <BlockInput width='46%'>
@@ -45,6 +107,8 @@ export default function OnboardingEndScreen({navigation}: OnboardingEndScreenPro
               <InputLoginSenha
               placeholder='Digite seu CPF'
               placeholderTextColor='#aaabab'
+              value={formData.end_complem}
+              onChangeText={(e) => handleFormEdit(e, 'end_complem')}
               />
             </BlockInput>
           </BlocksOfInput>
@@ -53,6 +117,9 @@ export default function OnboardingEndScreen({navigation}: OnboardingEndScreenPro
             <InputLoginSenha
             placeholder='(dd/mm/aaaa)'
             placeholderTextColor='#aaabab'
+            value={formData.end_bairro}
+            onChangeText={(e) => handleFormEdit(e, 'end_bairro')}
+            editable={false}
             />
           </BlockInput>
           <BlocksOfInput>
@@ -61,6 +128,9 @@ export default function OnboardingEndScreen({navigation}: OnboardingEndScreenPro
               <InputLoginSenha
               placeholder='(dd/mm/aaaa)'
               placeholderTextColor='#aaabab'
+              value={formData.end_cidade}
+              onChangeText={(e) => handleFormEdit(e, 'end_cidade')}
+              editable={false}
               />
             </BlockInput>
             <BlockInput width='46%'>
@@ -68,12 +138,15 @@ export default function OnboardingEndScreen({navigation}: OnboardingEndScreenPro
               <InputLoginSenha
               placeholder='(dd/mm/aaaa)'
               placeholderTextColor='#aaabab'
+              value={formData.end_uf}
+              onChangeText={(e) => handleFormEdit(e, 'end_uf')}
+              editable={false}
               />
             </BlockInput>
           </BlocksOfInput>
           </DivInput>
         <DivButtonConfirm>
-          <ConfirmButton onPress={() => navigation.navigate('OnboardingSenhaApp')} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">CONFIRMAR</TextButton></ConfirmButton>
+          <ConfirmButton disabled={!buttonState} style={!buttonState ? {backgroundColor: '#6b79e578'}: {}} onPress={() => navigation.navigate('OnboardingSenhaApp')} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">CONFIRMAR</TextButton></ConfirmButton>
         </DivButtonConfirm>
       </Container>
     </ScreenBase>

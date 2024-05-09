@@ -1,4 +1,5 @@
 import {View, Image, Text, TouchableOpacity, TextInput} from 'react-native';
+import { TextInputMask } from 'react-native-masked-text';
 import styled from 'styled-components';
 
 export const Container = styled(View)`
@@ -47,7 +48,7 @@ export const DivInput = styled(View)`
   justify-content: flex-start;
   align-items: stretch;
   flex-direction: column;
-  gap: 40px;
+  gap: 20px;
 `;
 
 export const BlockInput = styled(View)<{ width?: string }>`
@@ -56,7 +57,7 @@ export const BlockInput = styled(View)<{ width?: string }>`
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 20px;
+  /* gap: 10px; */
 `;
 
 export const BlocksOfInput = styled(View)`
@@ -72,7 +73,7 @@ export const TextInputCad = styled(Text)`
   color: #000;
 `;
 
-export const InputCadastro = styled(TextInput)`
+export const InputCadastro = styled(TextInputMask)`
   
   border-bottom-color: #1D1C3E;
   border-bottom-width: 1px;
@@ -103,4 +104,26 @@ export const LinkToInfoModal = styled(TouchableOpacity)`
   justify-content: center;
   align-items: center;
   flex-direction: row;
+`;
+
+export const ErrorMessage = styled(Text)`
+  font-size: 13px;
+  font-weight: 700;
+  color: #ff0000;
+`;
+
+export const DivContentRev = styled(View)`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 100%;
+  gap: 10px;
+`;
+
+export const DivItemRev = styled(View)`
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 1;
+  justify-content: space-between;
+
 `;

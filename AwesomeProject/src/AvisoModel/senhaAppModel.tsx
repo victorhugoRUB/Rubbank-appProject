@@ -19,15 +19,15 @@ export const ModalSenhaAppScreen = ({onClose}: {onClose: () => void}) => {
                 <ListContent>
                     <UniqueListContent>
                         <IconFeather name='check' size={25} color={'#000'} />
-                        <TextModal size='16px'>A senha deve conter no mínimo 8 caracteres, entre letras, números e caracteres especiais (!@#$%^&*)</TextModal>
+                        <TextModal size='16px'>A senha deve conter no mínimo 8 caracteres, entre letras, números e caracteres especiais (!@#$%^&*).</TextModal>
                     </UniqueListContent>
                     <UniqueListContent>
                         <IconFeather name='check' size={25} color={'#000'} />
-                        <TextModal size='16px'>Não utilizar números ou letras repetidos; não uitilizar números ou letras sequênciais (ex: 12345678, aaaaaaaa)</TextModal>
+                        <TextModal size='16px'>Não utilizar números ou letras repetidos; não utilizar números ou letras sequênciais (ex: 12345678, aaaaaaaa).</TextModal>
                     </UniqueListContent>
                     <UniqueListContent>
                         <IconFeather name='check' size={25} color={'#000'} />
-                        <TextModal size='16px'>Não é permitido utilizar dados pessoais como nome, data de nascimento, número de telefone ou nome da mãe</TextModal>
+                        <TextModal size='16px'>Evite utilizar dados pessoais como nome, data de nascimento, número de telefone ou nome da mãe.</TextModal>
                     </UniqueListContent>
                 </ListContent>
             </BottomContent>

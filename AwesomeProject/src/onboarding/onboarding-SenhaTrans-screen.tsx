@@ -8,11 +8,11 @@ import IconFeather from 'react-native-vector-icons/Feather';
 import { ModalSenhaAppScreen } from '../AvisoModel/senhaAppModel';
 import { Modal } from 'react-native';
 
-interface OnboardingSenhaAppScreenProps {
-  navigation: NavigationProp<RootStackParamList, 'OnboardingSenhaApp'>;
+interface OnboardingSenhaTransScreenProps {
+  navigation: NavigationProp<RootStackParamList, 'OnboardingSenhaTrans'>;
 }
 
-export default function OnboardingSenhaAppScreen({navigation}: OnboardingSenhaAppScreenProps) {
+export default function OnboardingSenhaTransScreen({navigation}: OnboardingSenhaTransScreenProps) {
   const [loading, setLoading] = useState(false);
   const [avisoModal, setAvisoModal] = useState(false);
   const [borderRed, setBorderRed] = useState('#000000');
@@ -21,7 +21,7 @@ export default function OnboardingSenhaAppScreen({navigation}: OnboardingSenhaAp
   const [buttonState, setButtonState ] = useState(false);
 
   const [formData, setFormData] = useState({
-    usuario_senha: '',
+    contaBanc_senhatransacao: '',
     confirmSenha: ''
   })
 
@@ -34,15 +34,13 @@ export default function OnboardingSenhaAppScreen({navigation}: OnboardingSenhaAp
   }
 
   useEffect(() => {
-    if(formData.usuario_senha === '' || formData.confirmSenha === ''){
+    if(formData.contaBanc_senhatransacao === '' || formData.confirmSenha === ''){
       setButtonState(false)
       return
     }else{
       setButtonState(true)
     }
   }, [formData])
-
-
   return (
     <ScreenBase>
       <Modal
@@ -54,34 +52,35 @@ export default function OnboardingSenhaAppScreen({navigation}: OnboardingSenhaAp
       </Modal>
       <Container>
         <TopBar><TopBarBluePart width='75%'/></TopBar>
-          <TextTitle>Digite qual será sua senha para entrar no aplicativo</TextTitle>
+          <TextTitle>Digite qual será sua senha para efetuar transações</TextTitle>
           <DivInput>
-            <LinkToInfoModal onPress={() => setAvisoModal(true)}><TextInputCad><IconFeather name='info' size={12} color={'#000'} /> <Span decoration='underline'>Como criar uma senha segura</Span></TextInputCad></LinkToInfoModal>
+            <LinkToInfoModal onPress={() => setAvisoModal(true)}><TextInputCad><IconFeather name='info' size={12} color={'#000'} /> <Span decoration='underline'>Senha numérica de 4 dígitos</Span></TextInputCad></LinkToInfoModal>
             <BlockInput>
               <TextInputCad>Digite sua <Span>senha</Span>:</TextInputCad>
-              <InputLoginSenha
-              value={formData.usuario_senha}
+              <InputCadastro
+              value={formData.contaBanc_senhatransacao}
               onChangeText={(e) => {
-                if(/^(?=.*[_!@#$%&?'*+\/=?`{|}()~^.,-])(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$/.test(e)){
+                if(/^\d{4}$/.test(e)){
                   setBorderRed('#000000')
-                  handleFormEdit(e, 'usuario_senha')
+                  handleFormEdit(e, 'contaBanc_senhatransacao')
                   setErrorMessage('')
                 }else{
                   setBorderRed('#FF0000')
-                  handleFormEdit(e, 'usuario_senha')
-                  setErrorMessage('Sua senha deve conter no mínimo 8 caracteres, sendo eles: uma letra maiúscula, uma letra minúscula, um número e um caractere especial')
+                  handleFormEdit(e, 'contaBanc_senhatransacao')
+                  setErrorMessage('Sua senha deve conter 4 dígitos apenas números e não pode ser seguidos, por exemplo: 1234 ou 1111.')
                 }
               }}
+              type='only-numbers'
               style={{borderColor: borderRed}}
               secureTextEntry/>
               {borderRed === '#FF0000' ? <ErrorMessage>{errorMessage}</ErrorMessage> : null}
             </BlockInput>
             <BlockInput>
               <TextInputCad>Confirme sua <Span>senha</Span>:</TextInputCad>
-              <InputLoginSenha
+              <InputCadastro
               value={formData.confirmSenha}
               onChangeText={(e) => {
-                if(e === formData.usuario_senha){
+                if(e === formData.contaBanc_senhatransacao){
                   setBorderRed('#000000')
                   handleFormEdit(e, 'confirmSenha')
                   setErrorMessageConfirm('')
@@ -91,13 +90,14 @@ export default function OnboardingSenhaAppScreen({navigation}: OnboardingSenhaAp
                   setErrorMessageConfirm('Sua senha deve ser igual a anterior')
                 }
               }}
+              type='only-numbers'
               style={{borderColor: borderRed}}
               secureTextEntry/> 
               {borderRed === '#FF0000' ? <ErrorMessage>{errorMessageConfirm}</ErrorMessage> : null}
             </BlockInput>
           </DivInput>
         <DivButtonConfirm>
-          <ConfirmButton disabled={!buttonState || borderRed === '#FF0000'} style={!buttonState || borderRed === '#FF0000' ? {backgroundColor: '#6b79e578'}: {}} onPress={() => navigation.navigate('OnboardingSenhaTrans')} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">CONFIRMAR</TextButton></ConfirmButton>
+          <ConfirmButton onPress={() => navigation.navigate('OnboardingSenhaApp')} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">CONFIRMAR</TextButton></ConfirmButton>
         </DivButtonConfirm>
       </Container>
     </ScreenBase>

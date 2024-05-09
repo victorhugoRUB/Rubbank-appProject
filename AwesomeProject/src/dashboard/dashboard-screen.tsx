@@ -3,15 +3,8 @@ import React, { useEffect, useState } from 'react';
 import type {RootStackParamList} from '../../App';
 import {ScreenBase} from '../components/screen-base/dashboard-screen-base';
 import { TouchableOpacity, useColorScheme } from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { BlockOptions, BlockOptionsBottom, Container, DivBalance, DivBottom, DivOptions, DivTop, IconsTop, Logo, SeuSaldo, TextBlockBottom, TextSaldo } from './dashboard-screen.styles';
+import { BlockOptions, BlockOptionsBottom, Container, DivBalance, DivBottom, DivOptions, DivTop, Logo, SeuSaldo, TextBlockBottom, TextSaldo } from './dashboard-screen.styles';
 const logoWhite = require('../assets/logos/rubbankWhite.png');
-const iconMenu = require('../assets/Icons/Icon-menu.png');
-const IconHelp = require('../assets/Icons/Icon-help-2.png');
-const EyeIconOpen = require('../assets/Icons/eyeIconPsswrdOpened.png');
-const EyeIconClose = require('../assets/Icons/eyeIconPsswrdClosed.png');
-import IconAwesome from 'react-native-vector-icons/FontAwesome';
-import IconAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import IconFeather from 'react-native-vector-icons/Feather';
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import IconOcticons from 'react-native-vector-icons/Octicons';
@@ -51,7 +44,6 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
   }
 
   const numeroFormatado = Number(saldoConta).toLocaleString('pt-BR')
-  const isDarkMode = useColorScheme() === 'dark';
 
   return (
     <ScreenBase>
