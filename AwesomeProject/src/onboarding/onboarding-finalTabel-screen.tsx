@@ -7,6 +7,8 @@ import { ConfirmButton, InputLoginSenha, TextButton } from '../login/login-scree
 import IconFeather from 'react-native-vector-icons/Feather';
 import { ModalSenhaAppScreen } from '../AvisoModel/senhaAppModel';
 import { Modal } from 'react-native';
+import { ReduxState } from '../redux/store';
+import { useSelector } from 'react-redux';
 
 interface OnboardingFinalTabelScreenProps {
   navigation: NavigationProp<RootStackParamList, 'OnboardingFinalTabel'>;
@@ -16,22 +18,26 @@ export default function OnboardingFinalTabelScreen({navigation}: OnboardingFinal
   const [loading, setLoading] = useState(false);
   const [avisoModal, setAvisoModal] = useState(false);
   const [buttonState, setButtonState ] = useState(false);
+  const userData = useSelector((state: ReduxState)=> state.user);
+  const endData = useSelector((state: ReduxState)=> state.end);
+  const senhaAppData = useSelector((state: ReduxState)=> state.senhaApp);
+  const senhaTransData = useSelector((state: ReduxState)=> state.senhaTrans);
 
   const [formData, setFormData] = useState({
-    usuario_nome: '',
-    usuario_email: '',
-    usuario_tel: '',
-    usuario_cpf: '',
-    usuario_dtNascimento: '',
-    usuario_senha: '',
-    end_cep: '',
-    end_rua: '',
-    end_num: '',
-    end_complem: '',
-    end_bairro: '',
-    end_cidade: '',
-    end_uf: '',
-    contaBanc_senhatransacao: '',
+    usuario_nome: userData.usuario_nome,
+    usuario_email: userData.usuario_email,
+    usuario_tel: userData.usuario_tel,
+    usuario_cpf: userData.usuario_cpf,
+    usuario_dtNascimento: userData.usuario_dtNascimento,
+    usuario_senha: senhaAppData.usuario_senha,
+    end_cep: endData.end_cep,
+    end_rua: endData.end_rua,
+    end_num: endData.end_num,
+    end_complem: endData.end_complem,
+    end_bairro: endData.end_bairro,
+    end_cidade: endData.end_cidade,
+    end_uf: endData.end_uf,
+    contaBanc_senhatransacao: senhaTransData.contaBanc_senhatransacao,
   })
 
   useEffect(() => {

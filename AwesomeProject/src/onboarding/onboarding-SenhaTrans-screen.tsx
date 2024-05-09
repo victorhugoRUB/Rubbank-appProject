@@ -7,6 +7,8 @@ import { ConfirmButton, InputLoginSenha, TextButton } from '../login/login-scree
 import IconFeather from 'react-native-vector-icons/Feather';
 import { ModalSenhaAppScreen } from '../AvisoModel/senhaAppModel';
 import { Modal } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { setSenhaTransField } from '../redux/senhaTransSlice';
 
 interface OnboardingSenhaTransScreenProps {
   navigation: NavigationProp<RootStackParamList, 'OnboardingSenhaTrans'>;
@@ -19,6 +21,7 @@ export default function OnboardingSenhaTransScreen({navigation}: OnboardingSenha
   const [errorMessage, setErrorMessage] = useState('');
   const [errorMessageConfirm, setErrorMessageConfirm] = useState('');
   const [buttonState, setButtonState ] = useState(false);
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     contaBanc_senhatransacao: '',
@@ -26,6 +29,7 @@ export default function OnboardingSenhaTransScreen({navigation}: OnboardingSenha
   })
 
   const handleFormEdit = (event: any, valor: any) => {
+    dispatch((setSenhaTransField({field: valor, value: event})))
     setFormData({
       ...formData,
       [valor]: event
