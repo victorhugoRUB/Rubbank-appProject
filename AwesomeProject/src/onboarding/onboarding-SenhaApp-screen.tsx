@@ -7,8 +7,9 @@ import { ConfirmButton, InputLoginSenha, TextButton } from '../login/login-scree
 import IconFeather from 'react-native-vector-icons/Feather';
 import { ModalSenhaAppScreen } from '../AvisoModel/senhaAppModel';
 import { Modal } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setsenhaAppField } from '../redux/senhaAppSlice';
+import { ReduxState } from '../redux/store';
 
 interface OnboardingSenhaAppScreenProps {
   navigation: NavigationProp<RootStackParamList, 'OnboardingSenhaApp'>;
@@ -22,6 +23,8 @@ export default function OnboardingSenhaAppScreen({navigation}: OnboardingSenhaAp
   const [errorMessageConfirm, setErrorMessageConfirm] = useState('');
   const [buttonState, setButtonState ] = useState(false);
   const dispatch = useDispatch();
+  const endData = useSelector((state: ReduxState)=> state.end);
+
 
   const [formData, setFormData] = useState({
     usuario_senha: '',
@@ -34,7 +37,7 @@ export default function OnboardingSenhaAppScreen({navigation}: OnboardingSenhaAp
       ...formData,
       [valor]: event
     })
-    console.log(formData)
+    console.log(endData)
   }
 
   useEffect(() => {

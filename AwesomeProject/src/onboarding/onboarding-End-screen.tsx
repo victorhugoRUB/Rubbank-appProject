@@ -5,8 +5,9 @@ import {ScreenBase} from '../components/screen-base/screen-base';
 import { BlockInput, BlocksOfInput, Container, DivButtonConfirm, DivContent, DivInput, InputCadastro, Span, TextInputCad, TextTitle, TopBar, TopBarBluePart } from './onboarding-screen.styles';
 import { ConfirmButton, InputLogin, InputLoginSenha, TextButton } from '../login/login-screen.styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setEndField } from '../redux/endSlice';
+import { ReduxState } from '../redux/store';
 
 
 interface OnboardingEndScreenProps {
@@ -16,7 +17,10 @@ interface OnboardingEndScreenProps {
 export default function OnboardingEndScreen({navigation}: OnboardingEndScreenProps) {
   const [loading, setLoading] = useState(false);
   const [buttonState, setButtonState] = useState(false);
+
   const dispatch = useDispatch();
+  const endData = useSelector((state: ReduxState)=> state.end);
+
 
   const [formData, setFormData] = useState({
     end_cep: '',
@@ -34,7 +38,6 @@ export default function OnboardingEndScreen({navigation}: OnboardingEndScreenPro
       ...formData,
       [valor]: event
     })
-    console.log(formData)
   }
 
   useEffect(() => {
@@ -63,7 +66,13 @@ export default function OnboardingEndScreen({navigation}: OnboardingEndScreenPro
       end_cidade: parseCEP.localidade,
       end_uf: parseCEP.uf
     })
+    dispatch((setEndField({field: 'end_cep', value: parseCEP.cep})))
+    dispatch((setEndField({field: 'end_rua', value: parseCEP.logradouro})))
+    dispatch((setEndField({field: 'end_bairro', value: parseCEP.bairro})))
+    dispatch((setEndField({field: 'end_cidade', value: parseCEP.localidade})))
+    dispatch((setEndField({field: 'end_uf', value: parseCEP.uf})))
   }
+  
   
 
   return (

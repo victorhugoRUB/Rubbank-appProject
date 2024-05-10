@@ -12,6 +12,10 @@ import OnboardingSenhaTransScreen from './src/onboarding/onboarding-SenhaTrans-s
 import OnboardingFinalTabelScreen from './src/onboarding/onboarding-finalTabel-screen';
 import { Provider } from 'react-redux';
 import { store } from './src/redux/store';
+import DashboardPerfilScreen from './src/dashboard/perfil/dashboardPerfil-screen';
+import DashboardDadosBancScreen from './src/dashboard/perfil/dashboardDadosBanc-screen';
+import AlterarSenhaAppScreen from './src/dashboard/alterar/alterar-SenhaApp-screen';
+import AlterarSenhaTransScreen from './src/dashboard/alterar/alterar-SenhaTrans-screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +23,10 @@ export interface RootStackParamList {
   Inicio: undefined;
   Login: undefined;
   Dashboard: undefined;
+  DashboardPerfil: undefined;
+  DashboardDadosBanc: undefined;
+  AlterarSenhaApp: undefined;
+  AlterarSenhaTrans: undefined;
   OnboardingDadosPessoais: undefined;
   OnboardingCEP: undefined;
   OnboardingEnd: undefined;
@@ -32,7 +40,7 @@ function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="OnboardingDadosPessoais">
+        <Stack.Navigator initialRouteName="Login">
           <Stack.Screen
             name="Inicio"
             component={InicioScreen}
@@ -46,6 +54,26 @@ function App() {
           <Stack.Screen
             name="Dashboard"
             component={DashboardScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DashboardPerfil"
+            component={DashboardPerfilScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DashboardDadosBanc"
+            component={DashboardDadosBancScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="AlterarSenhaApp"
+            component={AlterarSenhaAppScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="AlterarSenhaTrans"
+            component={AlterarSenhaTransScreen}
             options={{ headerShown: false }}
           />
           <Stack.Screen

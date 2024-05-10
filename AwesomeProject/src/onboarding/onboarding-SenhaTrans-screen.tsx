@@ -101,7 +101,7 @@ export default function OnboardingSenhaTransScreen({navigation}: OnboardingSenha
             </BlockInput>
           </DivInput>
         <DivButtonConfirm>
-          <ConfirmButton onPress={() => navigation.navigate('OnboardingSenhaApp')} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">CONFIRMAR</TextButton></ConfirmButton>
+          <ConfirmButton onPress={() => navigation.navigate('OnboardingFinalTabel')} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">CONFIRMAR</TextButton></ConfirmButton>
         </DivButtonConfirm>
       </Container>
     </ScreenBase>

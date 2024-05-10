@@ -107,7 +107,7 @@ export const ConfirmButton = styled(TouchableOpacity)<{ cor: string }>`
   align-items: center;
   width: 100%;
   padding: 16px;
-  background-color: ${props => props.cor};
+  background-color: ${props => props.cor || '#6B7AE5'};
   border-radius: 500px;
 `;
 

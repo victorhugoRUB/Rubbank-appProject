@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const Container = styled(View)`
   flex: 1;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   flex-direction: column;
   width: 100%;

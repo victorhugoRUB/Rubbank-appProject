@@ -26,7 +26,6 @@ export default function OnboardingScreen({navigation}: OnboardingScreenProps) {
   const [errorMessageDtNasc, setErrorMessageDtNasc] = useState('');
 
   const dispatch = useDispatch();
-  // const userData = useSelector((state: ReduxState)=> state.user);
   
   const [formData, setFormData] = useState({
     usuario_nome: '',
@@ -37,6 +36,7 @@ export default function OnboardingScreen({navigation}: OnboardingScreenProps) {
   })
 
   const handleDateSelected = (date: string) => {
+    dispatch(setUserField({field: 'usuario_dtNascimento', value: date}))
     setFormData({
       ...formData,
       usuario_dtNascimento: date
@@ -45,7 +45,6 @@ export default function OnboardingScreen({navigation}: OnboardingScreenProps) {
 
   const handleFormEdit = (event: any, valor: any) => {
     dispatch((setUserField({field: valor, value: event})))
-    
     setFormData({
       ...formData,
       [valor]: event

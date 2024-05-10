@@ -88,9 +88,9 @@ export const InputCadastro = styled(TextInputMask)`
 export const DivButtonConfirm = styled(View)`
   display: flex;
   width: 100%;
+  height: 40%;
   justify-content: flex-end;
-  align-items: center;
-  flex: 1;  
+  align-items: center;  
 `;
 
 export const Span = styled(Text)<{decoration?: string}>`
@@ -132,4 +132,23 @@ export const DivItemRev = styled(TouchableOpacity)`
   flex-direction: column;
   flex-shrink: 1;
   justify-content: space-between;
+`;
+
+export const DivOfInputs = styled(View)`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+`;
+
+export const InputTransSenha = styled(TextInput)`
+  border-bottom-color: #1D1C3E;
+  border-bottom-width: 1px;
+  padding: 10px;
+  width: 20%;
+  max-width: 100%;
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
 `;

@@ -74,7 +74,7 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
             <IconEntypo name="text-document" size={24} color="#000" />
             <TextBlockBottom>Extrato</TextBlockBottom>
           </BlockOptionsBottom>
-          <BlockOptionsBottom>
+          <BlockOptionsBottom onPress={() => navigation.navigate('DashboardPerfil')}>
             <IconOcticons name="person" size={24} color="#000" />
             <TextBlockBottom>Perfil</TextBlockBottom>
           </BlockOptionsBottom>
