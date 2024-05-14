@@ -47,7 +47,7 @@ export default function OnboardingEndScreen({navigation}: OnboardingEndScreenPro
   }, [])
 
   useEffect(() => {
-    if(formData.end_num === '' || formData.end_complem === ''){
+    if(formData.end_num === ''){
       setButtonState(false)
       return
     }else{
@@ -72,8 +72,6 @@ export default function OnboardingEndScreen({navigation}: OnboardingEndScreenPro
     dispatch((setEndField({field: 'end_cidade', value: parseCEP.localidade})))
     dispatch((setEndField({field: 'end_uf', value: parseCEP.uf})))
   }
-  
-  
 
   return (
     <ScreenBase>
@@ -88,7 +86,7 @@ export default function OnboardingEndScreen({navigation}: OnboardingEndScreenPro
             placeholderTextColor='#aaabab'
             value={formData.end_cep}
             onChangeText={(e) => handleFormEdit(e, 'end_cep')}
-            editable={false}
+            editable={formData.end_cep === ''} 
             />
           </BlockInput>
           <BlockInput>
@@ -98,7 +96,7 @@ export default function OnboardingEndScreen({navigation}: OnboardingEndScreenPro
             placeholderTextColor='#aaabab'
             value={formData.end_rua}
             onChangeText={(e) => handleFormEdit(e, 'end_rua')}
-            editable={false}
+            editable={formData.end_rua === ''} 
             />
           </BlockInput>
           <BlocksOfInput>
@@ -109,47 +107,49 @@ export default function OnboardingEndScreen({navigation}: OnboardingEndScreenPro
               placeholderTextColor='#aaabab'
               value={formData.end_num}
               onChangeText={(e) => handleFormEdit(e, 'end_num')}
+              editable={true} 
               />
             </BlockInput>
             <BlockInput width='46%'>
               <TextInputCad>Complemento*</TextInputCad>
               <InputLoginSenha
-              placeholder='Digite seu CPF'
+              placeholder='Complemento'
               placeholderTextColor='#aaabab'
               value={formData.end_complem}
               onChangeText={(e) => handleFormEdit(e, 'end_complem')}
+              editable={true} 
               />
             </BlockInput>
           </BlocksOfInput>
           <BlockInput>
             <TextInputCad>Bairro*</TextInputCad>
             <InputLoginSenha
-            placeholder='(dd/mm/aaaa)'
+            placeholder='Seu bairro'
             placeholderTextColor='#aaabab'
             value={formData.end_bairro}
             onChangeText={(e) => handleFormEdit(e, 'end_bairro')}
-            editable={false}
+            editable={formData.end_bairro === ''} 
             />
           </BlockInput>
           <BlocksOfInput>
             <BlockInput width='46%'>
               <TextInputCad>Cidade*</TextInputCad>
               <InputLoginSenha
-              placeholder='(dd/mm/aaaa)'
+              placeholder='Sua cidade'
               placeholderTextColor='#aaabab'
               value={formData.end_cidade}
               onChangeText={(e) => handleFormEdit(e, 'end_cidade')}
-              editable={false}
+              editable={formData.end_cidade === ''} 
               />
             </BlockInput>
             <BlockInput width='46%'>
               <TextInputCad>UF*</TextInputCad>
               <InputLoginSenha
-              placeholder='(dd/mm/aaaa)'
+              placeholder='Seu estado'
               placeholderTextColor='#aaabab'
               value={formData.end_uf}
               onChangeText={(e) => handleFormEdit(e, 'end_uf')}
-              editable={false}
+              editable={formData.end_uf === ''} 
               />
             </BlockInput>
           </BlocksOfInput>

@@ -13,6 +13,8 @@ import { setsenhaAppField } from '../../redux/senhaAppSlice';
 import { DivBottom, TextTopDash, DivTop } from '../perfil/dashboard-screen.styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { WarningScreen } from '../../AvisoModel/erroModel';
+import { ModalSucessScreen } from '../../AvisoModel/sucessModal';
+import { LoadingSpinner } from '../../Loading/loadingScreen';
 
 
 interface AlterarSenhaAppScreenProps {
@@ -22,9 +24,12 @@ interface AlterarSenhaAppScreenProps {
 export default function AlterarSenhaAppScreen({navigation}: AlterarSenhaAppScreenProps) {
   const [loading, setLoading] = useState(false);
   const [avisoModal, setAvisoModal] = useState(false);
+  const [sucessModal, setSucessModal] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
-  const [borderRed, setBorderRed] = useState('#000000');
+  const [borderRedATUAL, setBorderRedATUAL] = useState('#000000');
+  const [borderRedNOVA, setBorderRedNOVA] = useState('#000000');
+  const [borderRedCONFIRM, setBorderRedCONFIRM] = useState('#000000');
   const [errorMessageAtual, setErrorMessageAtual] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [errorMessageConfirm, setErrorMessageConfirm] = useState('');
@@ -66,15 +71,15 @@ export default function AlterarSenhaAppScreen({navigation}: AlterarSenhaAppScree
       
       console.log('chegou')
       if(!res.ok){
-        console.log('erro ao alterar')
         const AlertMessage = (await res.json());
         if(contaInfo.usuario_senha !== formData.usuario_senha){
-          console.log('entrou no if')
           setAlertMessage(AlertMessage.message)
           setShowWarning(true)
+          setLoading(false)
           return
         }
       }
+      setSucessModal(true)
       setLoading(false)
     }catch(err){
       setLoading(false)
@@ -82,18 +87,19 @@ export default function AlterarSenhaAppScreen({navigation}: AlterarSenhaAppScree
       console.log('Erro ao buscar usuário')
     }
   }
-  // useEffect(() => {
-  //   if(formData.usuario_senha === '' || formData.confirmSenha === ''){
-  //     setButtonState(false)
-  //     return
-  //   }else{
-  //     setButtonState(true)
-  //   }
-  // }, [formData])
+  useEffect(() => {
+    if(formData.usuario_senha === '' || formData.usuario_senhanova === '' || formData.usuario_senhanovaconfirm === ''){
+      setButtonState(false)
+      return
+    }else{
+      setButtonState(true)
+    }
+  }, [formData])
 
-
+  
   return (
     <ScreenBase>
+      <LoadingSpinner visible={loading}/>
       <Modal
       visible={avisoModal}
       animationType='slide'
@@ -113,7 +119,13 @@ export default function AlterarSenhaAppScreen({navigation}: AlterarSenhaAppScree
           />
         </TouchableWithoutFeedback>
       </Modal>
-      <Container >
+      <Modal
+      visible={sucessModal}
+      animationType='slide'
+      onRequestClose={() => setSucessModal(false)}>
+        <ModalSucessScreen navigation={() => navigation.navigate('DashboardPerfil')} message='Alteração realizada' message2='Você redefiniu sua senha com sucesso!'/>
+      </Modal>
+      <Container>
         <DivTop>
           <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}><IconFeather name="arrow-left" size={24} color="#fff" /></TouchableOpacity>
           <TextTopDash>Alterar senha do App</TextTopDash>
@@ -128,18 +140,18 @@ export default function AlterarSenhaAppScreen({navigation}: AlterarSenhaAppScree
               value={formData.usuario_senha}
               onChangeText={(e) => {
                 if(/^(?=.*[_!@#$%&?'*+\/=?`{|}()~^.,-])(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$/.test(e)){
-                  setBorderRed('#000000')
+                  setBorderRedATUAL('#000000')
                   handleFormEdit(e, 'usuario_senha')
                   setErrorMessageAtual('')
                 }else{
-                  setBorderRed('#FF0000')
+                  setBorderRedATUAL('#FF0000')
                   handleFormEdit(e, 'usuario_senha')
                   setErrorMessageAtual('Deve ser sua senha atual')
                 }
               }}
-              style={{borderColor: borderRed}}
+              style={{borderColor: borderRedATUAL}}
               secureTextEntry/>
-              {borderRed === '#FF0000' ? <ErrorMessage>{errorMessageAtual}</ErrorMessage> : null}
+              {borderRedATUAL === '#FF0000' ? <ErrorMessage>{errorMessageAtual}</ErrorMessage> : null}
             </BlockInput>
             <BlockInput>
               <TextInputCad>Digite sua <Span>nova senha</Span>:</TextInputCad>
@@ -147,18 +159,18 @@ export default function AlterarSenhaAppScreen({navigation}: AlterarSenhaAppScree
               value={formData.usuario_senhanova}
               onChangeText={(e) => {
                 if(/^(?=.*[_!@#$%&?'*+\/=?`{|}()~^.,-])(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$/.test(e)){
-                  setBorderRed('#000000')
+                  setBorderRedNOVA('#000000')
                   handleFormEdit(e, 'usuario_senhanova')
                   setErrorMessage('')
                 }else{
-                  setBorderRed('#FF0000')
+                  setBorderRedNOVA('#FF0000')
                   handleFormEdit(e, 'usuario_senhanova')
                   setErrorMessage('Sua senha deve ser igual a anterior')
                 }
               }}
-              style={{borderColor: borderRed}}
+              style={{borderColor: borderRedNOVA}}
               secureTextEntry/> 
-              {borderRed === '#FF0000' ? <ErrorMessage>{errorMessage}</ErrorMessage> : null}
+              {borderRedNOVA === '#FF0000' ? <ErrorMessage>{errorMessage}</ErrorMessage> : null}
             </BlockInput>
             <BlockInput>
               <TextInputCad>Digite sua <Span>senha</Span>:</TextInputCad>
@@ -166,22 +178,22 @@ export default function AlterarSenhaAppScreen({navigation}: AlterarSenhaAppScree
               value={formData.usuario_senhanovaconfirm}
               onChangeText={(e) => {
                 if(e === formData.usuario_senhanova){
-                  setBorderRed('#000000')
+                  setBorderRedCONFIRM('#000000')
                   handleFormEdit(e, 'usuario_senhanovaconfirm')
                   setErrorMessageConfirm('')
                 }else{
-                  setBorderRed('#FF0000')
+                  setBorderRedCONFIRM('#FF0000')
                   handleFormEdit(e, 'usuario_senhanovaconfirm')
                   setErrorMessageConfirm('Sua senha deve ser igual a anterior.')
                 }
               }}
-              style={{borderColor: borderRed}}
+              style={{borderColor: borderRedCONFIRM}}
               secureTextEntry/>
-              {borderRed === '#FF0000' ? <ErrorMessage>{errorMessageConfirm}</ErrorMessage> : null}
+              {borderRedCONFIRM === '#FF0000' ? <ErrorMessage>{errorMessageConfirm}</ErrorMessage> : null}
             </BlockInput>
           </DivInput>
           <DivButtonConfirm>
-            <ConfirmButton onPress={handleForm} cor=''><TextButton cor="#fff">CONFIRMAR</TextButton></ConfirmButton>
+            <ConfirmButton style={!buttonState || (borderRedATUAL === '#FF0000' || borderRedNOVA === '#FF0000' || borderRedCONFIRM === '#FF0000') ? {backgroundColor: '#6b79e578' }: {}} disabled={!buttonState || (borderRedATUAL === '#FF0000' || borderRedNOVA === '#FF0000' || borderRedCONFIRM === '#FF0000')} onPress={handleForm} cor='#6B7AE5'><TextButton cor="#ffffff">CONFIRMAR</TextButton></ConfirmButton>
           </DivButtonConfirm>
         </DivBottom>
       </Container>

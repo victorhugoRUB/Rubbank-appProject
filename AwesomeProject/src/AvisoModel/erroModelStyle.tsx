@@ -60,4 +60,5 @@ export const BottomText = styled(Text)`
   font-size: 15px;
   font-weight: 500;
   color: #000000;
+  text-align: center;
 `;

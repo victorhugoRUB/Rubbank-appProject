@@ -43,13 +43,13 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
     }
   }
 
-  const numeroFormatado = Number(saldoConta).toLocaleString('pt-BR')
+  const numeroFormatado = Number(saldoConta).toFixed(2).replace('.',',')
 
   return (
     <ScreenBase>
       <Container >
         <DivTop>
-          <DivOptions>
+          <DivOptions>  
             <Logo source={logoWhite} />
             <BlockOptions>
               <TouchableOpacity><IconFeather name="log-out" size={24} color="#fff" onPress={() => navigation.navigate('Login')} /></TouchableOpacity>
@@ -70,7 +70,7 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
             <IconEntypo name="swap" size={24} color="#000"/>
             <TextBlockBottom>Transferir</TextBlockBottom>
           </BlockOptionsBottom>
-          <BlockOptionsBottom>
+          <BlockOptionsBottom onPress={() => navigation.navigate('Extrato')}>
             <IconEntypo name="text-document" size={24} color="#000" />
             <TextBlockBottom>Extrato</TextBlockBottom>
           </BlockOptionsBottom>

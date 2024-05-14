@@ -13,6 +13,10 @@ import { setsenhaAppField } from '../../redux/senhaAppSlice';
 import { DivBottom, TextTopDash, DivTop } from '../perfil/dashboard-screen.styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { WarningScreen } from '../../AvisoModel/erroModel';
+import { useRef } from 'react';
+import { TextInput } from 'react-native';
+import lodash from 'lodash';
+import { setSenhaTransField } from '../../redux/senhaTransSlice';
 
 
 interface AlterarSenhaTransScreenProps {
@@ -29,24 +33,40 @@ export default function AlterarSenhaTransScreen({navigation}: AlterarSenhaTransS
   const [errorMessage, setErrorMessage] = useState('');
   const [errorMessageConfirm, setErrorMessageConfirm] = useState('');
   const [buttonState, setButtonState ] = useState(false);
-  const [inputValues, setInputValues] = useState(['', '', '', '']);
-
   const dispatch = useDispatch();
-
+  const [inputValues, setInputValues] = useState({
+    usuario_senha: ['', '', '', ''],
+    usuario_senhanova: ['', '', '', ''],
+    usuario_senhanovaconfirm: ['', '', '', '']
+  });
   const [formData, setFormData] = useState({
     usuario_senha: '',
     usuario_senhanova: '',
     usuario_senhanovaconfirm: ''
   })
 
+  useEffect(() => {
+    setFormData({
+      usuario_senha: inputValues.usuario_senha.join(''),
+      usuario_senhanova: inputValues.usuario_senhanova.join(''),
+      usuario_senhanovaconfirm: inputValues.usuario_senhanovaconfirm.join('')
+    })
+    
+  }, [inputValues])
+
+
+
+
   const handleFormEdit = (event: any, valor: any) => {
-    dispatch((setsenhaAppField({field: valor, value: event})))
+    dispatch((setSenhaTransField({field: valor, value: event})))
     setFormData({
       ...formData,
       [valor]: event
     })
     console.log(formData)
   }
+
+  
   const [contaInfo, setContaInfo] = useState({
     usuario_senha: '',
   })
@@ -85,32 +105,38 @@ export default function AlterarSenhaTransScreen({navigation}: AlterarSenhaTransS
     }
   }
 
-
-  // const handleInputChange = (index: number, value: string) => {
-  //   const newInputValues = [...inputValues];
-  //   newInputValues[index] = value;
-
-  //   setInputValues(newInputValues);
-
+  // const inputRefs = useRef<Array<TextInput | null>>([]);
+  // const handleInputChange = (field: string, index: number, value: string) => {
+  //   setInputValues(prevInputValues => ({
+  //     ...prevInputValues,
+  //     [field]: [
+  //       ...prevInputValues[field as keyof typeof prevInputValues].slice(0, index),
+  //       value,
+  //       ...prevInputValues[field as keyof typeof prevInputValues].slice(index + 1) 
+  //     ]
+  //   }));
+  //   console.log(inputValues)
+  //   console.log(index)
   //   if (value !== '') {
-  //     if (index < inputValues.length - 1) {
-  //       const nextInput = document.getElementById(`input-${index + 1}`);
+  //     if (index < inputValues[field as keyof typeof inputValues].length - 1) {
+
+  //       const nextInput = inputRefs.current[index + 1];
   //       if (nextInput) {
   //         nextInput.focus();
+  //       }
+  //     }
+  //   } else {
+  //     if (index > 0) {
+  //       field === 'usuario_senhanova' ? index+=4 : index+=0
+  //       const previousInput = inputRefs.current[index - 1];
+  //       if (previousInput) {
+  //         previousInput.focus();
   //       }
   //     }
   //   }
   // };
 
-  // {inputValues.map((value, index) => (
-  //   <InputTransSenha
-  //     key={index}
-  //     id={`input-${index}`}
-  //     value={value}
-  //     maxLength={1}
-  //     onChangeText={(text) => handleInputChange(index, text)}
-  //   />
-  // ))}
+
   return (
     <ScreenBase>
       <Modal
@@ -138,27 +164,47 @@ export default function AlterarSenhaTransScreen({navigation}: AlterarSenhaTransS
           <TextTopDash>Alterar senha transacional</TextTopDash>
         </DivTop>
         <DivBottom>
-        <TextTitle>Digite qual será sua senha para entrar no aplicativo</TextTitle>
+        <TextTitle>Digite qual será sua senha para realizar transações</TextTitle>
           <DivInput>
             <LinkToInfoModal onPress={() => setAvisoModal(true)}><TextInputCad><IconFeather name='info' size={12} color={'#000'} /> <Span decoration='underline'>Como criar uma senha segura</Span></TextInputCad></LinkToInfoModal>
             <BlockInput>
               <TextInputCad>Digite sua <Span>senha atual</Span>:</TextInputCad>
               <DivOfInputs>
-                <InputTransSenha />
-                <InputTransSenha />
-                <InputTransSenha />
-                <InputTransSenha />
+                {[...Array(4)].map((_, index) => (
+                  <InputTransSenha 
+                  key={index}
+                  maxLength={1}
+                  value={inputValues.usuario_senha[index]}
+                  ref={(ref) => {}}
+                  />
+                ))}
               </DivOfInputs>
               {borderRed === '#FF0000' ? <ErrorMessage>{errorMessageAtual}</ErrorMessage> : null}
             </BlockInput>
             <BlockInput>
               <TextInputCad>Digite sua <Span>nova senha</Span>:</TextInputCad>
-
+              <DivOfInputs>
+                {[...Array(4)].map((_, index) => (
+                  <InputTransSenha 
+                  key={index} 
+                  maxLength={1}
+                  value={inputValues.usuario_senhanova[index]}
+                  />
+                ))}
+              </DivOfInputs>
               {borderRed === '#FF0000' ? <ErrorMessage>{errorMessage}</ErrorMessage> : null}
             </BlockInput>
             <BlockInput>
               <TextInputCad>Digite sua <Span>senha</Span>:</TextInputCad>
-
+              <DivOfInputs>
+                {[...Array(4)].map((_, index) => (
+                  <InputTransSenha 
+                  key={index} 
+                  maxLength={1}
+                  value={inputValues.usuario_senhanovaconfirm[index]}
+                  />
+                ))}
+              </DivOfInputs>
               {borderRed === '#FF0000' ? <ErrorMessage>{errorMessageConfirm}</ErrorMessage> : null}
             </BlockInput>
           </DivInput>

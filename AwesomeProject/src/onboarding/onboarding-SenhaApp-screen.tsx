@@ -18,7 +18,8 @@ interface OnboardingSenhaAppScreenProps {
 export default function OnboardingSenhaAppScreen({navigation}: OnboardingSenhaAppScreenProps) {
   const [loading, setLoading] = useState(false);
   const [avisoModal, setAvisoModal] = useState(false);
-  const [borderRed, setBorderRed] = useState('#000000');
+  const [borderRedSENHA, setBorderRedSENHA] = useState('#000000');
+  const [borderRedCONFIRM, setBorderRedCONFIRM] = useState('#000000');
   const [errorMessage, setErrorMessage] = useState('');
   const [errorMessageConfirm, setErrorMessageConfirm] = useState('');
   const [buttonState, setButtonState ] = useState(false);
@@ -70,18 +71,18 @@ export default function OnboardingSenhaAppScreen({navigation}: OnboardingSenhaAp
               value={formData.usuario_senha}
               onChangeText={(e) => {
                 if(/^(?=.*[_!@#$%&?'*+\/=?`{|}()~^.,-])(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}$/.test(e)){
-                  setBorderRed('#000000')
+                  setBorderRedSENHA('#000000')
                   handleFormEdit(e, 'usuario_senha')
                   setErrorMessage('')
                 }else{
-                  setBorderRed('#FF0000')
+                  setBorderRedSENHA('#FF0000')
                   handleFormEdit(e, 'usuario_senha')
                   setErrorMessage('Sua senha deve conter no mínimo 8 caracteres, sendo eles: uma letra maiúscula, uma letra minúscula, um número e um caractere especial')
                 }
               }}
-              style={{borderColor: borderRed}}
+              style={{borderColor: borderRedSENHA}}
               secureTextEntry/>
-              {borderRed === '#FF0000' ? <ErrorMessage>{errorMessage}</ErrorMessage> : null}
+              {borderRedSENHA === '#FF0000' ? <ErrorMessage>{errorMessage}</ErrorMessage> : null}
             </BlockInput>
             <BlockInput>
               <TextInputCad>Confirme sua <Span>senha</Span>:</TextInputCad>
@@ -89,22 +90,22 @@ export default function OnboardingSenhaAppScreen({navigation}: OnboardingSenhaAp
               value={formData.confirmSenha}
               onChangeText={(e) => {
                 if(e === formData.usuario_senha){
-                  setBorderRed('#000000')
+                  setBorderRedCONFIRM('#000000')
                   handleFormEdit(e, 'confirmSenha')
                   setErrorMessageConfirm('')
                 }else{
-                  setBorderRed('#FF0000')
+                  setBorderRedCONFIRM('#FF0000')
                   handleFormEdit(e, 'confirmSenha')
                   setErrorMessageConfirm('Sua senha deve ser igual a anterior')
                 }
               }}
-              style={{borderColor: borderRed}}
+              style={{borderColor: borderRedCONFIRM}}
               secureTextEntry/> 
-              {borderRed === '#FF0000' ? <ErrorMessage>{errorMessageConfirm}</ErrorMessage> : null}
+              {borderRedCONFIRM === '#FF0000' ? <ErrorMessage>{errorMessageConfirm}</ErrorMessage> : null}
             </BlockInput>
           </DivInput>
         <DivButtonConfirm>
-          <ConfirmButton disabled={!buttonState || borderRed === '#FF0000'} style={!buttonState || borderRed === '#FF0000' ? {backgroundColor: '#6b79e578'}: {}} onPress={() => navigation.navigate('OnboardingSenhaTrans')} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">CONFIRMAR</TextButton></ConfirmButton>
+          <ConfirmButton disabled={!buttonState || borderRedSENHA === '#FF0000' || borderRedCONFIRM === '#FF0000' } style={!buttonState || borderRedSENHA === '#FF0000' || borderRedCONFIRM === '#FF0000' ? {backgroundColor: '#6b79e578'}: {}} onPress={() => navigation.navigate('OnboardingSenhaTrans')} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">CONFIRMAR</TextButton></ConfirmButton>
         </DivButtonConfirm>
       </Container>
     </ScreenBase>

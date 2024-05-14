@@ -10,6 +10,8 @@ import { Modal } from 'react-native';
 import { ReduxState } from '../redux/store';
 import { useSelector } from 'react-redux';
 import { ModalSucessScreen } from '../AvisoModel/sucessModal';
+import { LoadingSpinner } from '../Loading/loadingScreen';
+import { WarningScreen } from '../AvisoModel/erroModel';
 
 
 interface OnboardingFinalTabelScreenProps {
@@ -25,6 +27,20 @@ export default function OnboardingFinalTabelScreen({navigation}: OnboardingFinal
   const endData = useSelector((state: ReduxState)=> state.end);
   const senhaAppData = useSelector((state: ReduxState)=> state.senhaApp);
   const senhaTransData = useSelector((state: ReduxState)=> state.senhaTrans);
+  const [showWarning, setShowWarning] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string[]>([]);
+
+  const addErrorMessage = async (message: string) => {
+    await setErrorMessage((prevErrorMessages => [...prevErrorMessages, message]))
+  }
+  const clearErrorMessage = async () => {
+    await setErrorMessage([])
+  }
+
+  const updateErrorMessage = async () => {
+    await setAlertMessage(errorMessage.join('\n'))
+  }
 
   const [formData, setFormData] = useState({
     usuario_nome: userData.usuario_nome,
@@ -71,9 +87,6 @@ export default function OnboardingFinalTabelScreen({navigation}: OnboardingFinal
   })
 
   useEffect(() => {
-    console.log('\n\n\n')
-    console.log(endData)
-    console.log(formData)
     if(formData.usuario_nome === '' || formData.usuario_email === '' || formData.usuario_tel === '' || formData.usuario_cpf === '' || formData.usuario_dtNascimento === '' || formData.usuario_senha === '' || formData.end_cep === '' || formData.end_rua === '' || formData.end_num === '' || formData.end_complem === '' || formData.end_bairro === '' || formData.end_cidade === '' || formData.end_uf === '' || formData.contaBanc_senhatransacao === ''){
       setButtonState(false)
       return
@@ -95,7 +108,19 @@ export default function OnboardingFinalTabelScreen({navigation}: OnboardingFinal
       })
       console.log('USUARIO: ', res)
       if(!res.ok){
-        throw new Error('Erro ao criar usuariooooo')
+        clearErrorMessage()
+        const AlertMessage = await res.json()
+        if(AlertMessage.error){
+          addErrorMessage(AlertMessage.error[0].mensagem)
+          addErrorMessage(AlertMessage.error[1].mensagem)
+        }
+        if(AlertMessage.message){
+          addErrorMessage(AlertMessage.message)
+        }
+        updateErrorMessage()
+        console.log(alertMessage)
+        setShowWarning(true)
+        setLoading(false)
       }else{
         try {
           event.preventDefault()
@@ -107,6 +132,13 @@ export default function OnboardingFinalTabelScreen({navigation}: OnboardingFinal
             body: JSON.stringify(formLogin)
           });
           console.log('LOGIN:', res)
+          if(!res.ok){
+            const AlertMessage = await res.json()
+            console.log(AlertMessage)
+            setAlertMessage(AlertMessage.message)
+            setShowWarning(true)
+            setLoading(false)
+          }
           const r = await res.json()
           if(r.token){
             try{
@@ -119,6 +151,13 @@ export default function OnboardingFinalTabelScreen({navigation}: OnboardingFinal
                 body: JSON.stringify(formEnd)
               })
               console.log('ENDERECO:', res)
+              if(!res.ok){
+                const AlertMessage = await res.json()
+                console.log(AlertMessage)
+                addErrorMessage(AlertMessage.message)
+                updateErrorMessage()
+                setLoading(false)
+              }
               if(res.ok){
                 try{
                   const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/conta/create`,{
@@ -133,6 +172,20 @@ export default function OnboardingFinalTabelScreen({navigation}: OnboardingFinal
                   if(res.ok){
                     setLoading(false)
                     setSucessModal(true)
+                    clearErrorMessage()
+                  }else{
+                    clearErrorMessage()
+                    const AlertMessage = await res.json()
+                    if(AlertMessage.error){
+                      addErrorMessage(AlertMessage.error[0].mensagem)
+                      addErrorMessage(AlertMessage.error[1].mensagem)
+                    }
+                    if(AlertMessage.message){
+                      addErrorMessage(AlertMessage.message)
+                    }
+                    updateErrorMessage()
+                    setShowWarning(true)
+                    setLoading(false)
                   }
                 }catch(err){
                   console.log(err)
@@ -162,19 +215,18 @@ export default function OnboardingFinalTabelScreen({navigation}: OnboardingFinal
 
   return (
     <ScreenBase>
+      <LoadingSpinner visible={loading}/>
       <Modal
-      visible={avisoModal}
+      visible={sucessModal}
       animationType='slide'
-      onRequestClose={() => setAvisoModal(false)}
-      >
-        <ModalSenhaAppScreen onClose={() => setAvisoModal(false)}/>
+      onRequestClose={() => setSucessModal(false)}>
+        <ModalSucessScreen navigation={() => navigation.navigate('Login')} message='Sua conta digital RubBank foi criada com sucesso!' message2='Vamos avaliar seu cadastro e validar sua conta. Acesse agora com seu CPF ou CNPJ e senha cadastados.'/>
       </Modal>
-      <Modal
-      visible
-      animationType='slide'
-      onRequestClose={() => setSucessModal(false)}
-      >
-        <ModalSucessScreen navigation={navigation.navigate('Login')}/>
+      <Modal visible={showWarning} transparent={true} animationType='slide' onRequestClose={()=> setShowWarning(false)} onTouchStart={() => setShowWarning(false)}>
+        <WarningScreen
+        onClose={() => setShowWarning(false)}
+        warnMessage= {alertMessage}
+        />
       </Modal>
       <Container>
         <TopBar><TopBarBluePart width='95%'/></TopBar>

@@ -16,6 +16,8 @@ import DashboardPerfilScreen from './src/dashboard/perfil/dashboardPerfil-screen
 import DashboardDadosBancScreen from './src/dashboard/perfil/dashboardDadosBanc-screen';
 import AlterarSenhaAppScreen from './src/dashboard/alterar/alterar-SenhaApp-screen';
 import AlterarSenhaTransScreen from './src/dashboard/alterar/alterar-SenhaTrans-screen';
+import ExtratoScreen from './src/dashboard/Extrato/extrato-screen';
+import FiltroScreen from './src/dashboard/Extrato/filtro-screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +29,8 @@ export interface RootStackParamList {
   DashboardDadosBanc: undefined;
   AlterarSenhaApp: undefined;
   AlterarSenhaTrans: undefined;
+  Extrato: undefined;
+  Filtro: undefined;
   OnboardingDadosPessoais: undefined;
   OnboardingCEP: undefined;
   OnboardingEnd: undefined;
@@ -40,7 +44,7 @@ function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
+        <Stack.Navigator initialRouteName="Extrato">
           <Stack.Screen
             name="Inicio"
             component={InicioScreen}
@@ -74,6 +78,16 @@ function App() {
           <Stack.Screen
             name="AlterarSenhaTrans"
             component={AlterarSenhaTransScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Extrato"
+            component={ExtratoScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Filtro"
+            component={FiltroScreen}
             options={{ headerShown: false }}
           />
           <Stack.Screen

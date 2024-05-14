@@ -17,7 +17,8 @@ interface OnboardingSenhaTransScreenProps {
 export default function OnboardingSenhaTransScreen({navigation}: OnboardingSenhaTransScreenProps) {
   const [loading, setLoading] = useState(false);
   const [avisoModal, setAvisoModal] = useState(false);
-  const [borderRed, setBorderRed] = useState('#000000');
+  const [borderRedSENHA, setBorderRedSENHA] = useState('#000000');
+  const [borderRedCONFIRM, setBorderRedCONFIRM] = useState('#000000');
   const [errorMessage, setErrorMessage] = useState('');
   const [errorMessageConfirm, setErrorMessageConfirm] = useState('');
   const [buttonState, setButtonState ] = useState(false);
@@ -65,19 +66,19 @@ export default function OnboardingSenhaTransScreen({navigation}: OnboardingSenha
               value={formData.contaBanc_senhatransacao}
               onChangeText={(e) => {
                 if(/^\d{4}$/.test(e)){
-                  setBorderRed('#000000')
+                  setBorderRedSENHA('#000000')
                   handleFormEdit(e, 'contaBanc_senhatransacao')
                   setErrorMessage('')
                 }else{
-                  setBorderRed('#FF0000')
+                  setBorderRedSENHA('#FF0000')
                   handleFormEdit(e, 'contaBanc_senhatransacao')
                   setErrorMessage('Sua senha deve conter 4 dígitos apenas números e não pode ser seguidos, por exemplo: 1234 ou 1111.')
                 }
               }}
               type='only-numbers'
-              style={{borderColor: borderRed}}
+              style={{borderColor: borderRedSENHA}}
               secureTextEntry/>
-              {borderRed === '#FF0000' ? <ErrorMessage>{errorMessage}</ErrorMessage> : null}
+              {borderRedSENHA === '#FF0000' ? <ErrorMessage>{errorMessage}</ErrorMessage> : null}
             </BlockInput>
             <BlockInput>
               <TextInputCad>Confirme sua <Span>senha</Span>:</TextInputCad>
@@ -85,23 +86,23 @@ export default function OnboardingSenhaTransScreen({navigation}: OnboardingSenha
               value={formData.confirmSenha}
               onChangeText={(e) => {
                 if(e === formData.contaBanc_senhatransacao){
-                  setBorderRed('#000000')
+                  setBorderRedCONFIRM('#000000')
                   handleFormEdit(e, 'confirmSenha')
                   setErrorMessageConfirm('')
                 }else{
-                  setBorderRed('#FF0000')
+                  setBorderRedCONFIRM('#FF0000')
                   handleFormEdit(e, 'confirmSenha')
                   setErrorMessageConfirm('Sua senha deve ser igual a anterior')
                 }
               }}
               type='only-numbers'
-              style={{borderColor: borderRed}}
+              style={{borderColor: borderRedCONFIRM}}
               secureTextEntry/> 
-              {borderRed === '#FF0000' ? <ErrorMessage>{errorMessageConfirm}</ErrorMessage> : null}
+              {borderRedCONFIRM === '#FF0000' ? <ErrorMessage>{errorMessageConfirm}</ErrorMessage> : null}
             </BlockInput>
           </DivInput>
         <DivButtonConfirm>
-          <ConfirmButton onPress={() => navigation.navigate('OnboardingFinalTabel')} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">CONFIRMAR</TextButton></ConfirmButton>
+        <ConfirmButton disabled={!buttonState || borderRedSENHA === '#FF0000' || borderRedCONFIRM === '#FF0000' } style={!buttonState || borderRedSENHA === '#FF0000' || borderRedCONFIRM === '#FF0000' ? {backgroundColor: '#6b79e578'}: {}} onPress={() => navigation.navigate('OnboardingFinalTabel')} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">CONFIRMAR</TextButton></ConfirmButton>
         </DivButtonConfirm>
       </Container>
     </ScreenBase>

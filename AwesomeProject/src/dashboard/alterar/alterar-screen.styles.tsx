@@ -57,7 +57,7 @@ export const BlockInput = styled(View)<{ width?: string }>`
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-start;
-  /* gap: 10px; */
+  gap: 10px;
 `;
 
 export const BlocksOfInput = styled(View)`

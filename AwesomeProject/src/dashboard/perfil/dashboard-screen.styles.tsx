@@ -31,9 +31,9 @@ export const DivBottom = styled(View)`
   gap: 24px;
 `;
 
-export const TextTopDash = styled(Text)`
+export const TextTopDash = styled(Text)<{ color?: string }>`
   font-size: 24px;
-  color: #fff;
+  color: ${props => props.color || '#fff'};
   text-align: center;
   flex: 1;
   padding: 0 25px 0 0;
@@ -102,7 +102,7 @@ export const BancContent = styled(View)`
   width: 100%;
 `;
 
-export const BancContItem = styled(View)`
+export const BancContItem = styled(TouchableOpacity)`
   display: flex;
   flex-direction: row;
   justify-content: space-between;

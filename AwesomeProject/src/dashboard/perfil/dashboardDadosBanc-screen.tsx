@@ -11,7 +11,7 @@ import {ScreenBase} from '../../components/screen-base/dashboard-screen-base';
 import { TextButton } from '../../login/login-screen.styles';
 import { Span } from '../../onboarding/onboarding-screen.styles';
 import { LoadingSpinner } from '../../Loading/loadingScreen';
-
+import Clipboard from '@react-native-clipboard/clipboard'
 
 interface DashboardDadosBancScreenProps {
   navigation: NavigationProp<RootStackParamList, 'DashboardDadosBanc'>;
@@ -74,7 +74,7 @@ export default function DashboardDadosBancScreen({navigation}: DashboardDadosBan
         <DivBottom>
           <TopContentTextName align='flex-start'>Use os dados abaixo para fazer um <Span>TED para a Conta RubBank.</Span></TopContentTextName>
           <BancContent>
-            <BancContItem>
+            <BancContItem onPress={() => Clipboard.setString('333')}>
               <BancContItemSpcfc>
                 <TitleTextData>Agência</TitleTextData>
                 <TopContentTextName>{contaInfo.conta[0].contaBanc_agencia}</TopContentTextName>
@@ -84,7 +84,7 @@ export default function DashboardDadosBancScreen({navigation}: DashboardDadosBan
                 <TextCopy>Copiar</TextCopy>
               </BancContItemSpcfc>
             </BancContItem>
-            <BancContItem>
+            <BancContItem onPress={() => Clipboard.setString(contaInfo.conta[0].contaBanc_conta)}>
               <BancContItemSpcfc>
                 <TitleTextData>Conta</TitleTextData>
                 <TopContentTextName>{contaInfo.conta[0].contaBanc_conta}</TopContentTextName>
@@ -94,7 +94,7 @@ export default function DashboardDadosBancScreen({navigation}: DashboardDadosBan
                 <TextCopy>Copiar</TextCopy>
               </BancContItemSpcfc>
             </BancContItem>
-            <BancContItem>
+            <BancContItem onPress={() => Clipboard.setString(contaInfo.usuario_cpf)}>
               <BancContItemSpcfc>
                 <TitleTextData>CPF</TitleTextData>
                 <TopContentTextName>{contaInfo.usuario_cpf}</TopContentTextName>
@@ -104,7 +104,7 @@ export default function DashboardDadosBancScreen({navigation}: DashboardDadosBan
                 <TextCopy>Copiar</TextCopy>
               </BancContItemSpcfc>
             </BancContItem>
-            <BancContItem>
+            <BancContItem onPress={() => Clipboard.setString(contaInfo.usuario_nome)}>
               <BancContItemSpcfc>
                 <TitleTextData>Favorecido</TitleTextData>
                 <TopContentTextName>{contaInfo.usuario_nome}</TopContentTextName>
@@ -114,7 +114,7 @@ export default function DashboardDadosBancScreen({navigation}: DashboardDadosBan
                 <TextCopy>Copiar</TextCopy>
               </BancContItemSpcfc>
             </BancContItem>
-            <BancContItem>
+            <BancContItem onPress={() => Clipboard.setString('Rubbank')}>
               <BancContItemSpcfc>
                 <TitleTextData>Instituição</TitleTextData>
                 <TopContentTextName>Rubbank</TopContentTextName>
@@ -124,7 +124,7 @@ export default function DashboardDadosBancScreen({navigation}: DashboardDadosBan
                 <TextCopy>Copiar</TextCopy>
               </BancContItemSpcfc>
             </BancContItem>
-            <BancContItem>
+            <BancContItem onPress={() => Clipboard.setString(contaInfo.conta[0].contaBanc_tipo)}>
               <BancContItemSpcfc>
                 <TitleTextData>Tipo</TitleTextData>
                 <TopContentTextName>{contaInfo.conta[0].contaBanc_tipo}</TopContentTextName>
@@ -134,7 +134,7 @@ export default function DashboardDadosBancScreen({navigation}: DashboardDadosBan
                 <TextCopy>Copiar</TextCopy>
               </BancContItemSpcfc>
             </BancContItem>
-            <BancContItem>
+            <BancContItem onPress={() => Clipboard.setString('TED ou DOC')}>
               <BancContItemSpcfc>
                 <TitleTextData>Método</TitleTextData>
                 <TopContentTextName>TED ou DOC</TopContentTextName>
@@ -146,7 +146,7 @@ export default function DashboardDadosBancScreen({navigation}: DashboardDadosBan
             </BancContItem>
           </BancContent>
           <DivButton>
-            <ConfirmButton><TextButton cor='#000'>COMPARTILHAR DADOS</TextButton></ConfirmButton>
+            <ConfirmButton onPress={() => Clipboard.setString('Agência: 333 \nConta: '+ contaInfo.conta[0].contaBanc_conta + '\nCPF:' + contaInfo.usuario_cpf + '\nFavorecido: ' + contaInfo.usuario_nome + '\nInstituição: Rubbank\nTipo: ' + contaInfo.conta[0].contaBanc_tipo + '\nMétodo: TED ou DOC')}><TextButton cor='#000'>COMPARTILHAR DADOS</TextButton></ConfirmButton>
           </DivButton>
         </DivBottom>
       </Container>
