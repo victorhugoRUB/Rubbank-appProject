@@ -31,10 +31,6 @@ export default function LoginScreen({navigation}: LoginScreenProps) {
     usuario_senha: '' 
   })
 
-  // let value = event;
-  // if (valor === 'usuario_cpf') {
-  //   value = event.replace(/\D/g, ''); // Remove all non-digit characters
-  // }
 
   const handleFormEdit = (event: any, valor: any) => { 
     setFormData({
@@ -75,9 +71,7 @@ export default function LoginScreen({navigation}: LoginScreenProps) {
         navigation.navigate('Dashboard')
       }
       setLoading(false)
-      const json = await res.json()
       console.log(res)
-      console.log(json)
     }catch(err) {
       console.log(err)
       setLoading(false)

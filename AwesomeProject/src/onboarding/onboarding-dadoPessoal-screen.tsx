@@ -55,7 +55,6 @@ export default function OnboardingScreen({navigation}: OnboardingScreenProps) {
     })
   }
 
-
   useEffect(() => {
     const controlButtonState = () => {
       if(formData.usuario_nome === '' || formData.usuario_email === '' || formData.usuario_tel === '' || formData.usuario_cpf === '' || formData.usuario_dtNascimento === ''){

@@ -16,12 +16,10 @@ import { transform } from 'lodash';
 import Icon from '@react-native-vector-icons/material-icons';
 import { Span } from '../alterar/alterar-screen.styles';
 import { TextTopDash } from '../perfil/dashboard-screen.styles';
-import { useDispatch, useSelector } from 'react-redux';
-import { ReduxState } from '../../redux/store';
 
 
-interface ExtratoScreenProps {
-  navigation: NavigationProp<RootStackParamList, 'Extrato'>;
+interface ExtratoSaidaScreenProps {
+  navigation: NavigationProp<RootStackParamList, 'ExtratoSaida'>;
 }
 
 interface TransInfo {
@@ -34,7 +32,7 @@ interface TransInfo {
   createdAt: string
 }
 
-export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
+export default function ExtratoSaidaScreen({navigation}: ExtratoSaidaScreenProps) {
 
   const [showBalance, setShowBalance] = useState(false);
   const [messageTrans , setMessageTrans] = useState('');
@@ -42,13 +40,9 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
   const [botaoAtivo, setBotaoAtivo] = useState(false)
   const [transInfo, setTransInfo] = useState<TransInfo[]>([])
   const [flag , setFlag] = useState(false)
-  const filtroData = useSelector((state: ReduxState)=> state.filtro);
-
-  const dispatch = useDispatch();
 
   const fetchUserData = async () => {
     console.log('chamou')
-    console.log(filtroData, '\n\n\n\n')
     try{
       const token = await AsyncStorage.getItem('token');
       const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/conta/saldo`,{
@@ -69,14 +63,13 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
     }
     try{
       const token = await AsyncStorage.getItem('token');
-      const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/transferencia/?ordem=asc&dataInicial=&dataFinal=`,{
+      const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/transferencia/saida/`,{
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         }
       })
-
       console.log(res)
       if(!res.ok){
         throw new Error('Erro ao buscar transferencia')
@@ -87,7 +80,7 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
       console.log(transInfo)
     }catch(err){
       setFlag(false)
-      console.log(err)
+      console.log(err);
       console.log('Erro ao buscar saldo')
       setMessageTrans('Erro ao buscar transferencia')
       navigation.navigate('Login')
@@ -117,9 +110,9 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
         </DivTop>
         <DivBottom>
           <DivBttTop>
-            <DivBttTopButton onPress={() => navigation.navigate('Extrato')} width='3px'><TextButtonDivBtt>Tudo</TextButtonDivBtt></DivBttTopButton>
+          <DivBttTopButton onPress={() => navigation.navigate('Extrato')} ><TextButtonDivBtt>Tudo</TextButtonDivBtt></DivBttTopButton>
             <DivBttTopButton onPress={() => navigation.navigate('ExtratoEntrada')}><TextButtonDivBtt>Entrada</TextButtonDivBtt></DivBttTopButton>
-            <DivBttTopButton onPress={() => navigation.navigate('ExtratoSaida')}><TextButtonDivBtt>Saída</TextButtonDivBtt></DivBttTopButton>
+            <DivBttTopButton onPress={() => navigation.navigate('ExtratoSaida')} width='3px'><TextButtonDivBtt>Saída</TextButtonDivBtt></DivBttTopButton>
           </DivBttTop>
           <DivBttContent>
             {flag ?

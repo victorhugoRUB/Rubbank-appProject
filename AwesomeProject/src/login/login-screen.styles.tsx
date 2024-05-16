@@ -54,21 +54,21 @@ export const TitleInput = styled(Text)`
   color: black;
 `;
 
-export const InputLogin = styled(TextInputMask)`
+export const InputLogin = styled(TextInputMask)<{ width?: string }>`
   border-bottom-color: #1D1C3E;
   border-bottom-width: 1px;
   padding: 10px;
-  width: 100%;
+  width: ${props => props.width || '100%'};
   max-width: 100%;
   font-size: 15px;
   font-weight: 700;
 `;
 
-export const InputLoginSenha = styled(TextInput)`
+export const InputLoginSenha = styled(TextInput)<{width?: string}>`
   border-bottom-color: #1D1C3E;
   border-bottom-width: 1px;
   padding: 10px;
-  width: 100%;
+  width: ${props => props.width || '100%'};
   max-width: 100%;
   font-size: 15px;
   font-weight: 700;

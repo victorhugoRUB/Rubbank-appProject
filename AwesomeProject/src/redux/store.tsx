@@ -2,14 +2,16 @@ import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './userSlice';
 import endReducer from './endSlice';
 import senhaAppReducer from './senhaAppSlice';
-import senhaTrans from './senhaTransSlice';
+import senhaTransReducer from './senhaTransSlice';
+import filtroReducer from './filtroSlice';
 
 export const store = configureStore({
     reducer: {
         user: userReducer,
         end: endReducer,
         senhaApp: senhaAppReducer,
-        senhaTrans: senhaTrans
+        senhaTrans: senhaTransReducer,
+        filtro: filtroReducer
     }
 });
 

@@ -19,6 +19,7 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
 
   const [showBalance, setShowBalance] = useState(false);
   const [saldoConta, setSaldoConta] = useState('');
+
   useEffect(() => {fetchUserData()}, [])
 
   const fetchUserData = async () => {

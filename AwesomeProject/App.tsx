@@ -18,6 +18,9 @@ import AlterarSenhaAppScreen from './src/dashboard/alterar/alterar-SenhaApp-scre
 import AlterarSenhaTransScreen from './src/dashboard/alterar/alterar-SenhaTrans-screen';
 import ExtratoScreen from './src/dashboard/Extrato/extrato-screen';
 import FiltroScreen from './src/dashboard/Extrato/filtro-screen';
+import PrototipoScreen from './src/dashboard/Extrato/prototipoextrato';
+import ExtratoEntradaScreen from './src/dashboard/Extrato/extrato-entrada-screen';
+import ExtratoSaidaScreen from './src/dashboard/Extrato/extrato-saida-screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +33,8 @@ export interface RootStackParamList {
   AlterarSenhaApp: undefined;
   AlterarSenhaTrans: undefined;
   Extrato: undefined;
+  ExtratoEntrada: undefined;
+  ExtratoSaida: undefined;
   Filtro: undefined;
   OnboardingDadosPessoais: undefined;
   OnboardingCEP: undefined;
@@ -37,6 +42,7 @@ export interface RootStackParamList {
   OnboardingSenhaApp: undefined;
   OnboardingSenhaTrans: undefined;
   OnboardingFinalTabel: undefined;
+  Prototipo: undefined;
 }
 
 function App() {
@@ -44,7 +50,12 @@ function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Extrato">
+        <Stack.Navigator initialRouteName="Inicio">
+        <Stack.Screen
+            name="Prototipo"
+            component={PrototipoScreen}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="Inicio"
             component={InicioScreen}
@@ -83,6 +94,16 @@ function App() {
           <Stack.Screen
             name="Extrato"
             component={ExtratoScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ExtratoEntrada"
+            component={ExtratoEntradaScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ExtratoSaida"
+            component={ExtratoSaidaScreen}
             options={{ headerShown: false }}
           />
           <Stack.Screen
