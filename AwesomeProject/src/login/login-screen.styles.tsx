@@ -94,13 +94,13 @@ export const DivInputLogin = styled(View)`
   width: 100%;
 `;
 
-export const TextButton = styled(Text)<{ cor: string }>`
-  font-size: 16px;
+export const TextButton = styled(Text)<{ cor?: string, size?: string }>`
+  font-size: ${props => props.size || '16px'};
   font-weight: 600;
   color: ${props => props.cor};
 `;
 
-export const ConfirmButton = styled(TouchableOpacity)<{ cor: string }>`
+export const ConfirmButton = styled(TouchableOpacity)<{ cor?: string, border?: string | undefined }>`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -109,6 +109,7 @@ export const ConfirmButton = styled(TouchableOpacity)<{ cor: string }>`
   padding: 16px;
   background-color: ${props => props.cor || '#6B7AE5'};
   border-radius: 500px;
+  border: ${props => props.border || 'none'};
 `;
 
 export const TextLinks = styled(Text)`

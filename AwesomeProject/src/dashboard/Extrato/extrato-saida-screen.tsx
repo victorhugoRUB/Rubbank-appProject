@@ -2,7 +2,7 @@ import type {NavigationProp} from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import type {RootStackParamList} from '../../../App';
 import {ScreenBase} from '../../components/screen-base/dashboard-screen-base';
-import { Animated, FlatList, Text, TouchableOpacity, View, useColorScheme } from 'react-native';
+import { Animated, FlatList, Modal, Share, Text, TouchableOpacity, View, useColorScheme } from 'react-native';
 
 const logoPurple = require('../../assets/logos/logoPurple.png');
 const logoWhite = require('../assets/logos/rubbankWhite.png');
@@ -11,18 +11,23 @@ import IconEntypo from 'react-native-vector-icons/Entypo';
 import IconOcticons from 'react-native-vector-icons/Octicons';
 import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BlockTrans, BlockTransDay, Container, DivBottom, DivBttContent, DivBttTop, DivBttTopButton, DivSaldo, DivTextTrans, DivTextValor, DivTop, DivTopContent, LogoTrans, PutOnTop, TextButtonDivBtt, TextSaldo, TextTopDashExtrato } from './extrato-screen-styles';
-import { transform } from 'lodash';
+import { BlockTrans, BlockTransDay, ButtonNext, Container, CountInMiddle, DivBottom, DivBttContent, DivBttTop, DivBttTopButton, DivButtonNext, DivSaldo, DivTextTrans, DivTextValor, DivTop, DivTopContent, LogoTrans, PutOnTop, TextButtonDivBtt, TextSaldo, TextTopDash, TextTopDashExtrato } from './extrato-screen-styles';
+import { set, transform } from 'lodash';
 import Icon from '@react-native-vector-icons/material-icons';
 import { Span } from '../alterar/alterar-screen.styles';
-import { TextTopDash } from '../perfil/dashboard-screen.styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { ReduxState } from '../../redux/store';
+import { TransDetalheScreen } from '../../AvisoModel/transDetalheModal';
+import { LoadingSpinner } from '../../Loading/loadingScreen';
+import { setFiltroField } from '../../redux/filtroSlice';
 
 
-interface ExtratoSaidaScreenProps {
-  navigation: NavigationProp<RootStackParamList, 'ExtratoSaida'>;
+interface ExtratoScreenProps {
+  navigation: NavigationProp<RootStackParamList, 'Extrato'>;
 }
 
 interface TransInfo {
+  trans_id: number,
   usuId_remetente: number,
   usuId_destinatario: number,
   trans_valor: number,
@@ -32,24 +37,56 @@ interface TransInfo {
   createdAt: string
 }
 
-export default function ExtratoSaidaScreen({navigation}: ExtratoSaidaScreenProps) {
+export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
 
   const [showBalance, setShowBalance] = useState(false);
   const [messageTrans , setMessageTrans] = useState('');
   const [saldoConta, setSaldoConta] = useState('');
+  const [contaBanc, setContaBanc] = useState('')
   const [botaoAtivo, setBotaoAtivo] = useState(false)
   const [transInfo, setTransInfo] = useState<TransInfo[]>([])
+  const [transDetalheInfo, setTransDetalheInfo] = useState<TransInfo>()
   const [flag , setFlag] = useState(false)
+  const [transDetalhe, setTransDetalhe] = useState(false)
+  const filtroData = useSelector((state: ReduxState)=> state.filtro);
+  const [numPagFlat, setNumPagFlat] = useState(0)
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const nextPage = (valor: any) => {
+    console.log(valor)
+    if(valor === 'mais'){
+      const somar = Number(filtroData.page) + 1;
+      (dispatch((setFiltroField({field: 'page', value: somar.toString()}))))
+      fetchUserData()
+    }else{
+      const subtrair = Number(filtroData.page) - 1;
+      (dispatch((setFiltroField({field: 'page', value: subtrair.toString()}))))
+      fetchUserData()
+    }
+  }
+
+  const onShare = async () => {
+    const result = await Share.share({
+      message: 'Comprovante de transferência\n\nRemetente: '+transDetalheInfo?.usuId_remetente+'\nDestinatário: '+transDetalheInfo?.usuId_destinatario+'\nValor transferido: R$'+transDetalheInfo?.trans_valor+'\nMétodo: '+transDetalheInfo?.trans_metodo+'\nData da transferência: '+transDetalheInfo?.createdAt+'\n\nComprovante gerado pelo aplicativo RubBank',
+    })
+  }
+
+  const resetDataPage = () => {
+    dispatch(setFiltroField({field: 'page', value: '1'}))
+  }
 
   const fetchUserData = async () => {
     console.log('chamou')
+    setLoading(true)
     try{
       const token = await AsyncStorage.getItem('token');
       const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/conta/saldo`,{
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}` 
         }
       })
       if(!res.ok){
@@ -57,42 +94,119 @@ export default function ExtratoSaidaScreen({navigation}: ExtratoSaidaScreenProps
       }
       setSaldoConta((await res.json()).contaBanc_saldo)
     }catch(err){
+      setLoading(false)
       console.log(err);
       console.log('Erro ao buscar saldo')
       navigation.navigate('Login')
     }
     try{
       const token = await AsyncStorage.getItem('token');
-      const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/transferencia/saida/`,{
+      const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/conta`,{
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` 
+        }
+      })
+      if(!res.ok){
+        throw new Error('Erro ao buscar conta')
+      }
+      setContaBanc((await res.json()).contaBanc_id)
+      console.log(contaBanc) 
+    }catch(err){
+      setLoading(false)
+      console.log(err);
+      console.log('Erro ao buscar saldo')
+      navigation.navigate('Login')
+    }
+    try{
+      const token = await AsyncStorage.getItem('token');
+      const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/transferencia/saida/?${filtroData.ordem != '' ? '&ordem='+filtroData.ordem : ''}${filtroData.dataFinal != '' ? '&dataFinal='+filtroData.dataFinal : ''}${filtroData.dataInicial != '' ? '&dataInicial='+filtroData.dataInicial : ''}${filtroData.dias != '' ? '&dias='+filtroData.dias : ''}${filtroData.page != '' ? '&page='+filtroData.page : ''}`,{
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         }
       })
+
       console.log(res)
       if(!res.ok){
         throw new Error('Erro ao buscar transferencia')
       }
-      
-      setTransInfo((await res.json()))
-      setFlag(true)
+      setLoading(false)
+      const data = await res.json()
+      setTransInfo(data.trans)
+      setNumPagFlat(data.numPags)
       console.log(transInfo)
+      setFlag(true)
     }catch(err){
+      setLoading(false)
       setFlag(false)
-      console.log(err);
+      console.log(err)
       console.log('Erro ao buscar saldo')
       setMessageTrans('Erro ao buscar transferencia')
       navigation.navigate('Login')
     }
   }
 
+  const fetchTransDetalhe = async (trans_id: any) => {
+    setLoading(true)
+    console.log(trans_id)
+    try{
+      const token = await AsyncStorage.getItem('token');
+      const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/transferencia/detalhado/${trans_id}`,{
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
+      console.log(res)
+      if(!res.ok){
+        setLoading(false)
+        throw new Error('Erro ao buscar transferencia detalhada')
+      }
+      setTransDetalheInfo((await res.json()))
+      setTransDetalhe(!transDetalhe)
+      console.log(transDetalheInfo)
+      setFlag(true)
+      setLoading(false)
+    }catch(err){
+      setFlag(false)
+      console.log(err)
+      console.log('Erro ao buscar transferencia detalhada')
+      setMessageTrans('Erro ao buscar transferencia')
+    }
+
+  }
+
+  useEffect(() => {resetDataPage()}, [])
   useEffect(() => {fetchUserData()}, [])
 
-  const numeroFormatado = Number(transInfo).toFixed(2).replace('.',',')
+  const numeroFormatado = Number(saldoConta).toFixed(2).replace('.',',')
 
   return (
     <ScreenBase>
+    <LoadingSpinner visible={loading}/>
+      <Modal
+      transparent={true}
+      visible={transDetalhe}
+      onRequestClose={() => setTransDetalhe(!transDetalhe)}
+      animationType='slide'
+      >
+        <TransDetalheScreen
+        onShare={onShare}
+        onClose={() => setTransDetalhe(false)}
+        rem={transDetalheInfo?.usuId_remetente ?? 0}
+        des={transDetalheInfo?.usuId_destinatario ?? 0}
+        val={transDetalheInfo?.trans_valor ?? 0}
+        desc={transDetalheInfo?.trans_descricao ?? ''}
+        sta={transDetalheInfo?.trans_status ?? ''}
+        met={transDetalheInfo?.trans_metodo ?? ''}
+        dt={transDetalheInfo?.createdAt ? new Date(transDetalheInfo.createdAt).toLocaleDateString('pt-BR') : ''}
+        />
+      </Modal>
       <Container>
         <DivTop>
           <DivTopContent>
@@ -110,8 +224,8 @@ export default function ExtratoSaidaScreen({navigation}: ExtratoSaidaScreenProps
         </DivTop>
         <DivBottom>
           <DivBttTop>
-          <DivBttTopButton onPress={() => navigation.navigate('Extrato')} ><TextButtonDivBtt>Tudo</TextButtonDivBtt></DivBttTopButton>
-            <DivBttTopButton onPress={() => navigation.navigate('ExtratoEntrada')}><TextButtonDivBtt>Entrada</TextButtonDivBtt></DivBttTopButton>
+            <DivBttTopButton onPress={() => navigation.navigate('Extrato')}><TextButtonDivBtt>Tudo</TextButtonDivBtt></DivBttTopButton>
+            <DivBttTopButton onPress={() => navigation.navigate('ExtratoEntrada')} ><TextButtonDivBtt>Entrada</TextButtonDivBtt></DivBttTopButton>
             <DivBttTopButton onPress={() => navigation.navigate('ExtratoSaida')} width='3px'><TextButtonDivBtt>Saída</TextButtonDivBtt></DivBttTopButton>
           </DivBttTop>
           <DivBttContent>
@@ -133,7 +247,7 @@ export default function ExtratoSaidaScreen({navigation}: ExtratoSaidaScreenProps
                   return(
                   <BlockTransDay>
                     {renderHeader()}
-                    <BlockTrans>
+                    <BlockTrans onPress={() => fetchTransDetalhe(item.trans_id)} >
                       <PutOnTop>
                         <LogoTrans source={logoPurple} />
                         <DivTextTrans>
@@ -143,9 +257,27 @@ export default function ExtratoSaidaScreen({navigation}: ExtratoSaidaScreenProps
                         </DivTextTrans>
                       </PutOnTop>
                       <DivTextValor>
-                        <TextTopDashExtrato size='16px' color='#029D29'><Span>R$ {item.trans_valor.toFixed(2).replace('.',',')}</Span></TextTopDashExtrato>
+                        <TextTopDashExtrato size='16px' color={ Number(contaBanc) == item.usuId_remetente ? '#ff0000' : '#029D29'}><Span>R$ {item.trans_valor.toFixed(2).replace('.',',')}</Span></TextTopDashExtrato>
                       </DivTextValor>
                     </BlockTrans>
+                    {index === transInfo.length - 1 ? 
+                    <DivButtonNext>
+                      <ButtonNext disabled={filtroData.page === '' || filtroData.page === '1' ? true : false} backColor={filtroData.page === '' || filtroData.page === '1' ? '#6b79e5a6' : '#6B7AE5'} onPress={() => {nextPage('menos')}}>
+                        <TextButtonDivBtt fontSize='16px'>
+                          <IconFeather name='chevron-left' size={24} color='#fff' />
+                        </TextButtonDivBtt>
+                      </ButtonNext>
+                      <CountInMiddle>
+                        <TextTopDash color='#000'>
+                          {Number(filtroData.page)}/{numPagFlat}
+                        </TextTopDash>
+                      </CountInMiddle>
+                      <ButtonNext disabled={filtroData.page == numPagFlat} backColor={filtroData.page == numPagFlat ? '#6b79e5a6' : ' #6B7AE5'} onPress={() => {nextPage('mais')}}>
+                        <TextButtonDivBtt fontSize='16px'>
+                          <IconFeather name='chevron-right' size={24} color='#fff' />
+                        </TextButtonDivBtt>
+                      </ButtonNext>
+                    </DivButtonNext> : null}
                   </BlockTransDay>
                   )
                 }}

@@ -65,7 +65,7 @@ export const DivBttTop = styled(View)`
     width: 100%;
     border-radius: 32px 32px 0 0;
     padding: 16px 32px 0 32px;
-    border-bottom-width: 0.7;
+    border-bottom-width: 0.7px;
     border-bottom-color: #000;
 `;
 
@@ -99,7 +99,7 @@ export const DivBttContent = styled(View)<{justify?: string, align?: string}>`
     align-items: ${props => props.align || 'center'};
     flex-direction: column;
     width: 100%;
-    padding: 32px;
+    padding: 32px 32px 100px 32px;
     gap: 20px;
 `;
 
@@ -249,4 +249,34 @@ export const PutOnTop = styled(View)`
     align-items: flex-start;
     flex-direction: row;
     gap: 10px;
+`;
+
+export const DivButtonNext = styled(View)`
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    width: 95%;
+`;
+
+export const CountInMiddle = styled(View)`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+export const ButtonNext = styled(TouchableOpacity)<{ backColor?: string }>`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    width: 20%;
+    background-color: ${props => props.backColor || '#6B7AE5'};
+    border-radius: 500px;
+`;
+
+export const TextTopDash = styled(Text)<{ color?: string }>`
+  font-size: 24px;
+  color: ${props => props.color || '#fff'};
+  text-align: center;
 `;

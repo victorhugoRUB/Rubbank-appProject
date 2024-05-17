@@ -9,6 +9,8 @@ import IconFeather from 'react-native-vector-icons/Feather';
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import IconOcticons from 'react-native-vector-icons/Octicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSelector } from 'react-redux';
+import { ReduxState } from '../redux/store';
 
 
 interface DashboardScreenProps {
@@ -19,6 +21,7 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
 
   const [showBalance, setShowBalance] = useState(false);
   const [saldoConta, setSaldoConta] = useState('');
+  const filtroData = useSelector((state: ReduxState)=> state.filtro);
 
   useEffect(() => {fetchUserData()}, [])
 

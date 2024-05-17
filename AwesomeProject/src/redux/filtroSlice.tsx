@@ -5,13 +5,15 @@ interface FiltroState {
     dataFinal: string;
     dias: string;
     ordem: string;
+    page: number | string;
 }
 
 const initialState: FiltroState = {
     dataInicial: '',
     dataFinal: '',
     dias: '',
-    ordem: ''
+    ordem: '',
+    page: '1'
 }
 
 const filtroSlice = createSlice({

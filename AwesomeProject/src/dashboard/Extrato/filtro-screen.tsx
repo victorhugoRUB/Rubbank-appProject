@@ -27,6 +27,7 @@ interface FiltroScreenProps {
   navigation: NavigationProp<RootStackParamList, 'Filtro'>;
 }
 
+
 export default function FiltroScreen({navigation}: FiltroScreenProps) {
 
   const [filtroAntigo , setFiltroAntigo] = useState(false);
@@ -135,10 +136,10 @@ export default function FiltroScreen({navigation}: FiltroScreenProps) {
               <TextButtonDivBtt fontSize='18px'>Período máximo de 90 dias a partir da data inicial</TextButtonDivBtt>
             </DivTextBttFiltro>
             <DivBlockDays>
-              <BlockOfDays disabled={dropDown} onPress={() => {handleFormEdit(15, 'dias') ;button15 ? (setButton15(false), setValorDias(15)) : (setButton15(true), setButton30(false), setButton60(false), setButton90(false))}} backgroundColor={button15 ? '#F1580C' : 'transparent'} ><TextButtonDivBtt color={button15 ? '#fff' : ''} fontSize='20px'><Span>15</Span></TextButtonDivBtt><TextButtonDivBtt color={button15 ? '#fff' : ''} fontSize='20px'><Span>dias</Span></TextButtonDivBtt></BlockOfDays>
-              <BlockOfDays disabled={dropDown} onPress={() => {handleFormEdit(30, 'dias') ;button30 ? (setButton30(false), setValorDias(30)) : (setButton15(false), setButton30(true), setButton60(false), setButton90(false))}} backgroundColor={button30 ? '#F1580C' : 'transparent'} ><TextButtonDivBtt color={button30 ? '#fff' : ''} fontSize='20px'><Span>30</Span></TextButtonDivBtt><TextButtonDivBtt color={button30 ? '#fff' : ''} fontSize='20px'><Span>dias</Span></TextButtonDivBtt></BlockOfDays>
-              <BlockOfDays disabled={dropDown} onPress={() => {handleFormEdit(60, 'dias') ;button60 ? (setButton60(false), setValorDias(60)) : (setButton15(false), setButton30(false), setButton60(true), setButton90(false))}} backgroundColor={button60 ? '#F1580C' : 'transparent'} ><TextButtonDivBtt color={button60 ? '#fff' : ''} fontSize='20px'><Span>60</Span></TextButtonDivBtt><TextButtonDivBtt color={button60 ? '#fff' : ''} fontSize='20px'><Span>dias</Span></TextButtonDivBtt></BlockOfDays>
-              <BlockOfDays disabled={dropDown} onPress={() => {handleFormEdit(90, 'dias') ;button90 ? (setButton90(false), setValorDias(90)) : (setButton15(false), setButton30(false), setButton60(false), setButton90(true))}} backgroundColor={button90 ? '#F1580C' : 'transparent'} ><TextButtonDivBtt color={button90 ? '#fff' : ''} fontSize='20px'><Span>90</Span></TextButtonDivBtt><TextButtonDivBtt color={button90 ? '#fff' : ''} fontSize='20px'><Span>dias</Span></TextButtonDivBtt></BlockOfDays>
+              <BlockOfDays disabled={dropDown} onPress={() => {handleFormEdit(15, 'dias') ;button15 ? (setButton15(false), setValorDias(15)) : (setButton15(true), setButton30(false), setButton60(false), setButton90(false))}} backgroundColor={button15 || String(filtroData.dias) == '15' ? '#F1580C' : 'transparent'} ><TextButtonDivBtt color={button15 || String(filtroData.dias) == '15' ? '#fff' : ''} fontSize='20px'><Span>15</Span></TextButtonDivBtt><TextButtonDivBtt color={button15 || String(filtroData.dias) == '15' ? '#fff' : ''} fontSize='20px'><Span>dias</Span></TextButtonDivBtt></BlockOfDays>
+              <BlockOfDays disabled={dropDown} onPress={() => {handleFormEdit(30, 'dias') ;button30 ? (setButton30(false), setValorDias(30)) : (setButton15(false), setButton30(true), setButton60(false), setButton90(false))}} backgroundColor={button30 || String(filtroData.dias) == '30' ? '#F1580C' : 'transparent'} ><TextButtonDivBtt color={button30 || String(filtroData.dias) == '30' ? '#fff' : ''} fontSize='20px'><Span>30</Span></TextButtonDivBtt><TextButtonDivBtt color={button30 || String(filtroData.dias) == '30' ? '#fff' : ''} fontSize='20px'><Span>dias</Span></TextButtonDivBtt></BlockOfDays>
+              <BlockOfDays disabled={dropDown} onPress={() => {handleFormEdit(60, 'dias') ;button60 ? (setButton60(false), setValorDias(60)) : (setButton15(false), setButton30(false), setButton60(true), setButton90(false))}} backgroundColor={button60 || String(filtroData.dias) == '60' ? '#F1580C' : 'transparent'} ><TextButtonDivBtt color={button60 || String(filtroData.dias) == '60' ? '#fff' : ''} fontSize='20px'><Span>60</Span></TextButtonDivBtt><TextButtonDivBtt color={button60 || String(filtroData.dias) == '60' ? '#fff' : ''} fontSize='20px'><Span>dias</Span></TextButtonDivBtt></BlockOfDays>
+              <BlockOfDays disabled={dropDown} onPress={() => {handleFormEdit(90, 'dias') ;button90 ? (setButton90(false), setValorDias(90)) : (setButton15(false), setButton30(false), setButton60(false), setButton90(true))}} backgroundColor={button90 || String(filtroData.dias) == '90' ? '#F1580C' : 'transparent'} ><TextButtonDivBtt color={button90 || String(filtroData.dias) == '90' ? '#fff' : ''} fontSize='20px'><Span>90</Span></TextButtonDivBtt><TextButtonDivBtt color={button90 || String(filtroData.dias) == '90' ? '#fff' : ''} fontSize='20px'><Span>dias</Span></TextButtonDivBtt></BlockOfDays>
             </DivBlockDays>
             <PeriodoButton onPress={() => dropDown ? setDropDown(false) : setDropDown(true)}>
               <TextButtonDivBtt color='#F1580C'><Span>Outros períodos</Span></TextButtonDivBtt>
@@ -149,13 +150,13 @@ export default function FiltroScreen({navigation}: FiltroScreenProps) {
                 <InputLoginSenha 
                 width='45%' 
                 placeholder='Data inicial' 
-                value={dropDown ? formData.dataInicial : ''}
+                value={formData.dataInicial}
                 onChangeText={(e) => {handleFormEdit(e, 'dataInicial')}}
                 onFocus={() => {setOpenCalendar(true), setIsInicial(true)}}/>
                 <InputLoginSenha
                 width='45%' 
                 placeholder='Data final' 
-                value={dropDown ? formData.dataFinal : ''}
+                value={formData.dataFinal}
                 onChangeText={(e) => {handleFormEdit(e, 'dataFinal')}}
                 onFocus={() => {setOpenCalendar(true), setIsInicial(false)}}/>
                 
@@ -164,8 +165,8 @@ export default function FiltroScreen({navigation}: FiltroScreenProps) {
             <DivOrdem>
               <TextButtonDivBtt fontSize='20px'><Span>Por ordem</Span></TextButtonDivBtt>
               <DivAntigoNovo>
-                <AntigoNovoButton disabled={dropDown} borderBottomWidth='1px' onPress={() => {handleFormEdit('asc', 'ordem'); filtroAntigo ? setFiltroAntigo(false) : setFiltroAntigo(true); setFiltroNovos(false)}} ><TextButtonDivBtt fontSize='18px'>Mais antigos</TextButtonDivBtt><IconOcticons name={filtroAntigo ? 'check-circle-fill' : 'circle'} size={26} color={filtroAntigo ? '#000' : '#aaabab'} /></AntigoNovoButton>
-                <AntigoNovoButton disabled={dropDown} onPress={() => {handleFormEdit('desc', 'ordem'); filtroNovos ? setFiltroNovos(false) : setFiltroNovos(true); setFiltroAntigo(false)}} ><TextButtonDivBtt fontSize='18px'>Mais novos</TextButtonDivBtt><IconOcticons name={filtroNovos ? 'check-circle-fill' : 'circle'} size={26} color={filtroNovos ? '#000' : '#aaabab'} /></AntigoNovoButton>
+                <AntigoNovoButton disabled={dropDown} borderBottomWidth='1px' onPress={() => {handleFormEdit('asc', 'ordem'); filtroAntigo ? setFiltroAntigo(false) : setFiltroAntigo(true); setFiltroNovos(false)}} ><TextButtonDivBtt fontSize='18px'>Mais antigos</TextButtonDivBtt><IconOcticons name={filtroAntigo || filtroData.ordem == 'asc' ? 'check-circle-fill' : 'circle'} size={26} color={filtroAntigo ? '#000' : '#aaabab'} /></AntigoNovoButton>
+                <AntigoNovoButton disabled={dropDown} onPress={() => {handleFormEdit('desc', 'ordem'); filtroNovos ? setFiltroNovos(false) : setFiltroNovos(true); setFiltroAntigo(false)}} ><TextButtonDivBtt fontSize='18px'>Mais novos</TextButtonDivBtt><IconOcticons name={filtroNovos || filtroData.ordem == 'desc' ? 'check-circle-fill' : 'circle'} size={26} color={filtroNovos ? '#000' : '#aaabab'} /></AntigoNovoButton>
               </DivAntigoNovo>
             </DivOrdem>
             <DivInputLogin>
