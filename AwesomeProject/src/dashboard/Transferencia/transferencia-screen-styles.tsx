@@ -1,6 +1,6 @@
 import { property } from "lodash";
 import { PiDropSimple } from "react-icons/pi";
-import { Image, Touchable, TouchableOpacity } from "react-native";
+import { Image, ScrollView, TextInput, Touchable, TouchableOpacity } from "react-native";
 import { Text, View } from "react-native";
 import { TextInputMask } from "react-native-masked-text";
 import styled from "styled-components";
@@ -54,6 +54,17 @@ export const DivBottom = styled(View)`
     border-radius: 32px 32px 0 0;
     background-color: #ffffff;
     width: 100%;
+    padding: 24px 40px;
+`;
+
+export const DivBottomScroll = styled(ScrollView)`
+    flex: 8;
+    display: flex;
+    flex-direction: column;
+    border-radius: 32px 32px 0 0;
+    background-color: #ffffff;
+    width: 100%;
+    padding: 24px 40px;
 `;
 
 export const DivBttTop = styled(View)`
@@ -93,14 +104,14 @@ export const TextButtonDivBtt = styled(Text)<{fontSize?: any, color?: string}>`
     font-size: ${props => props.fontSize || '16px'};
 `;
 
-export const DivBttContent = styled(View)<{justify?: string, align?: string}>`
+export const DivBttContent = styled(View)`
     display: flex;
-    justify-content: ${props => props.justify || 'center'};
-    align-items: ${props => props.align || 'center'};
+    justify-content: space-between;
+    align-items: flex-start;
     flex-direction: column;
     width: 100%;
-    padding: 32px 32px 100px 32px;
     gap: 20px;
+    flex: 1;
 `;
 
 export const DivTextBttFiltro = styled(View)`
@@ -286,4 +297,63 @@ export const TextTopDash = styled(Text)<{ color?: string }>`
   font-size: 24px;
   color: ${props => props.color || '#fff'};
   text-align: center;
+  flex: 1;
+`;
+
+export const DivInputTrans = styled(View)<{ gap?: string; padding?: string; flex1?: string }>`
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    width: 100%;
+    gap: ${props => props.gap || '0'};
+    padding: ${props => props.padding || '0'};
+`;
+
+export const DivContentInput = styled(View)`
+    display: flex;
+    width: 100%;
+    gap: 20px;
+    padding: 20px 0;
+`;
+
+export const InputToWrite = styled(TextInput)<{ width?: string}>`
+  border-bottom-color: #1D1C3E;
+  border-bottom-width: 1px;
+  padding: 10px;
+  width: ${props => props.width || '100%'};
+  height: 70px;
+  max-width: 100%;
+  font-size: 16px;
+  font-weight: 700;
+`;
+
+export const InputToWriteMask = styled(TextInputMask)<{ width?: string}>`
+  border-bottom-color: #1D1C3E;
+  border-bottom-width: 1px;
+  padding: 10px;
+  width: ${props => props.width || '100%'};
+  height: 70px;
+  max-width: 100%;
+  font-size: 48px;
+  font-weight: 500;
+`;
+
+export const DivSenhaTrans = styled(View)`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    gap: 10px;
+`;
+
+export const InputCadastro = styled(TextInput)<{ fontSize?: string }>`
+    border-bottom-color: #1D1C3E;
+    border-bottom-width: 1px;
+    padding: 10px;
+    width: 20%;
+    font-size: ${props => props.fontSize || '16px'};
+    font-weight: 700;
+    text-align: center;
 `;

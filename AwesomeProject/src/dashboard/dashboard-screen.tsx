@@ -70,7 +70,7 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
           </DivBalance>
         </DivTop>
         <DivBottom>
-          <BlockOptionsBottom>
+          <BlockOptionsBottom onPress={() => navigation.navigate('TransferenciaCPF')}>
             <IconEntypo name="swap" size={24} color="#000"/>
             <TextBlockBottom>Transferir</TextBlockBottom>
           </BlockOptionsBottom>

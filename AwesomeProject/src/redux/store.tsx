@@ -4,6 +4,7 @@ import endReducer from './endSlice';
 import senhaAppReducer from './senhaAppSlice';
 import senhaTransReducer from './senhaTransSlice';
 import filtroReducer from './filtroSlice';
+import dadosTransReducer from './dadosTransSlice';
 
 export const store = configureStore({
     reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
         end: endReducer,
         senhaApp: senhaAppReducer,
         senhaTrans: senhaTransReducer,
-        filtro: filtroReducer
+        filtro: filtroReducer,
+        dadosTrans: dadosTransReducer
     }
 });
 

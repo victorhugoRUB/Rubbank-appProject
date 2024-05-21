@@ -21,6 +21,11 @@ import FiltroScreen from './src/dashboard/Extrato/filtro-screen';
 import PrototipoScreen from './src/dashboard/Extrato/prototipoextrato';
 import ExtratoEntradaScreen from './src/dashboard/Extrato/extrato-entrada-screen';
 import ExtratoSaidaScreen from './src/dashboard/Extrato/extrato-saida-screen';
+import TransferenciaScreen from './src/dashboard/Transferencia/transferenciaCPF-screen';
+import TransferenciaCPFScreen from './src/dashboard/Transferencia/transferenciaCPF-screen';
+import TransferenciaNumContaScreen from './src/dashboard/Transferencia/transferenciaNumConta-screen';
+import TransferenciaValorDescScreen from './src/dashboard/Transferencia/transferenciaValorDesc-screen';
+import TransferenciaSenhaScreen from './src/dashboard/Transferencia/transferenciaSenha-screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +35,10 @@ export interface RootStackParamList {
   Dashboard: undefined;
   DashboardPerfil: undefined;
   DashboardDadosBanc: undefined;
+  TransferenciaCPF: undefined;
+  TransferenciaNumConta: undefined;
+  TransferenciaValorDesc: undefined;
+  TransferenciaSenha: undefined;
   AlterarSenhaApp: undefined;
   AlterarSenhaTrans: undefined;
   Extrato: undefined;
@@ -50,7 +59,7 @@ function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
+        <Stack.Navigator initialRouteName="TransferenciaCPF">
         <Stack.Screen
             name="Prototipo"
             component={PrototipoScreen}
@@ -79,6 +88,26 @@ function App() {
           <Stack.Screen
             name="DashboardDadosBanc"
             component={DashboardDadosBancScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="TransferenciaCPF"
+            component={TransferenciaCPFScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="TransferenciaNumConta"
+            component={TransferenciaNumContaScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="TransferenciaValorDesc"
+            component={TransferenciaValorDescScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="TransferenciaSenha"
+            component={TransferenciaSenhaScreen}
             options={{ headerShown: false }}
           />
           <Stack.Screen

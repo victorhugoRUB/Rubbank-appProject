@@ -2,7 +2,7 @@ import type {NavigationProp} from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import type {RootStackParamList} from '../../../App';
 import {ScreenBase} from '../../components/screen-base/dashboard-screen-base';
-import { Animated, FlatList, Modal, RefreshControl, SectionList, Share, Text, TouchableOpacity, View, useColorScheme } from 'react-native';
+import { Animated, FlatList, Modal, Share, Text, TouchableOpacity, View, useColorScheme } from 'react-native';
 import PDF from 'react-native-pdf';
 
 const logoPurple = require('../../assets/logos/logoPurple.png');
@@ -12,7 +12,7 @@ import IconEntypo from 'react-native-vector-icons/Entypo';
 import IconOcticons from 'react-native-vector-icons/Octicons';
 import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BlockTrans, BlockTransDay, ButtonNext, Container, CountInMiddle, DivBottom, DivBttContent, DivBttTop, DivBttTopButton, DivButtonNext, DivSaldo, DivTextTrans, DivTextValor, DivTop, DivTopContent, LogoTrans, PutOnTop, TextButtonDivBtt, TextSaldo, TextTopDash, TextTopDashExtrato, TextTopDashHeader } from './extrato-screen-styles';
+import { BlockTrans, BlockTransDay, ButtonNext, Container, CountInMiddle, DivBottom, DivBttContent, DivBttTop, DivBttTopButton, DivButtonNext, DivContentInput, DivInputTrans, DivSaldo, DivTextTrans, DivTextValor, DivTop, DivTopContent, LogoTrans, PutOnTop, TextButtonDivBtt, TextSaldo, TextTopDash, TextTopDashExtrato } from './transferencia-screen-styles';
 import { set, transform } from 'lodash';
 import Icon from '@react-native-vector-icons/material-icons';
 import { Span } from '../alterar/alterar-screen.styles';
@@ -21,10 +21,11 @@ import { ReduxState } from '../../redux/store';
 import { TransDetalheScreen } from '../../AvisoModel/transDetalheModal';
 import { LoadingSpinner } from '../../Loading/loadingScreen';
 import { setFiltroField } from '../../redux/filtroSlice';
+import { ConfirmButton, InputLogin, TextButton, TitleInput } from '../../login/login-screen.styles';
 
 
-interface ExtratoScreenProps {
-  navigation: NavigationProp<RootStackParamList, 'Extrato'>;
+interface TransferenciaNumContaScreenProps {
+  navigation: NavigationProp<RootStackParamList, 'TransferenciaNumConta'>;
 }
 
 interface TransInfo {
@@ -38,7 +39,7 @@ interface TransInfo {
   createdAt: string
 }
 
-export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
+export default function TransferenciaNumContaScreen({navigation}: TransferenciaNumContaScreenProps) {
 
   const [showBalance, setShowBalance] = useState(false);
   const [messageTrans , setMessageTrans] = useState('');
@@ -52,9 +53,8 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
   const [numPagFlat, setNumPagFlat] = useState(0)
   const filtroData = useSelector((state: ReduxState)=> state.filtro);
   const [loading, setLoading] = useState(false);
-  const [isEffect, setIsEffect] = useState(true);
-  const [refresh, setRefresh] = useState(false);
-  const [moreContent, setMoreContent] = useState(false);
+  const [isEffect, setIsEffect] = useState(true)
+
 
   const dispatch = useDispatch();
 
@@ -89,7 +89,18 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
     }
   }
 
-
+  // const nextPage = async (valor: any) => {
+  //   console.log(valor)
+  //   if(valor === 'mais'){
+  //     const somar = Number(filtroData.page) + 1;
+  //     dispatch((setFiltroField({field: 'page', value: somar.toString()})))
+  //     await fetchUserData()
+  //   }else{
+  //     const subtrair = Number(filtroData.page) - 1;
+  //     dispatch((setFiltroField({field: 'page', value: subtrair.toString()})))
+  //     await fetchUserData()
+  //   }
+  // }
   //? COMPARTILHAR COMPROVANTE
 
   const generatePDF = async () => {
@@ -123,6 +134,7 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
     }
   }
 
+
   const onShare = async () => {
     const result = await Share.share({
       message: 'Comprovante de transferência\n\nRemetente: '+transDetalheInfo?.usuId_remetente+'\nDestinatário: '+transDetalheInfo?.usuId_destinatario+'\nValor transferido: R$'+transDetalheInfo?.trans_valor+'\nMétodo: '+transDetalheInfo?.trans_metodo+'\nData da transferência: '+transDetalheInfo?.createdAt+'\n\nComprovante gerado pelo aplicativo RubBank',
@@ -131,18 +143,6 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
 
   //? FIM COMPARTILHAR COMPROVANTE
 
-  const fetchMoreData = async () => {
-    if(!moreContent){
-      setMoreContent(true)
-      try{
-        await nextPage('mais')
-      }catch(err){
-        console.log(err)
-      }finally{
-        setMoreContent(false)
-      }
-    }
-  }
 
   const fetchUserData = async () => {
     setLoading(true)
@@ -231,14 +231,16 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
     }
   }
 
-  useEffect(() => {fetchUserData()}, [])
-  useEffect(() => {resetDataPage()}, [])
+  const testFunction = async () => {
+    return transInfo
+  }
+
   useEffect(() => 
     {if(isEffect){
       setIsEffect(false)
     }else{
       fetchUserData()
-    }}, [])
+    }}, [transInfo])
 
 
   const numeroFormatado = Number(saldoConta).toFixed(2).replace('.',',')
@@ -268,8 +270,7 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
         <DivTop>
           <DivTopContent>
             <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}><IconFeather name="arrow-left" size={26} color="#fff" /></TouchableOpacity>
-            <TextTopDash>Extrato</TextTopDash>
-            <TouchableOpacity onPress={() => navigation.navigate('Filtro')}><IconFeather name="filter" size={28} color="#fff" /></TouchableOpacity>
+            <TextTopDash>Transferência</TextTopDash>
           </DivTopContent>
           <DivTopContent>
             <TextSaldo fontSize='16px' textAlign='start' >Saldo disponível</TextSaldo>
@@ -281,45 +282,23 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
         </DivTop>
         <DivBottom>
           <DivBttTop>
-            <DivBttTopButton onPress={() => navigation.navigate('Extrato')} width='3px'><TextButtonDivBtt>Tudo</TextButtonDivBtt></DivBttTopButton>
-            <DivBttTopButton onPress={() => navigation.navigate('ExtratoEntrada')}><TextButtonDivBtt>Entrada</TextButtonDivBtt></DivBttTopButton>
-            <DivBttTopButton onPress={() => navigation.navigate('ExtratoSaida')}><TextButtonDivBtt>Saída</TextButtonDivBtt></DivBttTopButton>
+            <DivBttTopButton onPress={() => navigation.navigate('TransferenciaCPF')}><TextButtonDivBtt>CPF</TextButtonDivBtt></DivBttTopButton>
+            <DivBttTopButton width='3px'><TextButtonDivBtt>Número da conta</TextButtonDivBtt></DivBttTopButton>
           </DivBttTop>
           <DivBttContent>
-            {flag ?
-              <>
-                <SectionList
-                sections={[{ data: transInfo }]}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) => (
-                  <BlockTransDay>
-                  <BlockTrans onPress={() => fetchTransDetalhe(item.trans_id)} >
-                    <PutOnTop>
-                      <LogoTrans source={logoPurple} />
-                      <DivTextTrans>
-                        <TextTopDashExtrato size='16px' color='#000'><Span>Transferência Entre Contas</Span></TextTopDashExtrato>
-                        <TextTopDashExtrato size='12px' color='#aaabab'>{item.trans_status}</TextTopDashExtrato>
-                        <TextTopDashExtrato size='12px' color='#aaabab'>{new Date(item.createdAt).toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})}</TextTopDashExtrato>
-                      </DivTextTrans>
-                    </PutOnTop>
-                    <DivTextValor>
-                      <TextTopDashExtrato size='16px' color={ Number(contaBanc) == item.usuId_remetente ? '#ff0000' : '#029D29'}><Span>R$ {item.trans_valor.toFixed(2).replace('.',',')}</Span></TextTopDashExtrato>
-                    </DivTextValor>
-                  </BlockTrans>
-                </BlockTransDay>
-                )}
-                renderSectionHeader={({ section: { data } }) => (
-                  <TextTopDashHeader size='18px' color='#000'>
-                    {new Date(data[0].createdAt).getDate()} de {new Date(data[0].createdAt).toLocaleString('pt-BR', { month: 'long' }).charAt(0).toUpperCase() + new Date(data[0].createdAt).toLocaleString('pt-BR', { month: 'long' }).slice(1)}
-                  </TextTopDashHeader>
-                )}
-                
-                refreshControl={<RefreshControl refreshing={refresh} onRefresh={() => {setRefresh(true); fetchUserData(); setRefresh(false)}} />}
-                onEndReached={fetchMoreData}
-                onEndReachedThreshold={0.1}
-                ></SectionList>
-              </>
-            : <><IconMaterial name="piggy-bank-outline" size={50} color="#aaabab" style={{ transform: [{ scaleX: -1 }] }} /><TextButtonDivBtt fontSize='18px' color='#383838'>{messageTrans === '' ? "Você ainda não possui lançamentos." : messageTrans}</TextButtonDivBtt></>}
+            <DivContentInput>
+              <DivInputTrans>
+                <TitleInput>Agência</TitleInput>
+                <InputLogin type='only-numbers'/>
+              </DivInputTrans>
+              <DivInputTrans>
+                <TitleInput>Conta</TitleInput>
+                <InputLogin type='only-numbers'/>
+              </DivInputTrans>
+            </DivContentInput>
+            <DivInputTrans>
+              <ConfirmButton accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">CONTINUAR</TextButton></ConfirmButton>
+            </DivInputTrans>
           </DivBttContent>
         </DivBottom>
       </Container>
