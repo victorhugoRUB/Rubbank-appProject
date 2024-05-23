@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface EndState {
+    end_id: number;
     end_cep: string;
     end_rua: string;
     end_num: string;
@@ -11,6 +12,7 @@ interface EndState {
 }
 
 const initialState: EndState = {
+    end_id: 0,
     end_cep: '',
     end_rua: '',
     end_num: '',

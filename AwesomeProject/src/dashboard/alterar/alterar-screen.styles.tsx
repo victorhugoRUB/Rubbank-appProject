@@ -1,14 +1,12 @@
-import {View, Image, Text, TouchableOpacity, TextInput} from 'react-native';
+import {View, Image, Text, TouchableOpacity, TextInput, ScrollView} from 'react-native';
 import { TextInputMask } from 'react-native-masked-text';
 import styled from 'styled-components';
 
 export const Container = styled(View)`
   flex: 1;
-  padding: 30px 0 0 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
 `;
 
 export const TopBar = styled(View)`
@@ -51,6 +49,12 @@ export const DivInput = styled(View)`
   gap: 20px;
 `;
 
+export const DivInputScroll = styled(ScrollView)`
+  width: 100%;
+  display: flex; 
+  flex-direction: column;
+`;
+
 export const BlockInput = styled(View)<{ width?: string }>`
   display: flex;
   width: ${props => props.width || 'auto'};
@@ -88,9 +92,17 @@ export const InputCadastro = styled(TextInputMask)`
 export const DivButtonConfirm = styled(View)`
   display: flex;
   width: 100%;
-  height: 40%;
+  height: 30%;
   justify-content: flex-end;
-  align-items: center;  
+  align-items: center;
+`;
+
+export const DivButtonConfirmSenhaTrans = styled(View)`
+  display: flex;
+  width: 100%;
+  height: 20%;
+  justify-content: flex-end;
+  align-items: center;
 `;
 
 export const Span = styled(Text)<{decoration?: string}>`
@@ -151,4 +163,25 @@ export const InputTransSenha = styled(TextInput)`
   font-size: 15px;
   font-weight: 700;
   text-align: center;
+`;
+
+export const ContentBottom = styled(TouchableOpacity)`
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  border-radius: 15px;
+  /* background-color: red; */
+  elevation: 4;
+  background-color: #fff;
+  padding: 28px;
+  margin: 10px;
+`;
+
+export const DivBttContent = styled(View)<{justify?: string, align?: string}>`
+    display: flex;
+    justify-content: ${props => props.justify || 'center'};
+    align-items: ${props => props.align || 'center'};
+    flex-direction: column;
+    width: 100%;
+    /* background-color: red; */
 `;

@@ -24,6 +24,10 @@ import { setFiltroField } from '../../redux/filtroSlice';
 import { ConfirmButton, InputLogin, TextButton, TitleInput } from '../../login/login-screen.styles';
 import { setDadosTransField } from '../../redux/dadosTransSlice';
 import { TextInput } from 'react-native';
+import { WarningScreen } from '../../AvisoModel/erroModel';
+import { ModalSucessScreen } from '../../AvisoModel/sucessModal';
+import { ModalTransSucessScreen } from '../../AvisoModel/sucessTransModal';
+import { WarningSenhaTransScreen } from '../../AvisoModel/erroSenhaTransModal';
 
 interface TransferenciaSenhaScreenProps {
   navigation: NavigationProp<RootStackParamList, 'TransferenciaSenha'>;
@@ -42,6 +46,10 @@ export default function TransferenciaSenhaScreen({navigation}: TransferenciaSenh
   const filtroData = useSelector((state: ReduxState)=> state.filtro);
   const [loading, setLoading] = useState(false);
   const [isEffect, setIsEffect] = useState(true)
+  const [showWarning, setShowWarning] = useState(false)
+  const [mainAlertMessage, setMainAlertMessage] = useState('')
+  const [alertMessage, setAlertMessage] = useState('')
+  const [sucessModal, setSucessModal] = useState(false)
   const TransData = useSelector((state: ReduxState)=> state.dadosTrans);
 
   const dispatch = useDispatch()
@@ -56,10 +64,11 @@ export default function TransferenciaSenhaScreen({navigation}: TransferenciaSenh
 
   const handleFormEdit = (event: any, valor: any) => {
     dispatch(setDadosTransField({field: valor, value: event}))
-    setFormData({
-      ...formData,
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       [valor]: event
-    })
+    }))
+    console.log(formData)
     console.log(TransData)
   }
 
@@ -69,12 +78,11 @@ export default function TransferenciaSenhaScreen({navigation}: TransferenciaSenh
     try{ 
       const token = await AsyncStorage.getItem('token');
       const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/conta/saldo`,{
-        method: 'POST',
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}` 
         },
-        body: JSON.stringify(formData)
       })
       if(!res.ok){
         throw new Error('Erro ao buscar saldo')
@@ -92,6 +100,30 @@ export default function TransferenciaSenhaScreen({navigation}: TransferenciaSenh
     setLoading(true)
     const token = await AsyncStorage.getItem('token');
     try{
+      const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/conta/senhaTrans/validar/`,{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(formData)
+      });
+      const r = await res.json()
+      console.log(r)
+      if(!res.ok){
+        console.log(r)
+        setMainAlertMessage(r.message)
+        setAlertMessage(r.message2)
+        setShowWarning(true)
+        throw new Error('Erro na senha de transferencia')
+      }
+      
+    }catch(err){
+      console.log(err)
+      setLoading(false)
+      return
+    }
+    try{
       const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/transferencia/create/`,{
         method: 'POST',
         headers: {
@@ -101,20 +133,37 @@ export default function TransferenciaSenhaScreen({navigation}: TransferenciaSenh
         body: JSON.stringify(formData)
       });
       const r = await res.json()
+      console.log(res)
+      console.log(r)
       if(!res.ok){
         console.log(r)
-        throw new Error(await res.json())
+        setAlertMessage(r)
+        console.log(alertMessage)
+        setShowWarning(true)
+        throw new Error('Erro na senha de transferencia')
       }
-      console.log(r)
-      
+      setSucessModal(true)
     }catch(err){
       console.log(err)
-    }finally{
+    }
+    finally{
       setLoading(false)
     }
   }
   
-  useEffect(() => {handleInfo()}, [])
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await handleInfo();
+        formData
+      } catch (error) {
+        console.error('Erro ao buscar dados:', error);
+      }
+    };
+  
+    fetchData();
+  
+  }, []);
   const numeroFormatado = Number(saldoConta).toFixed(2).replace('.',',')
 
   // LÓGICA SENHA TRANS
@@ -143,6 +192,31 @@ export default function TransferenciaSenhaScreen({navigation}: TransferenciaSenh
 
   return (
     <ScreenBase>
+      <Modal
+      visible={showWarning}
+      transparent
+      animationType='slide'
+      onRequestClose={()=> setShowWarning(false)}
+      >
+        <WarningSenhaTransScreen
+        onClose={() => setShowWarning(!showWarning)}
+        navigation={() => navigation.navigate('Dashboard')}
+        mainWarnMessage={mainAlertMessage}
+        warnMessage={alertMessage}
+        />
+      </Modal>
+      <Modal
+      visible={sucessModal}
+      transparent
+      animationType='slide'
+      onRequestClose={()=> navigation.navigate('Dashboard')}
+      >
+        <ModalTransSucessScreen
+        navigation={() => navigation.navigate('Extrato')}
+        message='Sua transferência foi enviada com sucesso!'
+        message2=''
+        />
+      </Modal>
     <LoadingSpinner visible={loading}/>
       <Container>
         <DivTop>

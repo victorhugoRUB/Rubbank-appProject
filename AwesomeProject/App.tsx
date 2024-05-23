@@ -26,6 +26,8 @@ import TransferenciaCPFScreen from './src/dashboard/Transferencia/transferenciaC
 import TransferenciaNumContaScreen from './src/dashboard/Transferencia/transferenciaNumConta-screen';
 import TransferenciaValorDescScreen from './src/dashboard/Transferencia/transferenciaValorDesc-screen';
 import TransferenciaSenhaScreen from './src/dashboard/Transferencia/transferenciaSenha-screen';
+import AlterarEnderecoScreen from './src/dashboard/alterar/alterar-endereco-screen';
+import ListarEnderecoScreen from './src/dashboard/alterar/listar-endereco-screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +43,8 @@ export interface RootStackParamList {
   TransferenciaSenha: undefined;
   AlterarSenhaApp: undefined;
   AlterarSenhaTrans: undefined;
+  AlterarEndereco: undefined;
+  ListarEndereco: undefined;
   Extrato: undefined;
   ExtratoEntrada: undefined;
   ExtratoSaida: undefined;
@@ -59,7 +63,7 @@ function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="TransferenciaCPF">
+        <Stack.Navigator initialRouteName="AlterarEndereco">
         <Stack.Screen
             name="Prototipo"
             component={PrototipoScreen}
@@ -118,6 +122,16 @@ function App() {
           <Stack.Screen
             name="AlterarSenhaTrans"
             component={AlterarSenhaTransScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="AlterarEndereco"
+            component={AlterarEnderecoScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ListarEndereco"
+            component={ListarEnderecoScreen}
             options={{ headerShown: false }}
           />
           <Stack.Screen

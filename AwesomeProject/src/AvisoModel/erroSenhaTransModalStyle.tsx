@@ -48,7 +48,6 @@ export const DivTextModel = styled(View)`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 16px;
 `;
 
 export const TopText = styled(Text)`

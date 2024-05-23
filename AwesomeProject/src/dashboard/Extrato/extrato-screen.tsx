@@ -186,6 +186,7 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
         return
       }
       const data = await transRes.json()
+      console.log(data)
       setTransInfo(data.trans)
       setNumPagFlat(data.numPags)
       setFlag(true)

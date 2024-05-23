@@ -79,80 +79,80 @@ export default function OnboardingEndScreen({navigation}: OnboardingEndScreenPro
         <TopBar><TopBarBluePart width='50%'/></TopBar>
           <TextTitle>Preencha o <Span>número</Span> e o <Span>complemento</Span>.</TextTitle>
           <DivInput>
-          <BlockInput>
-            <TextInputCad>CEP*</TextInputCad>
-            <InputLoginSenha
-            placeholder='XXXXX-XXX'
-            placeholderTextColor='#aaabab'
-            value={formData.end_cep}
-            onChangeText={(e) => handleFormEdit(e, 'end_cep')}
-            editable={formData.end_cep === ''} 
-            />
-          </BlockInput>
-          <BlockInput>
-            <TextInputCad>Endereço*</TextInputCad>
-            <InputLoginSenha
-            placeholder='Digite seu endereço'
-            placeholderTextColor='#aaabab'
-            value={formData.end_rua}
-            onChangeText={(e) => handleFormEdit(e, 'end_rua')}
-            editable={formData.end_rua === ''} 
-            />
-          </BlockInput>
-          <BlocksOfInput>
-            <BlockInput width='46%'>
-              <TextInputCad>Número*</TextInputCad>
+            <BlockInput>
+              <TextInputCad>CEP*</TextInputCad>
               <InputLoginSenha
-              placeholder='Número residência'
+              placeholder='XXXXX-XXX'
               placeholderTextColor='#aaabab'
-              value={formData.end_num}
-              onChangeText={(e) => handleFormEdit(e, 'end_num')}
-              editable={true} 
+              value={formData.end_cep}
+              onChangeText={(e) => handleFormEdit(e, 'end_cep')}
+              editable={formData.end_cep === ''} 
               />
             </BlockInput>
-            <BlockInput width='46%'>
-              <TextInputCad>Complemento*</TextInputCad>
+            <BlockInput>
+              <TextInputCad>Endereço*</TextInputCad>
               <InputLoginSenha
-              placeholder='Complemento'
+              placeholder='Digite seu endereço'
               placeholderTextColor='#aaabab'
-              value={formData.end_complem}
-              onChangeText={(e) => handleFormEdit(e, 'end_complem')}
-              editable={true} 
+              value={formData.end_rua}
+              onChangeText={(e) => handleFormEdit(e, 'end_rua')}
+              editable={formData.end_rua === ''} 
               />
             </BlockInput>
-          </BlocksOfInput>
-          <BlockInput>
-            <TextInputCad>Bairro*</TextInputCad>
-            <InputLoginSenha
-            placeholder='Seu bairro'
-            placeholderTextColor='#aaabab'
-            value={formData.end_bairro}
-            onChangeText={(e) => handleFormEdit(e, 'end_bairro')}
-            editable={formData.end_bairro === ''} 
-            />
-          </BlockInput>
-          <BlocksOfInput>
-            <BlockInput width='46%'>
-              <TextInputCad>Cidade*</TextInputCad>
+            <BlocksOfInput>
+              <BlockInput width='46%'>
+                <TextInputCad>Número*</TextInputCad>
+                <InputLoginSenha
+                placeholder='Número residência'
+                placeholderTextColor='#aaabab'
+                value={formData.end_num}
+                onChangeText={(e) => handleFormEdit(e, 'end_num')}
+                editable={true} 
+                />
+              </BlockInput>
+              <BlockInput width='46%'>
+                <TextInputCad>Complemento*</TextInputCad>
+                <InputLoginSenha
+                placeholder='Complemento'
+                placeholderTextColor='#aaabab'
+                value={formData.end_complem}
+                onChangeText={(e) => handleFormEdit(e, 'end_complem')}
+                editable={true} 
+                />
+              </BlockInput>
+            </BlocksOfInput>
+            <BlockInput>
+              <TextInputCad>Bairro*</TextInputCad>
               <InputLoginSenha
-              placeholder='Sua cidade'
+              placeholder='Seu bairro'
               placeholderTextColor='#aaabab'
-              value={formData.end_cidade}
-              onChangeText={(e) => handleFormEdit(e, 'end_cidade')}
-              editable={formData.end_cidade === ''} 
+              value={formData.end_bairro}
+              onChangeText={(e) => handleFormEdit(e, 'end_bairro')}
+              editable={formData.end_bairro === ''} 
               />
             </BlockInput>
-            <BlockInput width='46%'>
-              <TextInputCad>UF*</TextInputCad>
-              <InputLoginSenha
-              placeholder='Seu estado'
-              placeholderTextColor='#aaabab'
-              value={formData.end_uf}
-              onChangeText={(e) => handleFormEdit(e, 'end_uf')}
-              editable={formData.end_uf === ''} 
-              />
-            </BlockInput>
-          </BlocksOfInput>
+            <BlocksOfInput>
+              <BlockInput width='46%'>
+                <TextInputCad>Cidade*</TextInputCad>
+                <InputLoginSenha
+                placeholder='Sua cidade'
+                placeholderTextColor='#aaabab'
+                value={formData.end_cidade}
+                onChangeText={(e) => handleFormEdit(e, 'end_cidade')}
+                editable={formData.end_cidade === ''} 
+                />
+              </BlockInput>
+              <BlockInput width='46%'>
+                <TextInputCad>UF*</TextInputCad>
+                <InputLoginSenha
+                placeholder='Seu estado'
+                placeholderTextColor='#aaabab'
+                value={formData.end_uf}
+                onChangeText={(e) => handleFormEdit(e, 'end_uf')}
+                editable={formData.end_uf === ''} 
+                />
+              </BlockInput>
+            </BlocksOfInput>
           </DivInput>
         <DivButtonConfirm>
           <ConfirmButton disabled={!buttonState} style={!buttonState ? {backgroundColor: '#6b79e578'}: {}} onPress={() => navigation.navigate('OnboardingSenhaApp')} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">CONFIRMAR</TextButton></ConfirmButton>

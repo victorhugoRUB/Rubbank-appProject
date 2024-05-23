@@ -42,7 +42,7 @@ export const BottomContent = styled(View)`
   align-items: center;
   width: 100%;
   flex: 1;
-  gap: 24px;
+  gap: 16px;
 `;
 
 export const ListContent = styled(View)`
@@ -57,9 +57,7 @@ export const ListContent = styled(View)`
 export const UniqueListContent = styled(View)`
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
   width: 100%;
-  max-width: 100%;
   gap: 10px;
   align-items: center;
 `;

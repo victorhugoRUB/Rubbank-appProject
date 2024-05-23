@@ -31,9 +31,10 @@ export const DivBottom = styled(View)`
   gap: 24px;
 `;
 
-export const TextTopDash = styled(Text)<{ color?: string }>`
+export const TextTopDash = styled(Text)<{ color?: string, weight?: string }>`
   font-size: 24px;
   color: ${props => props.color || '#fff'};
+    font-weight: ${props => props.weight || 'none'};
   text-align: center;
   flex: 1;
   padding: 0 25px 0 0;

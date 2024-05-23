@@ -77,6 +77,14 @@ export default function TransferenciaCPFScreen({navigation}: TransferenciaCPFScr
         throw new Error('Erro ao buscar saldo')
       }
       setSaldoConta((await saldoRes.json()).contaBanc_saldo)
+      dispatch(setDadosTransField({field: 'usuario_remetente', value: ''}))
+      dispatch(setDadosTransField({field: 'usuario_cpf', value: ''}))
+      dispatch(setDadosTransField({field: 'usuario_destinatario', value: ''}))
+      dispatch(setDadosTransField({field: 'contaBanc_agencia', value: ''}))
+      dispatch(setDadosTransField({field: 'contaBanc_conta', value: ''}))
+      dispatch(setDadosTransField({field: 'trans_descricao', value: ''}))
+      dispatch(setDadosTransField({field: 'trans_valor', value: 0}))
+      dispatch(setDadosTransField({field: 'contaBanc_senhatransacao', value: ''}))
     }catch(err){
       console.log(err)
     }finally{
@@ -145,7 +153,6 @@ export default function TransferenciaCPFScreen({navigation}: TransferenciaCPFScr
       navigation.navigate('TransferenciaValorDesc')
     }catch(err){
       console.log(err)
-      
     }finally{
       setLoading(false)
     }

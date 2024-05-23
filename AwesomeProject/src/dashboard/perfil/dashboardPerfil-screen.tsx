@@ -73,11 +73,11 @@ export default function DashboardPerfilScreen({navigation}: DashboardPerfilScree
               <IconFeather name="chevron-right" size={24} color="#000" />
             </ContentBottom>
             <ContentBottom>
-              <TopContentTextName>Alterar senha transacional</TopContentTextName>
+              <TopContentTextName onPress={() => navigation.navigate('AlterarSenhaTrans')}>Alterar senha transacional</TopContentTextName>
               <IconFeather name="chevron-right" size={24} color="#000" />
             </ContentBottom>
-            <ContentBottom>
-              <TopContentTextName>Alterar endereço</TopContentTextName>
+            <ContentBottom onPress={() => navigation.navigate('ListarEndereco')}>
+              <TopContentTextName >Alterar endereço</TopContentTextName>
               <IconFeather name="chevron-right" size={24} color="#000" />
             </ContentBottom>
           </DivBottomContent>

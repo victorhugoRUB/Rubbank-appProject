@@ -23,6 +23,7 @@ import { LoadingSpinner } from '../../Loading/loadingScreen';
 import { setFiltroField } from '../../redux/filtroSlice';
 import { ConfirmButton, InputLogin, TextButton, TitleInput } from '../../login/login-screen.styles';
 import { setDadosTransField } from '../../redux/dadosTransSlice';
+import { WarningScreen } from '../../AvisoModel/erroModel';
 
 interface TransferenciaValorDescScreenProps {
   navigation: NavigationProp<RootStackParamList, 'TransferenciaValorDesc'>;
@@ -42,7 +43,8 @@ export default function TransferenciaValorDescScreen({navigation}: Transferencia
   const [loading, setLoading] = useState(false);
   const [isEffect, setIsEffect] = useState(true)
   const TransData = useSelector((state: ReduxState)=> state.dadosTrans);
-
+  const [showWarning, setShowWarning] = useState(false)
+  const [alertMessage, setAlertMessage] = useState('')
   const dispatch = useDispatch()
 
   const [formData, setFormData] = useState({
@@ -63,6 +65,7 @@ export default function TransferenciaValorDescScreen({navigation}: Transferencia
       [valor]: event
     })
     console.log(formData)
+    console.log(TransData)
   }
 
   const handleInfo = async () => {
@@ -90,10 +93,11 @@ export default function TransferenciaValorDescScreen({navigation}: Transferencia
   }
 
   const handleForm = async (event: any) => {
+    console.log('entrou valida saldo')
     setLoading(true)
     const token = await AsyncStorage.getItem('token');
     try{
-      const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/transferencia/create/`,{
+      const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/conta/saldo/validar`,{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -102,11 +106,14 @@ export default function TransferenciaValorDescScreen({navigation}: Transferencia
         body: JSON.stringify(formData)
       });
       const r = await res.json()
+      console.log(res.ok)
+      console.log(r)
       if(!res.ok){
-        console.log(r)
+        setAlertMessage(r.message)
+        setShowWarning(true)
         throw new Error('Erro ao buscar dados bancários')
       }
-      
+      navigation.navigate('TransferenciaSenha')
     }catch(err){
       console.log(err)
     }finally{
@@ -119,6 +126,17 @@ export default function TransferenciaValorDescScreen({navigation}: Transferencia
 
   return (
     <ScreenBase>
+      <Modal
+      visible={showWarning}
+      transparent
+      animationType='slide'
+      onRequestClose={()=> setShowWarning(false)}
+      >
+        <WarningScreen
+        onClose={() => setShowWarning(!showWarning)}
+        warnMessage={alertMessage}
+        />
+      </Modal>
     <LoadingSpinner visible={loading}/>
       <Container>
         <DivTop>
@@ -182,14 +200,14 @@ export default function TransferenciaValorDescScreen({navigation}: Transferencia
                   }
                 }
                 value={formData.trans_valor.toString()}
-                onChangeText={(e) => {handleFormEdit(e.replace(/,/g, '.'), 'trans_valor')}}
+                onChangeText={(e) => {handleFormEdit((e.replace(/,/g, '.').replace(/\.(?=.*\..*$)/g, '')), 'trans_valor')}}
                 multiline={true}
                 numberOfLines={4}
                 />
               </DivInputTrans>
             </DivContentInput>            
             <DivInputTrans padding='50px 0'>
-              <ConfirmButton onPress={() => navigation.navigate('TransferenciaSenha')} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">CONTINUAR</TextButton></ConfirmButton>
+              <ConfirmButton onPress={handleForm} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">CONTINUAR</TextButton></ConfirmButton>
             </DivInputTrans>
           </DivBttContent>
         </DivBottomScroll>
