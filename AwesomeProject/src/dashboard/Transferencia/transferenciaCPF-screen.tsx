@@ -63,9 +63,10 @@ export default function TransferenciaCPFScreen({navigation}: TransferenciaCPFScr
 
   const handleInfo = async () => {
     setLoading(true)
+    console.log('GET SALDO CPF')
+
     const token = await AsyncStorage.getItem('token');
     try{ 
-      const token = await AsyncStorage.getItem('token');
       const saldoRes = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/conta/saldo`,{
         method: 'GET',
         headers: {
@@ -85,6 +86,7 @@ export default function TransferenciaCPFScreen({navigation}: TransferenciaCPFScr
       dispatch(setDadosTransField({field: 'trans_descricao', value: ''}))
       dispatch(setDadosTransField({field: 'trans_valor', value: 0}))
       dispatch(setDadosTransField({field: 'contaBanc_senhatransacao', value: ''}))
+      console.log(dadosTransData)
     }catch(err){
       console.log(err)
     }finally{
@@ -96,7 +98,6 @@ export default function TransferenciaCPFScreen({navigation}: TransferenciaCPFScr
     setLoading(true)
     const token = await AsyncStorage.getItem('token');
     try{ 
-      const token = await AsyncStorage.getItem('token');
       const saldoRes = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/conta/saldo`,{
         method: 'GET',
         headers: {
@@ -159,7 +160,8 @@ export default function TransferenciaCPFScreen({navigation}: TransferenciaCPFScr
   }
   
   useEffect(() => {handleInfo()}, [])
-  const numeroFormatado = Number(saldoConta).toFixed(2).replace('.',',')
+  
+  const numeroFormatado = Number(saldoConta).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   return (
     <ScreenBase>

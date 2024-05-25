@@ -101,7 +101,6 @@ export const DivBttContent = styled(View)<{justify?: string, align?: string}>`
     width: 100%;
     padding: 32px 32px 100px 32px;
     gap: 20px;
-    background-color: red;
 `;
 
 export const DivTextBttFiltro = styled(View)`

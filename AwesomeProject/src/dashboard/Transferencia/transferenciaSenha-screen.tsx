@@ -50,6 +50,7 @@ export default function TransferenciaSenhaScreen({navigation}: TransferenciaSenh
   const [mainAlertMessage, setMainAlertMessage] = useState('')
   const [alertMessage, setAlertMessage] = useState('')
   const [sucessModal, setSucessModal] = useState(false)
+  const [showAviso, setShowAviso] = useState(false)
   const TransData = useSelector((state: ReduxState)=> state.dadosTrans);
 
   const dispatch = useDispatch()
@@ -135,11 +136,20 @@ export default function TransferenciaSenhaScreen({navigation}: TransferenciaSenh
       const r = await res.json()
       console.log(res)
       console.log(r)
+      console.log('XXXXXXX',TransData)
       if(!res.ok){
-        console.log(r)
-        setAlertMessage(r)
-        console.log(alertMessage)
-        setShowWarning(true)
+        if(r.error){
+          console.log(r.error[0].mensagem)
+          setAlertMessage(r.error[0].mensagem)
+          console.log(alertMessage)
+          setShowAviso(true)
+        }else{
+          console.log(r)
+          setAlertMessage(r)
+          console.log(alertMessage)
+          setShowWarning(true)
+        }
+
         throw new Error('Erro na senha de transferencia')
       }
       setSucessModal(true)
@@ -217,11 +227,22 @@ export default function TransferenciaSenhaScreen({navigation}: TransferenciaSenh
         message2=''
         />
       </Modal>
+      <Modal
+      visible={showAviso}
+      transparent
+      animationType='slide'
+      onRequestClose={()=> setShowAviso(false)}
+      >
+        <WarningScreen
+        onClose={() => setShowAviso(!showAviso)}
+        warnMessage={alertMessage}
+        />
+      </Modal>
     <LoadingSpinner visible={loading}/>
       <Container>
         <DivTop>
           <DivTopContent>
-            <TouchableOpacity onPress={() => navigation.navigate('TransferenciaCPF')}><IconFeather name="arrow-left" size={26} color="#fff" /></TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate('TransferenciaValorDesc')}><IconFeather name="arrow-left" size={26} color="#fff" /></TouchableOpacity>
             <TextTopDash>Transferência</TextTopDash>
           </DivTopContent>
           <DivTopContent>

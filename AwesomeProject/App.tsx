@@ -63,7 +63,7 @@ function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="AlterarEndereco">
+        <Stack.Navigator initialRouteName="TransferenciaNumConta">
         <Stack.Screen
             name="Prototipo"
             component={PrototipoScreen}

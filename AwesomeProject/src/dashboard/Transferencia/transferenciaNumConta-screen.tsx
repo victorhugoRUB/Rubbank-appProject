@@ -22,6 +22,8 @@ import { TransDetalheScreen } from '../../AvisoModel/transDetalheModal';
 import { LoadingSpinner } from '../../Loading/loadingScreen';
 import { setFiltroField } from '../../redux/filtroSlice';
 import { ConfirmButton, InputLogin, TextButton, TitleInput } from '../../login/login-screen.styles';
+import { setDadosTransField } from '../../redux/dadosTransSlice';
+import { WarningScreen } from '../../AvisoModel/erroModel';
 
 
 interface TransferenciaNumContaScreenProps {
@@ -54,101 +56,30 @@ export default function TransferenciaNumContaScreen({navigation}: TransferenciaN
   const filtroData = useSelector((state: ReduxState)=> state.filtro);
   const [loading, setLoading] = useState(false);
   const [isEffect, setIsEffect] = useState(true)
-
+  const [showWarning, setShowWarning] = useState(false)
+  const [alertMessage, setAlertMessage] = useState('')
+  const dadosTransData = useSelector((state: ReduxState)=> state.dadosTrans);
 
   const dispatch = useDispatch();
 
-  const resetDataPage = () => {
-    dispatch((setFiltroField({field: 'page', value: '1'})))
-  }
+  const[formData, setFormData] = useState({
+    contaBanc_agencia: '',
+    contaBanc_conta: ''
+  })
 
-  const nextPage = async (valor: any) => {
-    const newPage = Number(filtroData.page) + 1;
-    const lastPage = Number(filtroData.page) - 1;
-    if(valor == 'mais'){
-      setLoading(true)
-      dispatch((setFiltroField({field: 'page', value: newPage.toString()})))
-      try{
-        await fetchUserData()
-      }catch(err){
-        console.log(err)
-      }finally{
-        setLoading(false)
-      }
-    };
-    if(valor == 'menos'){
-      setLoading(true)
-      dispatch((setFiltroField({field: 'page', value: lastPage.toString()})))
-      try{
-        await fetchUserData()
-      }catch(err){
-        console.log(err)
-      }finally{
-        setLoading(false)
-      }
-    }
-  }
-
-  // const nextPage = async (valor: any) => {
-  //   console.log(valor)
-  //   if(valor === 'mais'){
-  //     const somar = Number(filtroData.page) + 1;
-  //     dispatch((setFiltroField({field: 'page', value: somar.toString()})))
-  //     await fetchUserData()
-  //   }else{
-  //     const subtrair = Number(filtroData.page) - 1;
-  //     dispatch((setFiltroField({field: 'page', value: subtrair.toString()})))
-  //     await fetchUserData()
-  //   }
-  // }
-  //? COMPARTILHAR COMPROVANTE
-
-  const generatePDF = async () => {
-    const htmlContent = `
-    <html>
-      <body>
-        <h1>Comprovante de transferência</h1>
-        <p>Remetente: ${transDetalheInfo?.usuId_remetente}</p>
-        <p>Destinatário: ${transDetalheInfo?.usuId_destinatario}</p>
-        <p>Valor transferido: R$ ${transDetalheInfo?.trans_valor}</p>
-        <p>Método: ${transDetalheInfo?.trans_metodo}</p>
-        <p>Data da transferência: ${transDetalheInfo?.createdAt}</p>
-      </body>
-    </html>
-    `;
-    return htmlContent;
-  }
-  
-  const MyPDFComponent = () => {
-    const [pdfUri, setPdfUri] = React.useState('');
-
-    const generateAndSharePDF = async () => {
-      try{
-        const htmlContent = await generatePDF();
-        const blob = new Blob([htmlContent], {type: 'text/html', lastModified: Date.now()});
-        const url = URL.createObjectURL(blob);
-        setPdfUri
-      }catch(err){
-        console.log(err)
-      }
-    }
-  }
-
-
-  const onShare = async () => {
-    const result = await Share.share({
-      message: 'Comprovante de transferência\n\nRemetente: '+transDetalheInfo?.usuId_remetente+'\nDestinatário: '+transDetalheInfo?.usuId_destinatario+'\nValor transferido: R$'+transDetalheInfo?.trans_valor+'\nMétodo: '+transDetalheInfo?.trans_metodo+'\nData da transferência: '+transDetalheInfo?.createdAt+'\n\nComprovante gerado pelo aplicativo RubBank',
+  const handleFormEdit = (event: any, valor: any) => {
+    setFormData({
+      ...formData,
+      [valor]: event
     })
+    console.log(formData)
   }
 
-  //? FIM COMPARTILHAR COMPROVANTE
-
-
-  const fetchUserData = async () => {
+  const handleInfo = async () => {
     setLoading(true)
-    console.log('chamou')
+    console.log('GET SALDO NUM CONTA')
+    const token = await AsyncStorage.getItem('token');
     try{ 
-      const token = await AsyncStorage.getItem('token');
       const saldoRes = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/conta/saldo`,{
         method: 'GET',
         headers: {
@@ -160,110 +91,91 @@ export default function TransferenciaNumContaScreen({navigation}: TransferenciaN
         throw new Error('Erro ao buscar saldo')
       }
       setSaldoConta((await saldoRes.json()).contaBanc_saldo)
-
-      const contaRes = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/conta`,{
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}` 
-        }
-      })
-      if(!contaRes.ok){
-        throw new Error('Erro ao buscar conta')
-      }
-      setContaBanc((await contaRes.json()).contaBanc_id)
-      console.log(contaBanc) 
-
-      const transRes = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/transferencia/?${filtroData.ordem != '' ? '&ordem='+filtroData.ordem : ''}${filtroData.dataFinal != '' ? '&dataFinal='+filtroData.dataFinal : ''}${filtroData.dataInicial != '' ? '&dataInicial='+filtroData.dataInicial : ''}${filtroData.dias != '' ? '&dias='+filtroData.dias : ''}${filtroData.page != '' ? '&page='+filtroData.page : ''}`,{
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
-      })
-      console.log(transRes) 
-      if(!transRes.ok){
-        setMessageTrans('Erro ao buscar transferencia')
-        return
-      }
-      const data = await transRes.json()
-      setTransInfo(data.trans)
-      setNumPagFlat(data.numPags)
-      setFlag(true)
-      setLoading(false)
+      dispatch(setDadosTransField({field: 'usuario_remetente', value: ''}))
+      dispatch(setDadosTransField({field: 'usuario_cpf', value: ''}))
+      dispatch(setDadosTransField({field: 'usuario_destinatario', value: ''}))
+      dispatch(setDadosTransField({field: 'contaBanc_agencia', value: ''}))
+      dispatch(setDadosTransField({field: 'contaBanc_conta', value: ''}))
+      dispatch(setDadosTransField({field: 'trans_descricao', value: ''}))
+      dispatch(setDadosTransField({field: 'trans_valor', value: 0}))
+      dispatch(setDadosTransField({field: 'contaBanc_senhatransacao', value: ''}))
+      console.log(dadosTransData)
     }catch(err){
-      setFlag(false)
-      setLoading(false)
       console.log(err)
-      console.log('Erro ao buscar saldo')
-      navigation.navigate('Login') 
+    }finally{
+      setLoading(false)
     }
   }
 
-  const fetchTransDetalhe = async (trans_id: any) => {
+  const handleForm = async (event: any) => {
     setLoading(true)
-    console.log(trans_id)
+    const token = await AsyncStorage.getItem('token');
     try{
-      const token = await AsyncStorage.getItem('token');
-      const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/transferencia/detalhado/${trans_id}`,{
+      const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/usuario/`,{
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application',
           'Authorization': `Bearer ${token}`
         }
       })
-
-      console.log(res)
+      const r = await res.json()
       if(!res.ok){
-        setLoading(false)
-        throw new Error('Erro ao buscar transferencia detalhada')
+        throw new Error('Erro ao buscar usuário')
       }
-      setTransDetalheInfo((await res.json()))
-      setTransDetalhe(!transDetalhe)
-      console.log(transDetalheInfo)
-      setFlag(true)
-      setLoading(false)
+      dispatch(setDadosTransField({field: 'usuario_remetente', value: r.usuario_nome}))
     }catch(err){
-      setFlag(false)
       console.log(err)
-      console.log('Erro ao buscar transferencia detalhada')
-      setMessageTrans('Erro ao buscar transferencia')
+      return
+    }      
+    try{
+      console.log('validar cpf')
+      const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/conta/numConta/`,{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          contaBanc_agencia: Number(formData.contaBanc_agencia),
+          contaBanc_conta: formData.contaBanc_conta
+        })
+      }); 
+      const r = await res.json()
+      console.log(res)
+      console.log(r)
+      if(!res.ok){
+        setAlertMessage(r.message)
+        setShowWarning(true)
+        throw new Error('Erro ao buscar dados do usuário')
+      }
+      dispatch(setDadosTransField({field: 'usuario_cpf', value: r.usuario_cpf}))
+      dispatch(setDadosTransField({field: 'usuario_destinatario', value: r.usuario_nome}))
+      dispatch(setDadosTransField({field: 'contaBanc_agencia', value: r.conta[0].contaBanc_agencia}))
+      dispatch(setDadosTransField({field: 'contaBanc_conta', value: r.conta[0].contaBanc_conta}))
+      navigation.navigate('TransferenciaValorDesc')
+    }catch(err){
+      console.log(err)
+    }finally{
+      setLoading(false)
     }
   }
 
-  const testFunction = async () => {
-    return transInfo
-  }
+  useEffect(() => {handleInfo()}, [])
 
-  useEffect(() => 
-    {if(isEffect){
-      setIsEffect(false)
-    }else{
-      fetchUserData()
-    }}, [transInfo])
-
-
-  const numeroFormatado = Number(saldoConta).toFixed(2).replace('.',',')
+  const numeroFormatado = Number(saldoConta).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   return (
     <ScreenBase>
     <LoadingSpinner visible={loading}/>
-      <Modal
-      transparent={true}
-      visible={transDetalhe}
-      onRequestClose={() => setTransDetalhe(!transDetalhe)}
+    <Modal
+      visible={showWarning}
+      transparent
       animationType='slide'
+      onRequestClose={()=> setShowWarning(false)}
       >
-        <TransDetalheScreen
-        onShare={onShare}
-        onClose={() => setTransDetalhe(false)}
-        rem={transDetalheInfo?.usuId_remetente ?? 0}
-        des={transDetalheInfo?.usuId_destinatario ?? 0}
-        val={transDetalheInfo?.trans_valor ?? 0}
-        desc={transDetalheInfo?.trans_descricao ?? ''}
-        sta={transDetalheInfo?.trans_status ?? ''}
-        met={transDetalheInfo?.trans_metodo ?? ''}
-        dt={transDetalheInfo?.createdAt ? new Date(transDetalheInfo.createdAt).toLocaleDateString('pt-BR') : ''}
+        <WarningScreen
+        onClose={() => setShowWarning(!showWarning)}
+        warnMessage={alertMessage}
         />
       </Modal>
       <Container>
@@ -289,15 +201,25 @@ export default function TransferenciaNumContaScreen({navigation}: TransferenciaN
             <DivContentInput>
               <DivInputTrans>
                 <TitleInput>Agência</TitleInput>
-                <InputLogin type='only-numbers'/>
+                <InputLogin 
+                type='only-numbers'
+                placeholder='Insira o número da agência'
+                value={formData.contaBanc_agencia}
+                onChangeText={(e) => handleFormEdit(e, 'contaBanc_agencia')}
+                />
               </DivInputTrans>
               <DivInputTrans>
                 <TitleInput>Conta</TitleInput>
-                <InputLogin type='only-numbers'/>
+                <InputLogin 
+                type='only-numbers'
+                placeholder='Insira o número da conta'
+                value={formData.contaBanc_conta}
+                onChangeText={(e) => handleFormEdit(e, 'contaBanc_conta')}
+                />
               </DivInputTrans>
             </DivContentInput>
             <DivInputTrans>
-              <ConfirmButton accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">CONTINUAR</TextButton></ConfirmButton>
+              <ConfirmButton onPress={handleForm} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">CONTINUAR</TextButton></ConfirmButton>
             </DivInputTrans>
           </DivBttContent>
         </DivBottom>

@@ -184,7 +184,7 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
   useEffect(() => {resetDataPage()}, [])
   useEffect(() => {fetchUserData()}, [])
 
-  const numeroFormatado = Number(saldoConta).toFixed(2).replace('.',',')
+  const numeroFormatado = Number(saldoConta).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   return (
     <ScreenBase>
