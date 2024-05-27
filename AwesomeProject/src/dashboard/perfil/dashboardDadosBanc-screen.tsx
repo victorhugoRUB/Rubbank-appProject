@@ -2,7 +2,7 @@ import type {NavigationProp} from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { RootStackParamList } from '../../../App';
 import { TouchableOpacity } from 'react-native';
-import { BancContItem, BancContItemSpcfc, BancContent, ConfirmButton, Container, ContentBottom, DivBottom, DivBottomContent, DivButton, DivTop, DivTopContent, TextCopy, TextTopDash, TitleTextData, TopContentTextCPF, TopContentTextName, UserPicture } from './dashboard-screen.styles';
+import { BancContItem, BancContItemSpcfc, BancContent, ConfirmButton, Container, ContentBottom, DivBottom, DivBottomContent, DivButton, DivTop, DivTopContent, MainTextTopDash, NewDivBottom, TextCopy, TextTopDash, TitleTextData, TopContentTextCPF, TopContentTextName, UserPicture } from './dashboard-screen.styles';
 const logoWhite = require('../../assets/logos/rubbankWhite.png');
 import IconFeather from 'react-native-vector-icons/Feather';
 import IconAntDesign from 'react-native-vector-icons/AntDesign';
@@ -12,6 +12,7 @@ import { TextButton } from '../../login/login-screen.styles';
 import { Span } from '../../onboarding/onboarding-screen.styles';
 import { LoadingSpinner } from '../../Loading/loadingScreen';
 import Clipboard from '@react-native-clipboard/clipboard'
+import { DivButtonConfirm } from '../alterar/alterar-screen.styles';
 
 interface DashboardDadosBancScreenProps {
   navigation: NavigationProp<RootStackParamList, 'DashboardDadosBanc'>;
@@ -69,11 +70,12 @@ export default function DashboardDadosBancScreen({navigation}: DashboardDadosBan
       <Container >
         <DivTop>
           <TouchableOpacity onPress={() => navigation.navigate('DashboardPerfil')}><IconFeather name="arrow-left" size={24} color="#fff" /></TouchableOpacity>
-          <TextTopDash>Dados Bancários</TextTopDash>
+          <MainTextTopDash>Dados Bancários</MainTextTopDash>
+          <TouchableOpacity><IconFeather name="help-circle" size={24} color="#fff" /></TouchableOpacity>
         </DivTop>
-        <DivBottom>
-          <TopContentTextName align='flex-start'>Use os dados abaixo para fazer um <Span>TED para a Conta RubBank.</Span></TopContentTextName>
+        <NewDivBottom>
           <BancContent>
+          <TopContentTextName align='flex-start'>Use os dados abaixo para fazer um <Span>TED para a Conta RubBank.</Span></TopContentTextName>
             <BancContItem onPress={() => Clipboard.setString('333')}>
               <BancContItemSpcfc>
                 <TitleTextData>Agência</TitleTextData>
@@ -145,10 +147,10 @@ export default function DashboardDadosBancScreen({navigation}: DashboardDadosBan
               </BancContItemSpcfc>
             </BancContItem>
           </BancContent>
-          <DivButton>
+          <DivButtonConfirm>
             <ConfirmButton onPress={() => Clipboard.setString('Agência: 333 \nConta: '+ contaInfo.conta[0].contaBanc_conta + '\nCPF:' + contaInfo.usuario_cpf + '\nFavorecido: ' + contaInfo.usuario_nome + '\nInstituição: Rubbank\nTipo: ' + contaInfo.conta[0].contaBanc_tipo + '\nMétodo: TED ou DOC')}><TextButton cor='#000'>COMPARTILHAR DADOS</TextButton></ConfirmButton>
-          </DivButton>
-        </DivBottom>
+          </DivButtonConfirm>
+        </NewDivBottom>
       </Container>
     </ScreenBase>
   );

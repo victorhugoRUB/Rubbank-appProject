@@ -10,7 +10,7 @@ import { Modal, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../redux/store';
 import { setsenhaAppField } from '../../redux/senhaAppSlice';
-import { DivBottom, TextTopDash, DivTop } from '../perfil/dashboard-screen.styles';
+import { DivBottom, TextTopDash, DivTop, MainTextTopDash } from '../perfil/dashboard-screen.styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { WarningScreen } from '../../AvisoModel/erroModel';
 import { ModalSucessScreen } from '../../AvisoModel/sucessModal';
@@ -122,13 +122,14 @@ export default function AlterarSenhaAppScreen({navigation}: AlterarSenhaAppScree
       <Modal
       visible={sucessModal}
       animationType='slide'
-      onRequestClose={() => setSucessModal(false)}>
+      onRequestClose={() => navigation.navigate('DashboardPerfil')}>
         <ModalSucessScreen navigation={() => navigation.navigate('DashboardPerfil')} message='Alteração realizada' message2='Você redefiniu sua senha com sucesso!'/>
       </Modal>
       <Container>
         <DivTop>
-          <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}><IconFeather name="arrow-left" size={24} color="#fff" /></TouchableOpacity>
-          <TextTopDash>Alterar senha do App</TextTopDash>
+          <TouchableOpacity onPress={() => navigation.navigate('DashboardPerfil')}><IconFeather name="arrow-left" size={24} color="#fff" /></TouchableOpacity>
+          <MainTextTopDash>Alterar senha do App</MainTextTopDash>
+          <TouchableOpacity><IconFeather name="help-circle" size={24} color="#fff" /></TouchableOpacity>
         </DivTop>
         <DivBottom>
         <TextTitle>Digite qual será sua senha para entrar no aplicativo</TextTitle>

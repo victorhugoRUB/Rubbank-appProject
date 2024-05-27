@@ -12,7 +12,7 @@ import IconEntypo from 'react-native-vector-icons/Entypo';
 import IconOcticons from 'react-native-vector-icons/Octicons';
 import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BlockTrans, BlockTransDay, ButtonNext, Container, CountInMiddle, DivBottom, DivBottomScroll, DivBttContent, DivBttTop, DivBttTopButton, DivButtonNext, DivContentInput, DivInputTrans, DivSaldo, DivSenhaTrans, DivTextTrans, DivTextValor, DivTop, DivTopContent, InputCadastro, InputToWrite, InputToWriteMask, LogoTrans, PutOnTop, TextButtonDivBtt, TextSaldo, TextTopDash, TextTopDashExtrato } from './transferencia-screen-styles';
+import { BlockTrans, BlockTransDay, ButtonNext, Container, CountInMiddle, DivBottomScroll, DivBttContent, DivBttTop, DivBttTopButton, DivButtonNext, DivContentInput, DivInputTrans, DivSaldo, DivSenhaTrans, DivTextTrans, DivTextValor, DivTop, DivTopContent, InputCadastro, InputToWrite, InputToWriteMask, LogoTrans, PutOnTop, TextButtonDivBtt, TextSaldo, TextTopDash, TextTopDashExtrato } from './transferencia-screen-styles';
 import { set, size, transform } from 'lodash';
 import Icon from '@react-native-vector-icons/material-icons';
 import { InputTransSenha, Span } from '../alterar/alterar-screen.styles';
@@ -28,6 +28,8 @@ import { WarningScreen } from '../../AvisoModel/erroModel';
 import { ModalSucessScreen } from '../../AvisoModel/sucessModal';
 import { ModalTransSucessScreen } from '../../AvisoModel/sucessTransModal';
 import { WarningSenhaTransScreen } from '../../AvisoModel/erroSenhaTransModal';
+import { DivBottom, MainTextTopDash, NewDivBottom } from '../perfil/dashboard-screen.styles';
+import { displayNotification } from '../../notificacao/notificacao';
 
 interface TransferenciaSenhaScreenProps {
   navigation: NavigationProp<RootStackParamList, 'TransferenciaSenha'>;
@@ -149,10 +151,10 @@ export default function TransferenciaSenhaScreen({navigation}: TransferenciaSenh
           console.log(alertMessage)
           setShowWarning(true)
         }
-
         throw new Error('Erro na senha de transferencia')
       }
       setSucessModal(true)
+      displayNotification(1, formData.trans_valor)
     }catch(err){
       console.log(err)
     }
@@ -216,13 +218,14 @@ export default function TransferenciaSenhaScreen({navigation}: TransferenciaSenh
         />
       </Modal>
       <Modal
-      visible={sucessModal}
+      visible
       transparent
       animationType='slide'
       onRequestClose={()=> navigation.navigate('Dashboard')}
       >
         <ModalTransSucessScreen
         navigation={() => navigation.navigate('Extrato')}
+        navigation2={() => navigation.navigate('Dashboard')}
         message='Sua transferência foi enviada com sucesso!'
         message2=''
         />
@@ -243,7 +246,8 @@ export default function TransferenciaSenhaScreen({navigation}: TransferenciaSenh
         <DivTop>
           <DivTopContent>
             <TouchableOpacity onPress={() => navigation.navigate('TransferenciaValorDesc')}><IconFeather name="arrow-left" size={26} color="#fff" /></TouchableOpacity>
-            <TextTopDash>Transferência</TextTopDash>
+            <MainTextTopDash>Transferência</MainTextTopDash>
+            <TouchableOpacity><IconFeather name="help-circle" size={26} color="#fff" /></TouchableOpacity>
           </DivTopContent>
           <DivTopContent>
             <TextSaldo fontSize='16px' textAlign='start' >Saldo disponível</TextSaldo>
@@ -253,7 +257,7 @@ export default function TransferenciaSenhaScreen({navigation}: TransferenciaSenh
             </DivSaldo>
           </DivTopContent> 
         </DivTop>
-        <DivBottom>
+        <NewDivBottom>
           <DivBttContent>
             <DivContentInput>
               <DivInputTrans padding='50px 0'>
@@ -273,11 +277,11 @@ export default function TransferenciaSenhaScreen({navigation}: TransferenciaSenh
                 </DivSenhaTrans>
               </DivInputTrans>
             </DivContentInput>            
-            <DivInputTrans padding='20px 0'>
-              <ConfirmButton onPress={handleForm} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">CONTINUAR</TextButton></ConfirmButton>
-            </DivInputTrans>
           </DivBttContent>
-        </DivBottom>
+          <DivInputTrans padding='20px 0'>
+            <ConfirmButton onPress={handleForm} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">CONTINUAR</TextButton></ConfirmButton>
+          </DivInputTrans>
+        </NewDivBottom>
       </Container>
     </ScreenBase>
   );

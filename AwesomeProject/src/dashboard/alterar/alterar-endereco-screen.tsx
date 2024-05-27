@@ -10,7 +10,7 @@ import { Modal, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../redux/store';
 import { setsenhaAppField } from '../../redux/senhaAppSlice';
-import { DivBottom, TextTopDash, DivTop } from '../perfil/dashboard-screen.styles';
+import { DivBottom, TextTopDash, DivTop, MainTextTopDash, NewDivBottom } from '../perfil/dashboard-screen.styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { WarningScreen } from '../../AvisoModel/erroModel';
 import { ModalSucessScreen } from '../../AvisoModel/sucessModal';
@@ -201,9 +201,10 @@ export default function AlterarEnderecoScreen({navigation}: AlterarEnderecoScree
       <Container>
         <DivTop>
           <TouchableOpacity onPress={() => navigation.navigate('ListarEndereco')}><IconFeather name="arrow-left" size={24} color="#fff" /></TouchableOpacity>
-          <TextTopDash>Alterar endereço</TextTopDash>
+          <MainTextTopDash>Alterar endereço</MainTextTopDash>
+          <TouchableOpacity><IconFeather name="help-circle" size={24} color="#fff" /></TouchableOpacity>
         </DivTop>
-        <DivBottom>
+        <NewDivBottom>
         <DivInput>
             <BlockInput>
               <TextInputCad>CEP*</TextInputCad>
@@ -286,7 +287,7 @@ export default function AlterarEnderecoScreen({navigation}: AlterarEnderecoScree
           <DivButtonConfirm>
             <ConfirmButton style={!buttonState || (borderRedATUAL === '#FF0000' || borderRedNOVA === '#FF0000' || borderRedCONFIRM === '#FF0000') ? {backgroundColor: '#6b79e578' }: {}} disabled={!buttonState || (borderRedATUAL === '#FF0000' || borderRedNOVA === '#FF0000' || borderRedCONFIRM === '#FF0000')} onPress={handleForm} cor='#6B7AE5'><TextButton cor="#ffffff">CONFIRMAR</TextButton></ConfirmButton>
           </DivButtonConfirm>
-        </DivBottom>
+        </NewDivBottom>
       </Container>
     </ScreenBase>
   );

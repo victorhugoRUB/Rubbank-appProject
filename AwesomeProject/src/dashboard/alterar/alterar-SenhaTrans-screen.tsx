@@ -10,7 +10,7 @@ import { Modal, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../redux/store';
 import { setsenhaAppField } from '../../redux/senhaAppSlice';
-import { DivBottom, TextTopDash, DivTop } from '../perfil/dashboard-screen.styles';
+import { DivBottom, TextTopDash, DivTop, MainTextTopDash } from '../perfil/dashboard-screen.styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { WarningScreen } from '../../AvisoModel/erroModel';
 import { useRef } from 'react';
@@ -122,7 +122,7 @@ const handleChangeTextSenhaAtual = (text: string, index: number) => {
   }
 }
 const handleChangeTextNovaSenha = (text: string, index: number) => {
-  if (text !== '' && index < novaSenha.length) {
+  if (text !== '' && text !== ' ' && index < novaSenha.length) {
     const newNovaSenha = [...novaSenha];
     newNovaSenha[index] = text;
     setNovaSenha(newNovaSenha);
@@ -185,13 +185,14 @@ const handleChangeTextConfirmSenha = (text: string, index: number) => {
       <Modal
       visible={sucessModal}
       animationType='slide'
-      onRequestClose={() => setSucessModal(false)}>
+      onRequestClose={() => navigation.navigate('DashboardPerfil')}>
         <ModalSucessScreen navigation={() => navigation.navigate('DashboardPerfil')} message='Alteração realizada' message2='Você redefiniu sua senha com sucesso!'/>
       </Modal>
       <Container>
         <DivTop>
-          <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}><IconFeather name="arrow-left" size={24} color="#fff" /></TouchableOpacity>
-          <TextTopDash>Alterar senha transacional</TextTopDash>
+          <TouchableOpacity onPress={() => navigation.navigate('DashboardPerfil')}><IconFeather name="arrow-left" size={24} color="#fff" /></TouchableOpacity>
+          <MainTextTopDash>Alterar senha transacional</MainTextTopDash>
+          <TouchableOpacity><IconFeather name="help-circle" size={24} color="#fff" /></TouchableOpacity>
         </DivTop>
         <DivBottom>
         <TextTitle>Digite qual será sua senha para realizar transações</TextTitle>
@@ -207,14 +208,15 @@ const handleChangeTextConfirmSenha = (text: string, index: number) => {
                     ref={(ref) => (inputSenhaAtual.current[index] = ref)}
                     maxLength={1}
                     keyboardType='numeric'
+                    value={value}
                     secureTextEntry
-                    onChangeText={(text) => handleChangeTextSenhaAtual(text, index)}
+                    onChangeText={(text) => {handleChangeTextSenhaAtual(text.replace(/[^0-9/s]/g, ''), index)}}
                     />
                   ))}
                 </DivSenhaTrans>
             </BlockInput>
             <BlockInput>
-              <TextInputCad>Digite sua <Span>senha atual</Span>:</TextInputCad>
+              <TextInputCad>Digite sua <Span>senha nova</Span>:</TextInputCad>
               <DivSenhaTrans>
                   {novaSenha.map((value, index) => (
                     <InputCadastro
@@ -223,14 +225,15 @@ const handleChangeTextConfirmSenha = (text: string, index: number) => {
                     ref={(ref) => (inputNovaSenha.current[index] = ref)}
                     maxLength={1}
                     keyboardType='numeric'
+                    value={value}
                     secureTextEntry
-                    onChangeText={(text) => handleChangeTextNovaSenha(text, index)}
+                    onChangeText={(text) => handleChangeTextNovaSenha(text.replace(/[^0-9/s]/g, ''), index)}
                     />
                   ))}
                 </DivSenhaTrans>
             </BlockInput>
             <BlockInput>
-              <TextInputCad>Digite sua <Span>senha atual</Span>:</TextInputCad>
+              <TextInputCad>Confirme sua <Span>nova senha</Span>:</TextInputCad>
               <DivSenhaTrans>
                   {confirmSenha.map((value, index) => (
                     <InputCadastro
@@ -239,8 +242,9 @@ const handleChangeTextConfirmSenha = (text: string, index: number) => {
                     ref={(ref) => (inputConfirmSenha.current[index] = ref)}
                     maxLength={1}
                     keyboardType='numeric'
+                    value={value}
                     secureTextEntry
-                    onChangeText={(text) => handleChangeTextConfirmSenha(text, index)}
+                    onChangeText={(text) => handleChangeTextConfirmSenha(text.replace(/[^0-9/s]/g, ''), index)}
                     />
                   ))}
                 </DivSenhaTrans>

@@ -11,7 +11,8 @@ import IconOcticons from 'react-native-vector-icons/Octicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector } from 'react-redux';
 import { ReduxState } from '../redux/store';
-
+import notifee, { AndroidImportance } from '@notifee/react-native';
+import { displayNotification } from '../notificacao/notificacao';
 
 interface DashboardScreenProps {
   navigation: NavigationProp<RootStackParamList, 'Dashboard'>;
@@ -81,6 +82,10 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
           <BlockOptionsBottom onPress={() => navigation.navigate('DashboardPerfil')}>
             <IconOcticons name="person" size={24} color="#000" />
             <TextBlockBottom>Perfil</TextBlockBottom>
+          </BlockOptionsBottom>
+          <BlockOptionsBottom onPress={() => displayNotification(1)}>
+            <IconOcticons name="person" size={24} color="#000" />
+            <TextBlockBottom>Notificação</TextBlockBottom>
           </BlockOptionsBottom>
         </DivBottom>
       </Container>

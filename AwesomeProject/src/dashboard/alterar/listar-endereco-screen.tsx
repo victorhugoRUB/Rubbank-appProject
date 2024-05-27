@@ -10,7 +10,7 @@ import { FlatList, Modal, TouchableOpacity, TouchableWithoutFeedback } from 'rea
 import { useDispatch, useSelector } from 'react-redux';
 import { ReduxState } from '../../redux/store';
 import { setsenhaAppField } from '../../redux/senhaAppSlice';
-import { DivBottom, TextTopDash, DivTop, DivBottomContent } from '../perfil/dashboard-screen.styles';
+import { DivBottom, TextTopDash, DivTop, DivBottomContent, MainTextTopDash } from '../perfil/dashboard-screen.styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { WarningScreen } from '../../AvisoModel/erroModel';
 import { ModalSucessScreen } from '../../AvisoModel/sucessModal';
@@ -42,9 +42,7 @@ export default function ListarEnderecoScreen({navigation}: ListarEnderecoScreenP
   const endData = useSelector((state: ReduxState) => state.end);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    fetchEndData()
-  }, []);
+  useEffect(() => {fetchEndData()}, []);
   const fetchEndData = async () => {
     console.log('entrou')
     setLoading(true)
@@ -94,7 +92,8 @@ export default function ListarEnderecoScreen({navigation}: ListarEnderecoScreenP
       <Container>
         <DivTop>
           <TouchableOpacity onPress={() => navigation.navigate('DashboardPerfil')}><IconFeather name="arrow-left" size={24} color="#fff" /></TouchableOpacity>
-          <TextTopDash>Alterar endereço</TextTopDash>
+          <MainTextTopDash>Alterar endereço</MainTextTopDash>
+          <TouchableOpacity><IconFeather name="help-circle" size={24} color="#fff" /></TouchableOpacity>
         </DivTop>
         <DivBottom>
           <TextTopDash weight='600' color='#000'>Selecione o endereço que deseja alterar</TextTopDash>
@@ -113,7 +112,7 @@ export default function ListarEnderecoScreen({navigation}: ListarEnderecoScreenP
                 keyExtractor={(item, index) => index.toString()}
                 />
             </>  
-          : <><TextButtonDivBtt fontSize='18px' color='#383838'>{messageEnd === '' ? "Algo deu errado... Por quê você não tem endereço cadastrado?" : messageEnd}</TextButtonDivBtt></>}
+          : <><TextButtonDivBtt fontSize='18px' color='#383838'>{messageEnd === '' ? "Endereço não encontrado..." : messageEnd}</TextButtonDivBtt></>}
           </DivBttContent>
         </DivBottom>
       </Container>

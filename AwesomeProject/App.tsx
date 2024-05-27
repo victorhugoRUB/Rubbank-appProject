@@ -21,7 +21,6 @@ import FiltroScreen from './src/dashboard/Extrato/filtro-screen';
 import PrototipoScreen from './src/dashboard/Extrato/prototipoextrato';
 import ExtratoEntradaScreen from './src/dashboard/Extrato/extrato-entrada-screen';
 import ExtratoSaidaScreen from './src/dashboard/Extrato/extrato-saida-screen';
-import TransferenciaScreen from './src/dashboard/Transferencia/transferenciaCPF-screen';
 import TransferenciaCPFScreen from './src/dashboard/Transferencia/transferenciaCPF-screen';
 import TransferenciaNumContaScreen from './src/dashboard/Transferencia/transferenciaNumConta-screen';
 import TransferenciaValorDescScreen from './src/dashboard/Transferencia/transferenciaValorDesc-screen';
@@ -63,7 +62,7 @@ function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="TransferenciaNumConta">
+        <Stack.Navigator initialRouteName="Dashboard">
         <Stack.Screen
             name="Prototipo"
             component={PrototipoScreen}

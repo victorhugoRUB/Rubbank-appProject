@@ -2,7 +2,7 @@ import type {NavigationProp} from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { RootStackParamList } from '../../../App';
 import { TouchableOpacity } from 'react-native';
-import { ConfirmButton, Container, ContentBottom, DivBottom, DivBottomContent, DivTop, DivTopContent, TextTopDash, TopContentTextCPF, TopContentTextName, UserPicture } from './dashboard-screen.styles';
+import { ConfirmButton, Container, ContentBottom, DivBottom, DivBottomContent, DivTop, DivTopContent, MainTextTopDash, TextTopDash, TopContentTextCPF, TopContentTextName, UserPicture } from './dashboard-screen.styles';
 const logoWhite = require('../../assets/logos/rubbankWhite.png');
 import IconFeather from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -58,7 +58,8 @@ export default function DashboardPerfilScreen({navigation}: DashboardPerfilScree
       <Container >
         <DivTop>
           <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}><IconFeather name="arrow-left" size={24} color="#fff" /></TouchableOpacity>
-          <TextTopDash>Perfil</TextTopDash>
+          <MainTextTopDash>Perfil</MainTextTopDash>
+          <TouchableOpacity><IconFeather name="help-circle" size={24} color="#fff" /></TouchableOpacity>
         </DivTop>
         <DivBottom>
           <DivTopContent>

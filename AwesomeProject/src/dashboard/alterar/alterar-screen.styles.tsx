@@ -92,7 +92,6 @@ export const InputCadastro = styled(TextInputMask)`
 export const DivButtonConfirm = styled(View)`
   display: flex;
   width: 100%;
-  height: 30%;
   justify-content: flex-end;
   align-items: center;
 `;

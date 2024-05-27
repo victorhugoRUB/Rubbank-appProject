@@ -5,7 +5,7 @@ import { ConfirmButton, TextButton } from '../login/login-screen.styles';
 import IconFeather from 'react-native-vector-icons/Feather';
 
 
-export const ModalTransSucessScreen = ({navigation, message, message2}: {navigation: any; message: string, message2: string}) => {
+export const ModalTransSucessScreen = ({navigation, navigation2, message, message2}: {navigation: any; navigation2: any; message: string, message2: string}) => {
     return (
         <Container>
             <MiddleContent>
@@ -15,6 +15,7 @@ export const ModalTransSucessScreen = ({navigation, message, message2}: {navigat
             </MiddleContent>
         <DivButtonConfirm>
           <ConfirmButton onPress={navigation} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">ENVIAR COMPROVANTE</TextButton></ConfirmButton>
+          <ConfirmButton onPress={navigation2} accessibilityLabel="Confirmar login" border='2px solid #6B7AE5' cor='#fff'><TextButton cor="#6B7AE5">VOLTAR À TELA PRINCIPAL</TextButton></ConfirmButton>
         </DivButtonConfirm>
         </Container>
     );

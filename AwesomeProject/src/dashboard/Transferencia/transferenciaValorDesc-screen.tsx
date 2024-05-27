@@ -24,6 +24,7 @@ import { setFiltroField } from '../../redux/filtroSlice';
 import { ConfirmButton, InputLogin, TextButton, TitleInput } from '../../login/login-screen.styles';
 import { setDadosTransField } from '../../redux/dadosTransSlice';
 import { WarningScreen } from '../../AvisoModel/erroModel';
+import { MainTextTopDash } from '../perfil/dashboard-screen.styles';
 
 interface TransferenciaValorDescScreenProps {
   navigation: NavigationProp<RootStackParamList, 'TransferenciaValorDesc'>;
@@ -143,7 +144,8 @@ export default function TransferenciaValorDescScreen({navigation}: Transferencia
         <DivTop>
           <DivTopContent>
             <TouchableOpacity onPress={() => navigation.navigate('TransferenciaCPF')}><IconFeather name="arrow-left" size={26} color="#fff" /></TouchableOpacity>
-            <TextTopDash>Transferência</TextTopDash>
+            <MainTextTopDash>Transferência</MainTextTopDash>
+            <TouchableOpacity><IconFeather name="help-circle" size={26} color="#fff" /></TouchableOpacity>
           </DivTopContent>
           <DivTopContent>
             <TextSaldo fontSize='16px' textAlign='start' >Saldo disponível</TextSaldo>

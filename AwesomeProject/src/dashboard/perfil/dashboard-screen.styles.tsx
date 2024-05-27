@@ -9,16 +9,16 @@ export const Container = styled(View)`
 `;
 
 export const DivTop = styled(View)`
-  flex: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
   padding: 32px;
+  width: 100%;
 `;
 
 export const DivBottom = styled(View)`
-  flex: 22;
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -31,13 +31,34 @@ export const DivBottom = styled(View)`
   gap: 24px;
 `;
 
+export const NewDivBottom = styled(View)`
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  padding: 32px;
+  border-radius: 32px 32px 0 0;
+  background-color: #ffffff;
+  flex-wrap: wrap;
+  gap: 24px;
+`;
+
 export const TextTopDash = styled(Text)<{ color?: string, weight?: string }>`
   font-size: 24px;
   color: ${props => props.color || '#fff'};
-    font-weight: ${props => props.weight || 'none'};
+  font-weight: ${props => props.weight || 'none'};
   text-align: center;
   flex: 1;
   padding: 0 25px 0 0;
+`;
+
+export const MainTextTopDash = styled(Text)<{ color?: string, weight?: string }>`
+  font-size: 24px;
+  color: ${props => props.color || '#fff'};
+  font-weight: ${props => props.weight || 'none'};
+  text-align: center;
 `;
 
 export const DivTopContent = styled(View)`

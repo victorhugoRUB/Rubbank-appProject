@@ -13,9 +13,16 @@ export const Container = styled(View)`
 `;
 
 export const DivTop = styled(View)<{ flex?: number }>`
-    flex: ${props => props.flex || 1};
+    flex: 0.15;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    padding: 32px;
+`;
+
+export const NewDivTop = styled(View)<{ flex?: number }>`
+    display: flex;
     align-items: center;
     flex-direction: column;
     padding: 32px;
@@ -41,7 +48,6 @@ export const DivSaldo = styled(View)`
 export const TextSaldo = styled(Text)<{fontSize: string, textAlign: string}>`
   color: #fff;
   font-size: ${props => props.fontSize};
-  flex: 1;
   text-align: ${props => props.textAlign};
 `;
 
@@ -58,7 +64,7 @@ export const DivBottom = styled(View)`
 `;
 
 export const DivBottomScroll = styled(ScrollView)`
-    flex: 8;
+    flex: 1;
     display: flex;
     flex-direction: column;
     border-radius: 32px 32px 0 0;
@@ -68,7 +74,6 @@ export const DivBottomScroll = styled(ScrollView)`
 `;
 
 export const DivBttTop = styled(View)`
-    height: 10%;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -94,7 +99,6 @@ export const DivBttTopButton = styled(TouchableOpacity)<{ width?: string }>`
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
     border-bottom-width: ${props => props.width || '0'};
     border-bottom-color: #6B7AE5;
 `;
@@ -106,12 +110,10 @@ export const TextButtonDivBtt = styled(Text)<{fontSize?: any, color?: string}>`
 
 export const DivBttContent = styled(View)`
     display: flex;
-    justify-content: space-between;
     align-items: flex-start;
     flex-direction: column;
     width: 100%;
     gap: 20px;
-    flex: 1;
 `;
 
 export const DivTextBttFiltro = styled(View)`
@@ -314,7 +316,6 @@ export const DivContentInput = styled(View)`
     display: flex;
     width: 100%;
     gap: 20px;
-    padding: 20px 0;
 `;
 
 export const InputToWrite = styled(TextInput)<{ width?: string}>`

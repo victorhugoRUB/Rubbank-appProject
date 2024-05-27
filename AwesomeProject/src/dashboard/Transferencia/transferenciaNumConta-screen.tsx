@@ -24,7 +24,7 @@ import { setFiltroField } from '../../redux/filtroSlice';
 import { ConfirmButton, InputLogin, TextButton, TitleInput } from '../../login/login-screen.styles';
 import { setDadosTransField } from '../../redux/dadosTransSlice';
 import { WarningScreen } from '../../AvisoModel/erroModel';
-
+import { MainTextTopDash, NewDivBottom } from '../perfil/dashboard-screen.styles';
 
 interface TransferenciaNumContaScreenProps {
   navigation: NavigationProp<RootStackParamList, 'TransferenciaNumConta'>;
@@ -42,7 +42,7 @@ interface TransInfo {
 }
 
 export default function TransferenciaNumContaScreen({navigation}: TransferenciaNumContaScreenProps) {
-
+  console.log('AAAAAAAAAAAAAAAAAAA')
   const [showBalance, setShowBalance] = useState(false);
   const [messageTrans , setMessageTrans] = useState('');
   const [saldoConta, setSaldoConta] = useState('');
@@ -160,7 +160,7 @@ export default function TransferenciaNumContaScreen({navigation}: TransferenciaN
     }
   }
 
-  useEffect(() => {handleInfo()}, [])
+  useEffect(() => {console.log('entrou'), handleInfo()}, [])
 
   const numeroFormatado = Number(saldoConta).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
@@ -182,7 +182,8 @@ export default function TransferenciaNumContaScreen({navigation}: TransferenciaN
         <DivTop>
           <DivTopContent>
             <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}><IconFeather name="arrow-left" size={26} color="#fff" /></TouchableOpacity>
-            <TextTopDash>Transferência</TextTopDash>
+            <MainTextTopDash>Transferência</MainTextTopDash>
+            <TouchableOpacity><IconFeather name="help-circle" size={26} color="#fff" /></TouchableOpacity>
           </DivTopContent>
           <DivTopContent>
             <TextSaldo fontSize='16px' textAlign='start' >Saldo disponível</TextSaldo>
@@ -192,12 +193,12 @@ export default function TransferenciaNumContaScreen({navigation}: TransferenciaN
             </DivSaldo>
           </DivTopContent> 
         </DivTop>
-        <DivBottom>
-          <DivBttTop>
-            <DivBttTopButton onPress={() => navigation.navigate('TransferenciaCPF')}><TextButtonDivBtt>CPF</TextButtonDivBtt></DivBttTopButton>
-            <DivBttTopButton width='3px'><TextButtonDivBtt>Número da conta</TextButtonDivBtt></DivBttTopButton>
-          </DivBttTop>
+        <NewDivBottom>
           <DivBttContent>
+            <DivBttTop>
+              <DivBttTopButton onPress={() => navigation.navigate('TransferenciaCPF')}><TextButtonDivBtt>CPF</TextButtonDivBtt></DivBttTopButton>
+              <DivBttTopButton width='3px'><TextButtonDivBtt>Número da conta</TextButtonDivBtt></DivBttTopButton>
+            </DivBttTop>
             <DivContentInput>
               <DivInputTrans>
                 <TitleInput>Agência</TitleInput>
@@ -218,11 +219,11 @@ export default function TransferenciaNumContaScreen({navigation}: TransferenciaN
                 />
               </DivInputTrans>
             </DivContentInput>
-            <DivInputTrans>
-              <ConfirmButton onPress={handleForm} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">CONTINUAR</TextButton></ConfirmButton>
-            </DivInputTrans>
           </DivBttContent>
-        </DivBottom>
+          <DivInputTrans>
+            <ConfirmButton onPress={handleForm} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">CONTINUAR</TextButton></ConfirmButton>
+          </DivInputTrans>
+        </NewDivBottom>
       </Container>
     </ScreenBase>
   );

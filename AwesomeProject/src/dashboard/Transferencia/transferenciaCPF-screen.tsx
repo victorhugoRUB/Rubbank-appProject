@@ -12,7 +12,7 @@ import IconEntypo from 'react-native-vector-icons/Entypo';
 import IconOcticons from 'react-native-vector-icons/Octicons';
 import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BlockTrans, BlockTransDay, ButtonNext, Container, CountInMiddle, DivBottom, DivBttContent, DivBttTop, DivBttTopButton, DivButtonNext, DivContentInput, DivInputTrans, DivSaldo, DivTextTrans, DivTextValor, DivTop, DivTopContent, LogoTrans, PutOnTop, TextButtonDivBtt, TextSaldo, TextTopDash, TextTopDashExtrato } from './transferencia-screen-styles';
+import { BlockTrans, BlockTransDay, ButtonNext, Container, CountInMiddle, DivBottom, DivBttContent, DivBttTop, DivBttTopButton, DivButtonNext, DivContentInput, DivInputTrans, DivSaldo, DivTextTrans, DivTextValor, DivTop, DivTopContent, LogoTrans, PutOnTop, TextButtonDivBtt, TextSaldo, TextTopDashExtrato } from './transferencia-screen-styles';
 import { set, transform } from 'lodash';
 import Icon from '@react-native-vector-icons/material-icons';
 import { Span } from '../alterar/alterar-screen.styles';
@@ -25,13 +25,13 @@ import { ConfirmButton, InputLogin, TextButton, TitleInput } from '../../login/l
 import { setDadosTransField } from '../../redux/dadosTransSlice';
 import { WarningScreen } from '../../AvisoModel/erroModel';
 import { stringify } from 'querystring';
+import { MainTextTopDash, NewDivBottom } from '../perfil/dashboard-screen.styles';
 
 interface TransferenciaCPFScreenProps {
   navigation: NavigationProp<RootStackParamList, 'TransferenciaCPF'>;
 }
 
 export default function TransferenciaCPFScreen({navigation}: TransferenciaCPFScreenProps) {
-
   const [showBalance, setShowBalance] = useState(false);
   const [messageTrans , setMessageTrans] = useState('');
   const [saldoConta, setSaldoConta] = useState('');
@@ -181,7 +181,8 @@ export default function TransferenciaCPFScreen({navigation}: TransferenciaCPFScr
         <DivTop>
           <DivTopContent>
             <TouchableOpacity onPress={() => navigation.navigate('Dashboard')}><IconFeather name="arrow-left" size={26} color="#fff" /></TouchableOpacity>
-            <TextTopDash>Transferência</TextTopDash>
+            <MainTextTopDash>Transferência</MainTextTopDash>
+            <TouchableOpacity><IconFeather name="help-circle" size={26} color="#fff" /></TouchableOpacity>
           </DivTopContent>
           <DivTopContent>
             <TextSaldo fontSize='16px' textAlign='start' >Saldo disponível</TextSaldo>
@@ -191,12 +192,12 @@ export default function TransferenciaCPFScreen({navigation}: TransferenciaCPFScr
             </DivSaldo>
           </DivTopContent> 
         </DivTop>
-        <DivBottom>
-          <DivBttTop>
-            <DivBttTopButton width='3px'><TextButtonDivBtt>CPF</TextButtonDivBtt></DivBttTopButton>
-            <DivBttTopButton onPress={() => navigation.navigate('TransferenciaNumConta')}><TextButtonDivBtt>Número da conta</TextButtonDivBtt></DivBttTopButton>
-          </DivBttTop>
+        <NewDivBottom>
           <DivBttContent>
+            <DivBttTop>
+              <DivBttTopButton width='3px'><TextButtonDivBtt>CPF</TextButtonDivBtt></DivBttTopButton>
+              <DivBttTopButton onPress={() => navigation.navigate('TransferenciaNumConta')}><TextButtonDivBtt>Número da conta</TextButtonDivBtt></DivBttTopButton>
+            </DivBttTop>
             <DivContentInput>
               <DivInputTrans>
                 <TitleInput>CPF</TitleInput>
@@ -208,11 +209,11 @@ export default function TransferenciaCPFScreen({navigation}: TransferenciaCPFScr
                 />
               </DivInputTrans>
             </DivContentInput>            
-            <DivInputTrans>
+          </DivBttContent>
+          <DivInputTrans>
               <ConfirmButton onPress={handleForm} accessibilityLabel="Confirmar login" cor='#6B7AE5'><TextButton cor="#ffffff">CONTINUAR</TextButton></ConfirmButton>
             </DivInputTrans>
-          </DivBttContent>
-        </DivBottom>
+        </NewDivBottom>
       </Container>
     </ScreenBase>
   );
