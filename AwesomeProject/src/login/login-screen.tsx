@@ -8,6 +8,7 @@ import { WarningScreen } from '../AvisoModel/erroModel';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { LoadingSpinner } from '../Loading/loadingScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { firebase, logEvent } from '@react-native-firebase/analytics';
 const logoRubbank = require('../assets/logos/rubbank.png');
 const logoRubbankWhite = require('../assets/logos/rubbankWhite.png');
 const eyeIconOpen = require('../assets/Icons/eyeIconPsswrdOpened.png');
@@ -68,6 +69,11 @@ export default function LoginScreen({navigation}: LoginScreenProps) {
       if(r.token){
         console.log(r.token)
         await AsyncStorage.setItem('token', r.token)
+        await firebase
+          .analytics()
+          .logEvent('login', {
+            cpf: formData.usuario_cpf
+          });
         navigation.navigate('Dashboard')
       }
       setLoading(false)

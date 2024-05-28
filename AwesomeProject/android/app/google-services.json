@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "900830893566",
+    "project_id": "metricasrubbank",
+    "storage_bucket": "metricasrubbank.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:900830893566:android:21be05ef132841794fdcaf",
+        "android_client_info": {
+          "package_name": "com.awesomeproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDHRATqVv3wcKidZomu9UuXIND9Fdx5FNE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

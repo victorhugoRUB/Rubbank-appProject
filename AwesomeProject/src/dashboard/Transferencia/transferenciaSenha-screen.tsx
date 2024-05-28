@@ -218,7 +218,7 @@ export default function TransferenciaSenhaScreen({navigation}: TransferenciaSenh
         />
       </Modal>
       <Modal
-      visible
+      visible={sucessModal}
       transparent
       animationType='slide'
       onRequestClose={()=> navigation.navigate('Dashboard')}

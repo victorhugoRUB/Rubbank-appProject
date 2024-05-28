@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux';
 import { ReduxState } from '../redux/store';
 import notifee, { AndroidImportance } from '@notifee/react-native';
 import { displayNotification } from '../notificacao/notificacao';
+import analytics, { firebase } from '@react-native-firebase/analytics';
 
 interface DashboardScreenProps {
   navigation: NavigationProp<RootStackParamList, 'Dashboard'>;
@@ -85,7 +86,20 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
           </BlockOptionsBottom>
           <BlockOptionsBottom onPress={() => displayNotification(1)}>
             <IconOcticons name="person" size={24} color="#000" />
-            <TextBlockBottom>Notificação</TextBlockBottom>
+            <TextBlockBottom>Notificação(TESTE)</TextBlockBottom>
+          </BlockOptionsBottom>
+          <BlockOptionsBottom onPress={async () => 
+            {await firebase
+              .analytics()
+              .logEvent('eventodashboard', {
+                id: 1,
+                name: 'test',
+              });
+              console.log('evento logado')
+            }
+          }>
+            <IconOcticons name="person" size={24} color="#000" />
+            <TextBlockBottom>Firebase(TESTE)</TextBlockBottom>
           </BlockOptionsBottom>
         </DivBottom>
       </Container>

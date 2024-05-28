@@ -1,4 +1,4 @@
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, NavigationContainerRef, useNavigation, useRoute } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import LoginScreen from './src/login/login-screen';
@@ -10,8 +10,6 @@ import OnboardingEndScreen from './src/onboarding/onboarding-End-screen';
 import OnboardingSenhaAppScreen from './src/onboarding/onboarding-SenhaApp-screen';
 import OnboardingSenhaTransScreen from './src/onboarding/onboarding-SenhaTrans-screen';
 import OnboardingFinalTabelScreen from './src/onboarding/onboarding-finalTabel-screen';
-import { Provider } from 'react-redux';
-import { store } from './src/redux/store';
 import DashboardPerfilScreen from './src/dashboard/perfil/dashboardPerfil-screen';
 import DashboardDadosBancScreen from './src/dashboard/perfil/dashboardDadosBanc-screen';
 import AlterarSenhaAppScreen from './src/dashboard/alterar/alterar-SenhaApp-screen';
@@ -27,8 +25,10 @@ import TransferenciaValorDescScreen from './src/dashboard/Transferencia/transfer
 import TransferenciaSenhaScreen from './src/dashboard/Transferencia/transferenciaSenha-screen';
 import AlterarEnderecoScreen from './src/dashboard/alterar/alterar-endereco-screen';
 import ListarEnderecoScreen from './src/dashboard/alterar/listar-endereco-screen';
-
-const Stack = createNativeStackNavigator();
+import { Provider } from 'react-redux';
+import { store } from './src/redux/store';
+import { useEffect } from 'react';
+import { firebase, logScreenView } from '@react-native-firebase/analytics';
 
 export interface RootStackParamList {
   Inicio: undefined;
@@ -57,13 +57,42 @@ export interface RootStackParamList {
   Prototipo: undefined;
 }
 
-function App() {
+const Stack = createNativeStackNavigator();
 
+
+function App() {
+  const routeNameRef: any = React.useRef();
+  const navigationRef: any = React.useRef();
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Dashboard">
-        <Stack.Screen
+      <NavigationContainer
+      ref={navigationRef}
+      onReady={() => {
+        console.log('onReady')
+        routeNameRef.current = navigationRef.current.getCurrentRoute().name;
+      }}
+      onStateChange={async () => {
+        console.log('onStateChange')
+        const previousRouteName = routeNameRef.current;
+        const currentRouteName = navigationRef.current.getCurrentRoute().name;
+
+        if (previousRouteName !== currentRouteName) {
+          console.log(previousRouteName + ' ' + currentRouteName)
+          await firebase .analytics().logScreenView({
+            screen_name: currentRouteName,
+            screen_class: 'NavigationContainer',
+          });
+          await firebase .analytics().logEvent('screen_view', {
+            screen_name: currentRouteName,
+            screen_class: 'NavigationContainer',
+          })
+        }
+        routeNameRef.current = currentRouteName;
+      }}
+
+      >
+        <Stack.Navigator initialRouteName="Login">
+          <Stack.Screen
             name="Prototipo"
             component={PrototipoScreen}
             options={{ headerShown: false }}

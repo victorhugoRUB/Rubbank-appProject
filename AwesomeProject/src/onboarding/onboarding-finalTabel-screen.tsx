@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import { ModalSucessScreen } from '../AvisoModel/sucessModal';
 import { LoadingSpinner } from '../Loading/loadingScreen';
 import { WarningScreen } from '../AvisoModel/erroModel';
+import { firebase } from '@react-native-firebase/analytics';
 
 
 interface OnboardingFinalTabelScreenProps {
@@ -173,6 +174,10 @@ export default function OnboardingFinalTabelScreen({navigation}: OnboardingFinal
                     setLoading(false)
                     setSucessModal(true)
                     clearErrorMessage()
+                    await firebase
+                      .analytics()
+                      .logEvent('create_account', {
+                      });
                   }else{
                     clearErrorMessage()
                     const AlertMessage = await res.json()
