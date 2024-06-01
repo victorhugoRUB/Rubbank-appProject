@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import type {RootStackParamList} from '../../App';
 import {ScreenBase} from '../components/screen-base/dashboard-screen-base';
 import { TouchableOpacity, useColorScheme } from 'react-native';
-import { BlockOptions, BlockOptionsBottom, Container, DivBalance, DivBottom, DivOptions, DivTop, Logo, SeuSaldo, TextBlockBottom, TextSaldo } from './dashboard-screen.styles';
+import { AltDivBottom, BlockOptions, BlockOptionsBottom, Container, DivBalance, DivBottom, DivOptions, DivTop, GenericDiv, Logo, SeuSaldo, TextBlockBottom, TextSaldo } from './dashboard-screen.styles';
 const logoWhite = require('../assets/logos/rubbankWhite.png');
 import IconFeather from 'react-native-vector-icons/Feather';
 import IconEntypo from 'react-native-vector-icons/Entypo';
@@ -14,6 +14,8 @@ import { ReduxState } from '../redux/store';
 import notifee, { AndroidImportance } from '@notifee/react-native';
 import { displayNotification } from '../notificacao/notificacao';
 import analytics, { firebase } from '@react-native-firebase/analytics';
+import { logEvent } from '../firebase/firebase';
+import {BannerAd, BannerAdSize} from 'react-native-google-mobile-ads' 
 
 interface DashboardScreenProps {
   navigation: NavigationProp<RootStackParamList, 'Dashboard'>;
@@ -71,37 +73,44 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
             <TouchableOpacity onPress={() => setShowBalance(!showBalance)}><IconFeather name={showBalance ? 'eye' : 'eye-off'} size={24} color="#fff"></IconFeather></TouchableOpacity>
           </DivBalance>
         </DivTop>
-        <DivBottom>
-          <BlockOptionsBottom onPress={() => navigation.navigate('TransferenciaCPF')}>
-            <IconEntypo name="swap" size={24} color="#000"/>
-            <TextBlockBottom>Transferir</TextBlockBottom>
-          </BlockOptionsBottom>
-          <BlockOptionsBottom onPress={() => navigation.navigate('Extrato')}>
-            <IconEntypo name="text-document" size={24} color="#000" />
-            <TextBlockBottom>Extrato</TextBlockBottom>
-          </BlockOptionsBottom>
-          <BlockOptionsBottom onPress={() => navigation.navigate('DashboardPerfil')}>
-            <IconOcticons name="person" size={24} color="#000" />
-            <TextBlockBottom>Perfil</TextBlockBottom>
-          </BlockOptionsBottom>
-          <BlockOptionsBottom onPress={() => displayNotification(1)}>
-            <IconOcticons name="person" size={24} color="#000" />
-            <TextBlockBottom>Notificação(TESTE)</TextBlockBottom>
-          </BlockOptionsBottom>
-          <BlockOptionsBottom onPress={async () => 
-            {await firebase
-              .analytics()
-              .logEvent('eventodashboard', {
-                id: 1,
-                name: 'test',
-              });
-              console.log('evento logado')
+        <AltDivBottom>
+          <GenericDiv>
+            <BlockOptionsBottom onPress={() => navigation.navigate('TransferenciaCPF')}>
+              <IconEntypo name="swap" size={24} color="#000"/>
+              <TextBlockBottom>Transferir</TextBlockBottom>
+            </BlockOptionsBottom>
+            <BlockOptionsBottom onPress={() => navigation.navigate('Extrato')}>
+              <IconEntypo name="text-document" size={24} color="#000" />
+              <TextBlockBottom>Extrato</TextBlockBottom>
+            </BlockOptionsBottom>
+            <BlockOptionsBottom onPress={() => navigation.navigate('DashboardPerfil')}>
+              <IconOcticons name="person" size={24} color="#000" />
+              <TextBlockBottom>Perfil</TextBlockBottom>
+            </BlockOptionsBottom>
+            <BlockOptionsBottom onPress={() => displayNotification(1)}>
+              <IconOcticons name="person" size={24} color="#000" />
+              <TextBlockBottom>Notificação(TESTE)</TextBlockBottom>
+            </BlockOptionsBottom>
+            <BlockOptionsBottom onPress={async () =>{ 
+              logEvent('eventDashboard', undefined)
+              console.log('Entrou no evento')
             }
-          }>
-            <IconOcticons name="person" size={24} color="#000" />
-            <TextBlockBottom>Firebase(TESTE)</TextBlockBottom>
-          </BlockOptionsBottom>
-        </DivBottom>
+            }>
+              <IconOcticons name="person" size={24} color="#000" />
+              <TextBlockBottom>Firebase(TESTE)</TextBlockBottom>
+            </BlockOptionsBottom>
+          </GenericDiv>
+          <BannerAd
+          unitId="ca-app-pub-3940256099942544/2934735716"
+          size={BannerAdSize.BANNER}
+          onAdLoaded={() => {
+            console.log('Advert loaded');
+          }}
+          onAdFailedToLoad={(error) => {
+              console.error('Advert failed to load: ', error);
+          }}
+          />
+        </AltDivBottom>
       </Container>
     </ScreenBase>
   );

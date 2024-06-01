@@ -31,6 +31,27 @@ export const DivBottom = styled(View)`
   gap: 24px;
 `;
 
+export const AltDivBottom = styled(View)`
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  border-radius: 32px 32px 0 0;
+  background-color: #ffffff;
+  flex-wrap: wrap;
+  gap: 24px;
+`;
+
+export const GenericDiv = styled(View)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+`;
+
 export const NewDivBottom = styled(View)`
   flex: 1;
   display: flex;

@@ -25,6 +25,7 @@ import { ConfirmButton, InputLogin, TextButton, TitleInput } from '../../login/l
 import { setDadosTransField } from '../../redux/dadosTransSlice';
 import { WarningScreen } from '../../AvisoModel/erroModel';
 import { MainTextTopDash, NewDivBottom } from '../perfil/dashboard-screen.styles';
+import { logEvent } from '../../firebase/firebase';
 
 interface TransferenciaNumContaScreenProps {
   navigation: NavigationProp<RootStackParamList, 'TransferenciaNumConta'>;
@@ -78,6 +79,7 @@ export default function TransferenciaNumContaScreen({navigation}: TransferenciaN
   const handleInfo = async () => {
     setLoading(true)
     console.log('GET SALDO NUM CONTA')
+    const startTime = new Date().getTime()
     const token = await AsyncStorage.getItem('token');
     try{ 
       const saldoRes = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/conta/saldo`,{
@@ -103,12 +105,16 @@ export default function TransferenciaNumContaScreen({navigation}: TransferenciaN
     }catch(err){
       console.log(err)
     }finally{
+      const endTime = new Date().getTime()
+      const time = endTime - startTime
+      logEvent('resService_time', time)
       setLoading(false)
     }
   }
 
   const handleForm = async (event: any) => {
     setLoading(true)
+    const startTime = new Date().getTime()
     const token = await AsyncStorage.getItem('token');
     try{
       const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/usuario/`,{

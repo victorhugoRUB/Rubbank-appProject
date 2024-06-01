@@ -80,6 +80,19 @@ export const DivBottom = styled(View)`
   flex-wrap: wrap;
 `;
 
+export const AltDivBottom = styled(View)`
+  flex: 2.5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  padding: 24px;
+  border-radius: 32px 32px 0 0;
+  background-color: #ffffff;
+  flex-wrap: wrap;
+`;
+
 export const BlockOptionsBottom = styled(TouchableOpacity)`
   display: flex;
   justify-content: space-between;
@@ -97,4 +110,12 @@ export const BlockOptionsBottom = styled(TouchableOpacity)`
 export const TextBlockBottom = styled(Text)`
   color: #000;
   font-size: 14px;
+`;
+
+export const GenericDiv = styled(View)`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
 `;

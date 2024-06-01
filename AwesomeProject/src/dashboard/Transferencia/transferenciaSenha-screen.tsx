@@ -30,6 +30,7 @@ import { ModalTransSucessScreen } from '../../AvisoModel/sucessTransModal';
 import { WarningSenhaTransScreen } from '../../AvisoModel/erroSenhaTransModal';
 import { DivBottom, MainTextTopDash, NewDivBottom } from '../perfil/dashboard-screen.styles';
 import { displayNotification } from '../../notificacao/notificacao';
+import { logEvent } from '../../firebase/firebase';
 
 interface TransferenciaSenhaScreenProps {
   navigation: NavigationProp<RootStackParamList, 'TransferenciaSenha'>;
@@ -78,6 +79,7 @@ export default function TransferenciaSenhaScreen({navigation}: TransferenciaSenh
   const handleInfo = async () => {
     setLoading(true)
     console.log('entrousaldo')
+    const startTime = new Date().getTime()
     try{ 
       const token = await AsyncStorage.getItem('token');
       const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/conta/saldo`,{
@@ -95,12 +97,17 @@ export default function TransferenciaSenhaScreen({navigation}: TransferenciaSenh
     }catch(err){
       console.log(err)
     }finally{
+      const endTime = new Date().getTime()
+      const time = endTime - startTime
+      logEvent('resService_time', time)
+      console.log(time+'ms')
       setLoading(false)
     }
   }
 
   const handleForm = async (event: any) => {
     setLoading(true)
+    const startTime = new Date().getTime()
     const token = await AsyncStorage.getItem('token');
     try{
       const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/conta/senhaTrans/validar/`,{
@@ -154,11 +161,17 @@ export default function TransferenciaSenhaScreen({navigation}: TransferenciaSenh
         throw new Error('Erro na senha de transferencia')
       }
       setSucessModal(true)
+      logEvent('transferencia_value', formData.trans_valor)
+      console.log('Entrou no evento')
       displayNotification(1, formData.trans_valor)
     }catch(err){
       console.log(err)
     }
     finally{
+      const endTime = new Date().getTime()
+      const time = endTime - startTime
+      logEvent('resService_time', time)
+      console.log(time+'ms')
       setLoading(false)
     }
   }

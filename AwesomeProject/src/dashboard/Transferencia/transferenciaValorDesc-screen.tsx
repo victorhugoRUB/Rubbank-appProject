@@ -25,6 +25,7 @@ import { ConfirmButton, InputLogin, TextButton, TitleInput } from '../../login/l
 import { setDadosTransField } from '../../redux/dadosTransSlice';
 import { WarningScreen } from '../../AvisoModel/erroModel';
 import { MainTextTopDash } from '../perfil/dashboard-screen.styles';
+import { logEvent } from '../../firebase/firebase';
 
 interface TransferenciaValorDescScreenProps {
   navigation: NavigationProp<RootStackParamList, 'TransferenciaValorDesc'>;
@@ -72,6 +73,7 @@ export default function TransferenciaValorDescScreen({navigation}: Transferencia
   const handleInfo = async () => {
     setLoading(true)
     console.log('entrousaldo')
+    const startTime = new Date().getTime()
     try{ 
       const token = await AsyncStorage.getItem('token');
       const saldoRes = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/conta/saldo`,{
@@ -89,6 +91,10 @@ export default function TransferenciaValorDescScreen({navigation}: Transferencia
     }catch(err){
       console.log(err)
     }finally{
+      const endTime = new Date().getTime()
+      const time = endTime - startTime
+      logEvent('resService_time', time)
+      console.log(time+'ms')
       setLoading(false)
     }
   }
@@ -96,6 +102,7 @@ export default function TransferenciaValorDescScreen({navigation}: Transferencia
   const handleForm = async (event: any) => {
     console.log('entrou valida saldo')
     setLoading(true)
+    const startTime = new Date().getTime()
     const token = await AsyncStorage.getItem('token');
     try{
       const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/conta/saldo/validar`,{
@@ -118,6 +125,10 @@ export default function TransferenciaValorDescScreen({navigation}: Transferencia
     }catch(err){
       console.log(err)
     }finally{
+      const endTime = new Date().getTime()
+      const time = endTime - startTime
+      logEvent('resService_time', time)
+      console.log(time+'ms')
       setLoading(false)
     }
   }

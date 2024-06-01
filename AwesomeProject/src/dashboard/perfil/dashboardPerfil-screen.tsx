@@ -2,7 +2,7 @@ import type {NavigationProp} from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { RootStackParamList } from '../../../App';
 import { TouchableOpacity } from 'react-native';
-import { ConfirmButton, Container, ContentBottom, DivBottom, DivBottomContent, DivTop, DivTopContent, MainTextTopDash, TextTopDash, TopContentTextCPF, TopContentTextName, UserPicture } from './dashboard-screen.styles';
+import { AltDivBottom, ConfirmButton, Container, ContentBottom, DivBottom, DivBottomContent, DivTop, DivTopContent, GenericDiv, MainTextTopDash, TextTopDash, TopContentTextCPF, TopContentTextName, UserPicture } from './dashboard-screen.styles';
 const logoWhite = require('../../assets/logos/rubbankWhite.png');
 import IconFeather from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -11,6 +11,7 @@ import { TextButton } from '../../login/login-screen.styles';
 import { useSelector } from 'react-redux';
 import { ReduxState } from '../../redux/store';
 import { LoadingSpinner } from '../../Loading/loadingScreen';
+import { BannerAd, BannerAdSize } from 'react-native-google-mobile-ads';
 
 
 interface DashboardPerfilScreenProps {
@@ -61,28 +62,40 @@ export default function DashboardPerfilScreen({navigation}: DashboardPerfilScree
           <MainTextTopDash>Perfil</MainTextTopDash>
           <TouchableOpacity><IconFeather name="help-circle" size={24} color="#fff" /></TouchableOpacity>
         </DivTop>
-        <DivBottom>
-          <DivTopContent>
-            <UserPicture></UserPicture>
-            <TopContentTextName>{infoUser.usuario_nome}</TopContentTextName>
-            <TopContentTextCPF>CPF: {infoUser.usuario_cpf}</TopContentTextCPF>
-          </DivTopContent>
-          <ConfirmButton onPress={() => navigation.navigate('DashboardDadosBanc')} ><TextButton cor="#000">VER DADOS BANCÁRIOS</TextButton></ConfirmButton>
-          <DivBottomContent>
-            <ContentBottom onPress={() => navigation.navigate('AlterarSenhaApp')}>
-              <TopContentTextName>Alterar senha do App</TopContentTextName>
-              <IconFeather name="chevron-right" size={24} color="#000" />
-            </ContentBottom>
-            <ContentBottom>
-              <TopContentTextName onPress={() => navigation.navigate('AlterarSenhaTrans')}>Alterar senha transacional</TopContentTextName>
-              <IconFeather name="chevron-right" size={24} color="#000" />
-            </ContentBottom>
-            <ContentBottom onPress={() => navigation.navigate('ListarEndereco')}>
-              <TopContentTextName >Alterar endereço</TopContentTextName>
-              <IconFeather name="chevron-right" size={24} color="#000" />
-            </ContentBottom>
-          </DivBottomContent>
-        </DivBottom>
+        <AltDivBottom>
+          <DivBottom>
+            <DivTopContent>
+              <UserPicture></UserPicture>
+              <TopContentTextName>{infoUser.usuario_nome}</TopContentTextName>
+              <TopContentTextCPF>CPF: {infoUser.usuario_cpf}</TopContentTextCPF>
+            </DivTopContent>
+            <ConfirmButton onPress={() => navigation.navigate('DashboardDadosBanc')} ><TextButton cor="#000">VER DADOS BANCÁRIOS</TextButton></ConfirmButton>
+            <DivBottomContent>
+              <ContentBottom onPress={() => navigation.navigate('AlterarSenhaApp')}>
+                <TopContentTextName>Alterar senha do App</TopContentTextName>
+                <IconFeather name="chevron-right" size={24} color="#000" />
+              </ContentBottom>
+              <ContentBottom>
+                <TopContentTextName onPress={() => navigation.navigate('AlterarSenhaTrans')}>Alterar senha transacional</TopContentTextName>
+                <IconFeather name="chevron-right" size={24} color="#000" />
+              </ContentBottom>
+              <ContentBottom onPress={() => navigation.navigate('ListarEndereco')}>
+                <TopContentTextName >Alterar endereço</TopContentTextName>
+                <IconFeather name="chevron-right" size={24} color="#000" />
+              </ContentBottom>
+            </DivBottomContent>
+          </DivBottom>
+          <BannerAd
+          unitId="ca-app-pub-3751478648669083/1880424154"
+          size={BannerAdSize.BANNER}
+          onAdLoaded={() => {
+            console.log('Advert loaded');
+          }}
+          onAdFailedToLoad={(error) => {
+              console.error('Advert failed to load: ', error);
+          }}
+          />
+        </AltDivBottom>
       </Container>
     </ScreenBase>
   );

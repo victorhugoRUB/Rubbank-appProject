@@ -91,7 +91,7 @@ function App() {
       }}
 
       >
-        <Stack.Navigator initialRouteName="Login">
+        <Stack.Navigator initialRouteName="Dashboard">
           <Stack.Screen
             name="Prototipo"
             component={PrototipoScreen}

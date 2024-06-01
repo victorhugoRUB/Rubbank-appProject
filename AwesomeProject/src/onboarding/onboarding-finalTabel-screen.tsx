@@ -13,6 +13,7 @@ import { ModalSucessScreen } from '../AvisoModel/sucessModal';
 import { LoadingSpinner } from '../Loading/loadingScreen';
 import { WarningScreen } from '../AvisoModel/erroModel';
 import { firebase } from '@react-native-firebase/analytics';
+import { logEvent } from '../firebase/firebase';
 
 
 interface OnboardingFinalTabelScreenProps {
@@ -174,10 +175,7 @@ export default function OnboardingFinalTabelScreen({navigation}: OnboardingFinal
                     setLoading(false)
                     setSucessModal(true)
                     clearErrorMessage()
-                    await firebase
-                      .analytics()
-                      .logEvent('create_account', {
-                      });
+                    logEvent('create_account', {undefined})
                   }else{
                     clearErrorMessage()
                     const AlertMessage = await res.json()
