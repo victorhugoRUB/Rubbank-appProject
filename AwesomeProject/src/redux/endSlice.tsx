@@ -22,13 +22,15 @@ const initialState: EndState = {
     end_uf: ''
 }
 
+type EndField = keyof EndState;
+
 const endSlice = createSlice({
     name: 'end',
     initialState,
     reducers: {
-        setEndField(state, action: PayloadAction<{ field: string, value: string }>) {
+        setEndField<K extends EndField>(state: EndState, action: PayloadAction<{ field: K, value: EndState[K] }>) {
             const { field, value } = action.payload;
-            state[field as keyof EndState] = value;
+            state[field] = value;
         },
     }
 })

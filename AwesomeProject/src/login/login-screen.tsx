@@ -13,6 +13,7 @@ const logoRubbank = require('../assets/logos/rubbank.png');
 const logoRubbankWhite = require('../assets/logos/rubbankWhite.png');
 const eyeIconOpen = require('../assets/Icons/eyeIconPsswrdOpened.png');
 const eyeIconClose = require('../assets/Icons/eyeIconPsswrdClosed.png');
+import IconFeather from 'react-native-vector-icons/Feather';
 
 interface LoginScreenProps {
   navigation: NavigationProp<RootStackParamList, 'Login'>;
@@ -124,7 +125,7 @@ export default function LoginScreen({navigation}: LoginScreenProps) {
                 style={{ borderColor: inputBorderColor, backgroundColor: isDarkMode ? Colors.darker : Colors.lighter, color: isDarkMode ? Colors.lighter : Colors.darker}} 
                 secureTextEntry={!showPassword}
                 />
-              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}><EyePasswordIcon source={showPassword ? eyeIconOpen : eyeIconClose} style={{   position: 'absolute', right: 20, top: -43, bottom: 12,  backgroundColor: isDarkMode ? Colors.lighter: Colors.transparent }}/></TouchableOpacity>
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}><IconFeather size={20} color={isDarkMode ? '#fff' : '#000'} name={showPassword ? 'eye' : 'eye-off'} style={{ position: 'absolute', right: 20, top: -43, bottom: 12}}/></TouchableOpacity>
               {errorMessage !== '' ? <TextBottom style={colorChangetoWhite}>{errorMessage}</TextBottom> : null}
               <TextLinks>Esqueceu a sua senha?</TextLinks>
             </DivLogin>

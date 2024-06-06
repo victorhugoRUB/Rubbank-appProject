@@ -285,7 +285,7 @@ export default function AlterarEnderecoScreen({navigation}: AlterarEnderecoScree
             </BlocksOfInput>
           </DivInput>
           <DivButtonConfirm>
-            <ConfirmButton style={!buttonState || (borderRedATUAL === '#FF0000' || borderRedNOVA === '#FF0000' || borderRedCONFIRM === '#FF0000') ? {backgroundColor: '#6b79e578' }: {}} disabled={!buttonState || (borderRedATUAL === '#FF0000' || borderRedNOVA === '#FF0000' || borderRedCONFIRM === '#FF0000')} onPress={handleForm} cor='#6B7AE5'><TextButton cor="#ffffff">CONFIRMAR</TextButton></ConfirmButton>
+            <ConfirmButton style={!buttonState || (borderRedATUAL === '#FF0000' || borderRedNOVA === '#FF0000' || borderRedCONFIRM === '#FF0000') ? {backgroundColor: '#6b79e578' }: {}} disabled={!buttonState} onPress={handleForm} cor='#6B7AE5'><TextButton cor="#ffffff">CONFIRMAR</TextButton></ConfirmButton>
           </DivButtonConfirm>
         </NewDivBottom>
       </Container>

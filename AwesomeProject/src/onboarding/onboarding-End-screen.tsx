@@ -32,12 +32,23 @@ export default function OnboardingEndScreen({navigation}: OnboardingEndScreenPro
     end_uf: ''
   })
 
+  const [formInitData, setFormInitData] = useState({
+    end_cep: '',
+    end_rua: '',
+    end_num: '',
+    end_complem: '',
+    end_bairro: '',
+    end_cidade: '',
+    end_uf: ''
+  })
+
   const handleFormEdit = (event: any, valor: any) => {
     dispatch((setEndField({field: valor, value: event})))
     setFormData({
       ...formData,
       [valor]: event
     })
+    console.log(formData)
   }
 
   useEffect(() => {
@@ -66,12 +77,30 @@ export default function OnboardingEndScreen({navigation}: OnboardingEndScreenPro
       end_cidade: parseCEP.localidade,
       end_uf: parseCEP.uf
     })
+    setFormInitData({
+      ...formInitData,
+      end_cep: parseCEP.cep,
+      end_rua: parseCEP.logradouro,
+      end_bairro: parseCEP.bairro,
+      end_cidade: parseCEP.localidade,
+      end_uf: parseCEP.uf
+    })
     dispatch((setEndField({field: 'end_cep', value: parseCEP.cep})))
     dispatch((setEndField({field: 'end_rua', value: parseCEP.logradouro})))
     dispatch((setEndField({field: 'end_bairro', value: parseCEP.bairro})))
     dispatch((setEndField({field: 'end_cidade', value: parseCEP.localidade})))
     dispatch((setEndField({field: 'end_uf', value: parseCEP.uf})))
   }
+
+  useEffect(() => {
+    if(formData.end_cep === '' || formData.end_rua === '' || formData.end_num === '' || formData.end_bairro === '' || formData.end_cidade === '' || formData.end_uf === ''){
+      console.log(formData)
+      setButtonState(false)
+      return
+    }else{
+      setButtonState(true)
+    }
+  }, [formData])
 
   return (
     <ScreenBase>
@@ -86,7 +115,7 @@ export default function OnboardingEndScreen({navigation}: OnboardingEndScreenPro
               placeholderTextColor='#aaabab'
               value={formData.end_cep}
               onChangeText={(e) => handleFormEdit(e, 'end_cep')}
-              editable={formData.end_cep === ''} 
+              editable={formInitData.end_cep === ''} 
               />
             </BlockInput>
             <BlockInput>
@@ -96,7 +125,7 @@ export default function OnboardingEndScreen({navigation}: OnboardingEndScreenPro
               placeholderTextColor='#aaabab'
               value={formData.end_rua}
               onChangeText={(e) => handleFormEdit(e, 'end_rua')}
-              editable={formData.end_rua === ''} 
+              editable={formInitData.end_rua === ''} 
               />
             </BlockInput>
             <BlocksOfInput>
@@ -128,7 +157,7 @@ export default function OnboardingEndScreen({navigation}: OnboardingEndScreenPro
               placeholderTextColor='#aaabab'
               value={formData.end_bairro}
               onChangeText={(e) => handleFormEdit(e, 'end_bairro')}
-              editable={formData.end_bairro === ''} 
+              editable={formInitData.end_bairro === ''} 
               />
             </BlockInput>
             <BlocksOfInput>
@@ -139,7 +168,7 @@ export default function OnboardingEndScreen({navigation}: OnboardingEndScreenPro
                 placeholderTextColor='#aaabab'
                 value={formData.end_cidade}
                 onChangeText={(e) => handleFormEdit(e, 'end_cidade')}
-                editable={formData.end_cidade === ''} 
+                editable={formInitData.end_cidade === ''} 
                 />
               </BlockInput>
               <BlockInput width='46%'>
@@ -149,7 +178,7 @@ export default function OnboardingEndScreen({navigation}: OnboardingEndScreenPro
                 placeholderTextColor='#aaabab'
                 value={formData.end_uf}
                 onChangeText={(e) => handleFormEdit(e, 'end_uf')}
-                editable={formData.end_uf === ''} 
+                editable={formInitData.end_uf === ''} 
                 />
               </BlockInput>
             </BlocksOfInput>

@@ -63,7 +63,6 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
 
   const nextPage = async (valor: any) => {
     const newPage = Number(filtroData.page) + 1;
-    const lastPage = Number(filtroData.page) - 1;
     if(valor == 'mais'){
       setLoading(true)
       dispatch((setFiltroField({field: 'page', value: newPage.toString()})))
@@ -75,17 +74,7 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
         setLoading(false)
       }
     };
-    if(valor == 'menos'){
-      setLoading(true)
-      dispatch((setFiltroField({field: 'page', value: lastPage.toString()})))
-      try{
-        await fetchUserData()
-      }catch(err){
-        console.log(err)
-      }finally{
-        setLoading(false)
-      }
-    }
+    
   }
 
   // const nextPage = async (valor: any) => {
@@ -236,12 +225,12 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
   }
   useEffect(() => {fetchUserData()}, [])
   useEffect(() => {resetDataPage()}, [])
-  useEffect(() => 
-    {if(isEffect){
-      setIsEffect(false)
-    }else{
-      fetchUserData()
-    }}, [transInfo])
+  // useEffect(() => 
+  //   {if(isEffect){
+  //     setIsEffect(false)
+  //   }else{
+  //     fetchUserData()
+  //   }}, [transInfo])
 
 
     const numeroFormatado = Number(saldoConta).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -320,7 +309,7 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
                         <TextTopDashExtrato size='16px' color={ Number(contaBanc) == item.usuId_remetente ? '#ff0000' : '#029D29'}><Span>R$ {item.trans_valor.toFixed(2).replace('.',',')}</Span></TextTopDashExtrato>
                       </DivTextValor>
                     </BlockTrans>
-                    {index === transInfo.length - 1 ? 
+                    {/* {index === transInfo.length - 1 ? 
                     <DivButtonNext>
                       <ButtonNext disabled={filtroData.page === '' || filtroData.page === '1' ? true : false} backColor={filtroData.page === '' || filtroData.page === '1' ? '#6b79e5a6' : '#6B7AE5'} onPress={() => {nextPage('menos')}}>
                         <TextButtonDivBtt fontSize='16px'>
@@ -337,12 +326,16 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
                           <IconFeather name='chevron-right' size={24} color='#fff' />
                         </TextButtonDivBtt>
                       </ButtonNext>
-                    </DivButtonNext> : null}
+                    </DivButtonNext> : null} */}
                   </BlockTransDay>
                   )
                 }}
                 keyExtractor={(item, index) => index.toString()}
                 stickyHeaderIndices={[]}
+                onEndReached={() => {
+                  nextPage('mais')
+                }}
+                onEndReachedThreshold={0.1}
                 />
               </>
             : <><IconMaterial name="piggy-bank-outline" size={50} color="#aaabab" style={{ transform: [{ scaleX: -1 }] }} /><TextButtonDivBtt fontSize='18px' color='#383838'>{messageTrans === '' ? "Você ainda não possui lançamentos." : messageTrans}</TextButtonDivBtt></>}

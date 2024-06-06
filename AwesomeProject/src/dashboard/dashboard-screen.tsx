@@ -5,6 +5,7 @@ import {ScreenBase} from '../components/screen-base/dashboard-screen-base';
 import { TouchableOpacity, useColorScheme } from 'react-native';
 import { AltDivBottom, BlockOptions, BlockOptionsBottom, Container, DivBalance, DivBottom, DivOptions, DivTop, GenericDiv, Logo, SeuSaldo, TextBlockBottom, TextSaldo } from './dashboard-screen.styles';
 const logoWhite = require('../assets/logos/rubbankWhite.png');
+const logo = require('../assets/logos/rubbank.png');
 import IconFeather from 'react-native-vector-icons/Feather';
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import IconOcticons from 'react-native-vector-icons/Octicons';
@@ -16,6 +17,7 @@ import { displayNotification } from '../notificacao/notificacao';
 import analytics, { firebase } from '@react-native-firebase/analytics';
 import { logEvent } from '../firebase/firebase';
 import {BannerAd, BannerAdSize} from 'react-native-google-mobile-ads' 
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 interface DashboardScreenProps {
   navigation: NavigationProp<RootStackParamList, 'Dashboard'>;
@@ -52,7 +54,7 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
   }
 
   const numeroFormatado = Number(saldoConta).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
+  const isDarkMode = useColorScheme() === 'dark';
   return (
     <ScreenBase>
       <Container >
@@ -60,9 +62,9 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
           <DivOptions>  
             <Logo source={logoWhite} />
             <BlockOptions>
-              <TouchableOpacity><IconFeather name="log-out" size={24} color="#fff" onPress={() => navigation.navigate('Login')} /></TouchableOpacity>
-              <TouchableOpacity><IconFeather name="help-circle" size={24} color="#fff" /></TouchableOpacity>
-              <TouchableOpacity><IconFeather name="menu" size={24} color="#fff" /></TouchableOpacity>
+              <TouchableOpacity><IconFeather name="log-out" size={24} color='#fff' onPress={() => navigation.navigate('Login')} /></TouchableOpacity>
+              <TouchableOpacity><IconFeather name="help-circle" size={24} color='#fff'/></TouchableOpacity>
+              <TouchableOpacity><IconFeather name="menu" size={24} color='#fff' /></TouchableOpacity>
             </BlockOptions>
           </DivOptions>
           <DivBalance>
@@ -70,14 +72,14 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
               <TextSaldo fontSize='16px'>Seu saldo</TextSaldo>
               <TextSaldo fontSize='24px'>{showBalance ? 'R$'+numeroFormatado : '_____________________'}</TextSaldo>
             </SeuSaldo>
-            <TouchableOpacity onPress={() => setShowBalance(!showBalance)}><IconFeather name={showBalance ? 'eye' : 'eye-off'} size={24} color="#fff"></IconFeather></TouchableOpacity>
+            <TouchableOpacity onPress={() => setShowBalance(!showBalance)}><IconFeather name={showBalance ? 'eye' : 'eye-off'} size={24} color={'#fff'}></IconFeather></TouchableOpacity>
           </DivBalance>
         </DivTop>
-        <AltDivBottom>
-          <GenericDiv>
-            <BlockOptionsBottom onPress={() => navigation.navigate('TransferenciaCPF')}>
-              <IconEntypo name="swap" size={24} color="#000"/>
-              <TextBlockBottom>Transferir</TextBlockBottom>
+        <AltDivBottom style={{backgroundColor: isDarkMode ? Colors.dark : '#fff'}}>
+          <GenericDiv style={{backgroundColor: isDarkMode ? Colors.dark : '#fff'}}>
+            <BlockOptionsBottom onPress={() => navigation.navigate('TransferenciaCPF')} style={{backgroundColor: isDarkMode ? Colors.darker : '#fff'}}>
+              <IconEntypo name="swap" size={24} color={isDarkMode ? '#fff' : '#000'}/>
+              <TextBlockBottom style={{color: isDarkMode ? '#fff' : '#000'}}>Transferir</TextBlockBottom>
             </BlockOptionsBottom>
             <BlockOptionsBottom onPress={() => navigation.navigate('Extrato')}>
               <IconEntypo name="text-document" size={24} color="#000" />

@@ -86,7 +86,7 @@ export default function DashboardPerfilScreen({navigation}: DashboardPerfilScree
             </DivBottomContent>
           </DivBottom>
           <BannerAd
-          unitId="ca-app-pub-3751478648669083/1880424154"
+          unitId="ca-app-pub-3940256099942544/2934735716"
           size={BannerAdSize.BANNER}
           onAdLoaded={() => {
             console.log('Advert loaded');

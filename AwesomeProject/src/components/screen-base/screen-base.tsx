@@ -8,7 +8,5 @@ export const ScreenBase = ({children}: PropsWithChildren): ReactElement => {
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.red,
   };
-  return <Screen 
-  style={backgroundStyle}
-  >{children}</Screen>;
+  return <Screen style={backgroundStyle}>{children}</Screen>;
 };

@@ -89,7 +89,7 @@ export default function OnboardingFinalTabelScreen({navigation}: OnboardingFinal
   })
 
   useEffect(() => {
-    if(formData.usuario_nome === '' || formData.usuario_email === '' || formData.usuario_tel === '' || formData.usuario_cpf === '' || formData.usuario_dtNascimento === '' || formData.usuario_senha === '' || formData.end_cep === '' || formData.end_rua === '' || formData.end_num === '' || formData.end_complem === '' || formData.end_bairro === '' || formData.end_cidade === '' || formData.end_uf === '' || formData.contaBanc_senhatransacao === ''){
+    if(formData.usuario_nome === '' || formData.usuario_email === '' || formData.usuario_tel === '' || formData.usuario_cpf === '' || formData.usuario_dtNascimento === '' || formData.usuario_senha === '' || formData.end_cep === '' || formData.end_rua === '' || formData.end_num === '' || formData.end_bairro === '' || formData.end_cidade === '' || formData.end_uf === '' || formData.contaBanc_senhatransacao === ''){
       setButtonState(false)
       return
     }else{
@@ -236,61 +236,61 @@ export default function OnboardingFinalTabelScreen({navigation}: OnboardingFinal
         <TextTitle>Revisando as informações de cadastro</TextTitle>
         <DivAlignContent>
           <DivContentRev>
-            <DivItemRev>
+            <DivItemRev onPress={() => navigation.navigate('OnboardingDadosPessoais')}>
               <TextInputCad>Nome: <IconFeather name='edit' size={16} color={'#000'} /></TextInputCad>
               <TextInputCad><Span>{formData.usuario_nome}</Span></TextInputCad>
             </DivItemRev>
-            <DivItemRev>
+            <DivItemRev onPress={() => navigation.navigate('OnboardingDadosPessoais')}>
               <TextInputCad>Email: <IconFeather name='edit' size={16} color={'#000'} /></TextInputCad>
               <TextInputCad><Span>{formData.usuario_email}</Span></TextInputCad>
             </DivItemRev>
-            <DivItemRev>
+            <DivItemRev onPress={() => navigation.navigate('OnboardingDadosPessoais')}>
               <TextInputCad>Telefone: <IconFeather name='edit' size={16} color={'#000'} /></TextInputCad>
               <TextInputCad><Span>{formData.usuario_tel}</Span></TextInputCad>
             </DivItemRev>
-            <DivItemRev>
+            <DivItemRev onPress={() => navigation.navigate('OnboardingDadosPessoais')}>
               <TextInputCad>CPF: <IconFeather name='edit' size={16} color={'#000'} /></TextInputCad>
               <TextInputCad><Span>{formData.usuario_cpf}</Span></TextInputCad>
             </DivItemRev>
-            <DivItemRev>
+            <DivItemRev onPress={() => navigation.navigate('OnboardingDadosPessoais')}>
               <TextInputCad>Data de Nascimento: <IconFeather name='edit' size={16} color={'#000'} /></TextInputCad>
               <TextInputCad><Span>{formData.usuario_dtNascimento}</Span></TextInputCad>
             </DivItemRev>
-            <DivItemRev>
+            <DivItemRev onPress={() => navigation.navigate('OnboardingSenhaApp')}>
               <TextInputCad>Senha: <IconFeather name='edit' size={16} color={'#000'} /></TextInputCad>
               <TextInputCad><Span>{formData.usuario_senha}</Span></TextInputCad>
             </DivItemRev>
-            <DivItemRev>
+            <DivItemRev onPress={() => navigation.navigate('OnboardingEnd')}>
               <TextInputCad>CEP: <IconFeather name='edit' size={16} color={'#000'} /></TextInputCad>
               <TextInputCad><Span>{formData.end_cep}</Span></TextInputCad>
             </DivItemRev>
           </DivContentRev>
           <DivContentRev>
-            <DivItemRev>
+            <DivItemRev onPress={() => navigation.navigate('OnboardingEnd')}>
               <TextInputCad>Rua: <IconFeather name='edit' size={16} color={'#000'} /></TextInputCad>
               <TextInputCad><Span>{formData.end_rua}</Span></TextInputCad>
             </DivItemRev>
-            <DivItemRev>
+            <DivItemRev onPress={() => navigation.navigate('OnboardingEnd')}>
               <TextInputCad>Número: <IconFeather name='edit' size={16} color={'#000'} /></TextInputCad>
               <TextInputCad><Span>{formData.end_num}</Span></TextInputCad>
             </DivItemRev>
-            <DivItemRev>
+            <DivItemRev onPress={() => navigation.navigate('OnboardingEnd')}>
               <TextInputCad>Complemento: <IconFeather name='edit' size={16} color={'#000'} /></TextInputCad>
               <TextInputCad><Span>{formData.end_complem}</Span></TextInputCad>
             </DivItemRev>
-            <DivItemRev>
+            <DivItemRev onPress={() => navigation.navigate('OnboardingEnd')}>
               <TextInputCad>Bairro: <IconFeather name='edit' size={16} color={'#000'} /></TextInputCad>
               <TextInputCad><Span>{formData.end_bairro}</Span></TextInputCad>
             </DivItemRev>
-            <DivItemRev>
+            <DivItemRev onPress={() => navigation.navigate('OnboardingEnd')}>
               <TextInputCad>Cidade: <IconFeather name='edit' size={16} color={'#000'} /></TextInputCad>
               <TextInputCad><Span>{formData.end_cidade}</Span></TextInputCad>
             </DivItemRev>
-            <DivItemRev>
+            <DivItemRev onPress={() => navigation.navigate('OnboardingEnd')}>
               <TextInputCad>UF: <IconFeather name='edit' size={16} color={'#000'} /></TextInputCad>
               <TextInputCad><Span>{formData.end_uf}</Span></TextInputCad>
             </DivItemRev>
-            <DivItemRev>
+            <DivItemRev onPress={() => navigation.navigate('OnboardingSenhaTrans')}>
               <TextInputCad>Senha de Transação: <IconFeather name='edit' size={16} color={'#000'} /></TextInputCad>
               <TextInputCad><Span>{formData.contaBanc_senhatransacao}</Span></TextInputCad>
             </DivItemRev>
