@@ -13,7 +13,7 @@ const initialState: FiltroState = {
     dataFinal: '',
     dias: '',
     ordem: '',
-    page: '1'
+    page: '2',
 }
 
 const filtroSlice = createSlice({

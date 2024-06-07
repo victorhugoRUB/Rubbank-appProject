@@ -233,7 +233,7 @@ export const DivInputLogin = styled(View)`
   justify-content: flex-end;
   align-items: center;
   gap: 10px;
-  height: 40%;
+  height: 30%;
   width: 100%;
 `;
 

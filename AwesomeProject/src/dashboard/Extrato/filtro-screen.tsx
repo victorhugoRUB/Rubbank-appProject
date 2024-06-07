@@ -105,8 +105,12 @@ export default function FiltroScreen({navigation}: FiltroScreenProps) {
     dispatch((setFiltroField({field: 'ordem', value: ''})))
     dispatch((setFiltroField({field: 'dataFinal', value: ''})))
     dispatch((setFiltroField({field: 'dataInicial', value: ''})))
-    
+    dispatch((setFiltroField({field: 'page', value: '2'})))
   };
+
+  useEffect(() => {
+    dispatch((setFiltroField({field: 'page', value: '2'})))
+  }, [filtroData])
 
   useEffect(() => {
     dropDown ? resetFilters() : null

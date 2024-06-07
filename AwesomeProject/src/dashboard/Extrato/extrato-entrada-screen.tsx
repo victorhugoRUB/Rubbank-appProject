@@ -52,24 +52,24 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
   const [numPagFlat, setNumPagFlat] = useState(0)
   const filtroData = useSelector((state: ReduxState)=> state.filtro);
   const [loading, setLoading] = useState(false);
+  const [contar, setContar] = useState(1)
 
   const dispatch = useDispatch()
 
-  const resetDataPage = () => {
-    dispatch((setFiltroField({field: 'page', value: '1'})))
-  }
 
-  const nextPage = (valor: any) => {
-    console.log(valor)
-    if(valor === 'mais'){
-      const somar = Number(filtroData.page) + 1;
-      (dispatch((setFiltroField({field: 'page', value: somar.toString()}))))
-      fetchUserData()
-    }else{
-      const subtrair = Number(filtroData.page) - 1;
-      (dispatch((setFiltroField({field: 'page', value: subtrair.toString()}))))
-      fetchUserData()
-    }
+  const nextPage = async (valor: any) => {
+    const newPage = Number(filtroData.page) + 1;
+    if(valor == 'mais'){
+      setLoading(true)
+      dispatch((setFiltroField({field: 'page', value: newPage.toString()})))
+      try{
+        await fetchUserData()
+      }catch(err){
+        console.log(err)
+      }finally{
+        setLoading(false)
+      }
+    };
   }
 
   const onShare = async () => {
@@ -121,8 +121,15 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
       navigation.navigate('Login')
     }
     try{
+      if(filtroData.page === '2'){
+        console.log('entrou')
+        setContar(0);
+        console.log(contar)
+      }
+      setContar(contar + 1)
+      console.log(contar)
       const token = await AsyncStorage.getItem('token');
-      const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/transferencia/entrada/?${filtroData.ordem != '' ? '&ordem='+filtroData.ordem : ''}${filtroData.dataFinal != '' ? '&dataFinal='+filtroData.dataFinal : ''}${filtroData.dataInicial != '' ? '&dataInicial='+filtroData.dataInicial : ''}${filtroData.dias != '' ? '&dias='+filtroData.dias : ''}${filtroData.page != '' ? '&page='+filtroData.page : ''}`,{
+      const res = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/transferencia/entrada/?${filtroData.ordem != '' ? '&ordem='+filtroData.ordem : ''}${filtroData.dataFinal != '' ? '&dataFinal='+filtroData.dataFinal : ''}${filtroData.dataInicial != '' ? '&dataInicial='+filtroData.dataInicial : ''}${filtroData.dias != '' ? '&dias='+filtroData.dias : ''}${contar != 1 ? '&page='+filtroData.page : ''}`,{
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -135,11 +142,9 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
       } 
       setLoading(false)
       const data = await res.json()
-      setTransInfo(data.trans)
+      setTransInfo(prevTransInfo => [...prevTransInfo, ...data.trans])
       setNumPagFlat(data.numPags)
       console.log(data)
-      console.log(numPagFlat)
-      console.log(transInfo)
       setFlag(true) 
     }catch(err){
       setLoading(false)
@@ -182,8 +187,14 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
     }
 
   }
-  useEffect(() => {resetDataPage()}, [])
-  useEffect(() => {fetchUserData()}, [])
+  useEffect(() => {
+    setTransInfo([])
+    console.log('carregando')
+    dispatch((setFiltroField({field: 'page', value: '2'})))
+    // setContar(0)
+    fetchUserData()
+    console.log('chamouuseeffect')
+  }, [filtroData.dataFinal, filtroData.dataInicial, filtroData.dias, filtroData.ordem])
 
   const numeroFormatado = Number(saldoConta).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
@@ -261,7 +272,7 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
                         <TextTopDashExtrato size='16px' color={ Number(contaBanc) == item.usuId_remetente ? '#ff0000' : '#029D29'}><Span>R$ {item.trans_valor.toFixed(2).replace('.',',')}</Span></TextTopDashExtrato>
                       </DivTextValor>
                     </BlockTrans>
-                    {index === transInfo.length - 1 ? 
+                    {/* {index === transInfo.length - 1 ? 
                     <DivButtonNext>
                       <ButtonNext disabled={filtroData.page === '' || filtroData.page === '1' ? true : false} backColor={filtroData.page === '' || filtroData.page === '1' ? '#6b79e5a6' : '#6B7AE5'} onPress={() => {nextPage('menos')}}>
                         <TextButtonDivBtt fontSize='16px'>
@@ -278,12 +289,14 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
                           <IconFeather name='chevron-right' size={24} color='#fff' />
                         </TextButtonDivBtt>
                       </ButtonNext>
-                    </DivButtonNext> : null}
+                    </DivButtonNext> : null} */}
                   </BlockTransDay>
                   )
                 }}
                 keyExtractor={(item, index) => index.toString()}
                 stickyHeaderIndices={[]}
+                onEndReached={() => {nextPage('mais')}}
+                onEndReachedThreshold={0.5}
                 />
               </>
             : <><IconMaterial name="piggy-bank-outline" size={50} color="#aaabab" style={{ transform: [{ scaleX: -1 }] }} /><TextButtonDivBtt fontSize='18px' color='#383838'>{messageTrans === '' ? "Você ainda não possui lançamentos." : messageTrans}</TextButtonDivBtt></>}

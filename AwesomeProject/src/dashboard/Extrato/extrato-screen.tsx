@@ -22,7 +22,6 @@ import { TransDetalheScreen } from '../../AvisoModel/transDetalheModal';
 import { LoadingSpinner } from '../../Loading/loadingScreen';
 import { setFiltroField } from '../../redux/filtroSlice';
 
-
 interface ExtratoScreenProps {
   navigation: NavigationProp<RootStackParamList, 'Extrato'>;
 }
@@ -52,9 +51,17 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
   const [numPagFlat, setNumPagFlat] = useState(0)
   const filtroData = useSelector((state: ReduxState)=> state.filtro);
   const [loading, setLoading] = useState(false);
-  const [isEffect, setIsEffect] = useState(true)
+  const [isEffect, setIsEffect] = useState(true);
+  const [page, setPage] = useState('1');
+  const [contar, setContar] = useState(1);
+  const [guardarValor, setGuardarValor] = useState('')
+  const [isPageTwo, setIsPageTwo] = useState(false);
+  let top = 1
+  let random = 1;
 
-
+  setInterval(() => {
+    random += 1;
+  }, 1000);
   const dispatch = useDispatch();
 
   const resetDataPage = () => {
@@ -62,18 +69,25 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
   }
 
   const nextPage = async (valor: any) => {
-    const newPage = Number(filtroData.page) + 1;
-    if(valor == 'mais'){
-      setLoading(true)
+    console.log(filtroData.page)
+    const oldPage = Number(filtroData.page);
+    const newPage = (oldPage + 1).toString();
+    setTimeout(() => {
       dispatch((setFiltroField({field: 'page', value: newPage.toString()})))
-      try{
-        await fetchUserData()
-      }catch(err){
-        console.log(err)
-      }finally{
-        setLoading(false)
-      }
-    };
+    }, 2000)
+    console.log(filtroData.page)
+    console.log(newPage)
+    setPage(newPage)
+
+    setLoading(true)
+    console.log(filtroData.page)
+    try{
+      await fetchUserData()
+    }catch(err){
+      console.log(err)
+    }finally{
+      setLoading(false)
+    }
     
   }
 
@@ -160,9 +174,11 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
         throw new Error('Erro ao buscar conta')
       }
       setContaBanc((await contaRes.json()).contaBanc_id)
-      console.log(contaBanc) 
 
-      const transRes = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/transferencia/?${filtroData.ordem != '' ? '&ordem='+filtroData.ordem : ''}${filtroData.dataFinal != '' ? '&dataFinal='+filtroData.dataFinal : ''}${filtroData.dataInicial != '' ? '&dataInicial='+filtroData.dataInicial : ''}${filtroData.dias != '' ? '&dias='+filtroData.dias : ''}${filtroData.page != '' ? '&page='+filtroData.page : ''}`,{
+      setContar(contar + 1)
+
+      console.log(contar)
+      const transRes = await fetch(`https://rubcube-3-backend-victorhugo.onrender.com/transferencia/?${filtroData.ordem != '' ? '&ordem='+filtroData.ordem : ''}${filtroData.dataFinal != '' ? '&dataFinal='+filtroData.dataFinal : ''}${filtroData.dataInicial != '' ? '&dataInicial='+filtroData.dataInicial : ''}${filtroData.dias != '' ? '&dias='+filtroData.dias : ''}${contar != 1 ? '&page='+filtroData.page : ''}`,{
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -174,9 +190,11 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
         setMessageTrans('Erro ao buscar transferencia')
         return
       }
-      const data = await transRes.json()
-      console.log(data)
-      setTransInfo(data.trans)
+
+      const [transData] = await Promise.all([transRes.json()])
+      const data = await transData
+      console.log(data, '________________________________', filtroData.page)
+      setTransInfo(prevTransInfo => [...prevTransInfo, ...data.trans])
       setNumPagFlat(data.numPags)
       setFlag(true)
       setLoading(false)
@@ -220,11 +238,23 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
     }
   }
 
-  const testFunction = async () => {
-    return transInfo
+  function setTimeoutPromise(ms: number): Promise<void> {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve(); // Resolvemos a promessa sem um valor, indicando que o timeout terminou
+      }, ms);
+    });
   }
-  useEffect(() => {fetchUserData()}, [])
-  useEffect(() => {resetDataPage()}, [])
+
+  useEffect(() => {
+    setTransInfo([])
+    console.log('carregando')
+    dispatch((setFiltroField({field: 'page', value: '2'})))
+    // setContar(0)
+    fetchUserData()
+    console.log('chamouuseeffect')
+  }, [filtroData.dataFinal, filtroData.dataInicial, filtroData.dias, filtroData.ordem])
+
   // useEffect(() => 
   //   {if(isEffect){
   //     setIsEffect(false)
@@ -335,7 +365,7 @@ export default function ExtratoScreen({navigation}: ExtratoScreenProps) {
                 onEndReached={() => {
                   nextPage('mais')
                 }}
-                onEndReachedThreshold={0.1}
+                onEndReachedThreshold={0.5}
                 />
               </>
             : <><IconMaterial name="piggy-bank-outline" size={50} color="#aaabab" style={{ transform: [{ scaleX: -1 }] }} /><TextButtonDivBtt fontSize='18px' color='#383838'>{messageTrans === '' ? "Você ainda não possui lançamentos." : messageTrans}</TextButtonDivBtt></>}

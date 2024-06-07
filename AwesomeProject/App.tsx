@@ -25,6 +25,7 @@ import TransferenciaValorDescScreen from './src/dashboard/Transferencia/transfer
 import TransferenciaSenhaScreen from './src/dashboard/Transferencia/transferenciaSenha-screen';
 import AlterarEnderecoScreen from './src/dashboard/alterar/alterar-endereco-screen';
 import ListarEnderecoScreen from './src/dashboard/alterar/listar-endereco-screen';
+import { useFocusEffect } from '@react-navigation/native';
 import { Provider } from 'react-redux';
 import { store } from './src/redux/store';
 import { useEffect } from 'react';
@@ -91,7 +92,7 @@ function App() {
       }}
 
       >
-        <Stack.Navigator initialRouteName="Dashboard">
+        <Stack.Navigator initialRouteName="Inicio">
           <Stack.Screen
             name="Prototipo"
             component={PrototipoScreen}

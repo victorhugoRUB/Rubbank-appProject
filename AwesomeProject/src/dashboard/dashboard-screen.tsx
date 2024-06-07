@@ -9,6 +9,7 @@ const logo = require('../assets/logos/rubbank.png');
 import IconFeather from 'react-native-vector-icons/Feather';
 import IconEntypo from 'react-native-vector-icons/Entypo';
 import IconOcticons from 'react-native-vector-icons/Octicons';
+import IconMaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector } from 'react-redux';
 import { ReduxState } from '../redux/store';
@@ -89,17 +90,9 @@ export default function DashboardScreen({navigation}: DashboardScreenProps) {
               <IconOcticons name="person" size={24} color="#000" />
               <TextBlockBottom>Perfil</TextBlockBottom>
             </BlockOptionsBottom>
-            <BlockOptionsBottom onPress={() => displayNotification(1)}>
-              <IconOcticons name="person" size={24} color="#000" />
-              <TextBlockBottom>Notificação(TESTE)</TextBlockBottom>
-            </BlockOptionsBottom>
-            <BlockOptionsBottom onPress={async () =>{ 
-              logEvent('eventDashboard', undefined)
-              console.log('Entrou no evento')
-            }
-            }>
-              <IconOcticons name="person" size={24} color="#000" />
-              <TextBlockBottom>Firebase(TESTE)</TextBlockBottom>
+            <BlockOptionsBottom disabled onPress={() => displayNotification(1)}>
+              <IconMaterialIcons name="pix" size={24} color="#000" />
+              <TextBlockBottom>PIX (em breve)</TextBlockBottom>
             </BlockOptionsBottom>
           </GenericDiv>
           <BannerAd
